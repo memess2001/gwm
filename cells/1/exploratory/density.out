@@ -1,0 +1,4 @@
+  slide: density (mean=1) in bins touching the thin wall: left 1.84, right 1.83; next bins 0.81/0.80; far 0.95 (sd 0.05)
+   stop: density (mean=1) in bins touching the thin wall: left 1.85, right 1.85; next bins 0.81/0.82; far 0.97 (sd 0.05)
+ reject: density (mean=1) in bins touching the thin wall: left 1.02, right 1.00; next bins 1.01/1.00; far 1.00 (sd 0.05)
+reflect: density (mean=1) in bins touching the thin wall: left 1.00, right 1.00; next bins 1.01/1.00; far 1.00 (sd 0.06)

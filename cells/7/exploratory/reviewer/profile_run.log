@@ -1,0 +1,8 @@
+T=0.5 done in 50s
+T=1.0 done in 38s
+/tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/review/cell7/estimators.py:115: RuntimeWarning: divide by zero encountered in divide
+  Lm = np.einsum('ln,lnij->lij', s ** 2 / qq ** 2, Ch)
+T=2.0 done in 42s
+/tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/review/cell7/estimators.py:116: RuntimeWarning: invalid value encountered in subtract
+  Xm = M - Lm
+T=4.0 done in 59s

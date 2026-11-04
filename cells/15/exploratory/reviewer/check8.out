@@ -1,0 +1,2 @@
+double pendulum, 4000 states on a chaotic orbit: Lebesgue div in (q,qdot): RMS 0.931, max 3.41; matches -d/dt log det M: max|diff| 1.3e-15; orbit mean -0.0014
+  divergence w.r.t. det M(q) dq dqdot: max |.| = 0.0e+00

@@ -1,0 +1,4 @@
+lam_t=10000 lam_r=4 floor=0.1: sigma_1 range [0.100, 0.500], temporal CV(sigma) = 0.42; diag-Fisher speed max/min = 2.55 (mu-part only 1.00); share of speed^2 from 2dsig^2 term = 0.248; whitened-Euclidean max/min = 1.00
+lam_t=10000 lam_r=4 floor=0.0: sigma_1 range [0.010, 0.500], temporal CV(sigma) = 1.85; diag-Fisher speed max/min = 1.45 (mu-part only 1.41); share of speed^2 from 2dsig^2 term = 0.006; whitened-Euclidean max/min = 1.01
+lam_t=400 lam_r=4 floor=0.1: sigma_1 range [0.100, 0.500], temporal CV(sigma) = 0.65; diag-Fisher speed max/min = 1.11 (mu-part only 1.03); share of speed^2 from 2dsig^2 term = 0.062; whitened-Euclidean max/min = 1.00
+lam_t=10000 lam_r=1000 floor=0.1: sigma_1 range [0.100, 0.100], temporal CV(sigma) = 0.00; diag-Fisher speed max/min = 1.00 (mu-part only 1.00); share of speed^2 from 2dsig^2 term = 0.000; whitened-Euclidean max/min = 1.00

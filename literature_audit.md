@@ -1541,3 +1541,7 @@ HF papers："phase space volume Liouville neural dynamics dissipation"；"Liouvi
 
 未能读取的页面：arXiv 2304.00188 的元数据页（限速；正文已核对）；export.arxiv.org（robots 禁止）。未核实的引用已在文中逐条标注。
 
+
+---
+
+> **第二轮补查（2026-11-03）** 见 `literature_audit_round2.md`。原始结构化输出在 `results/lit_round2_raw.json`。本文件（第一轮）保持原样，不再修改；第一轮中被第二轮更正的地方，以第二轮为准。

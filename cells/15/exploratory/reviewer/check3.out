@@ -1,0 +1,18 @@
+k=0.3 |harmonic n| of log a, n=1..16
+  script  [0.233  0.0138 0.0032 0.0316 0.0052 0.0185 0.0027 0.0257 0.011  0.0019 0.0029 0.0092 0.0061 0.0113 0.0049 0.0043]
+  clean   [0.2274 0.0097 0.0009 0.0014 0.0011 0.0009 0.0006 0.0004 0.0002 0.0001 0.     0.     0.     0.     0.     0.    ]
+  clean: |(log a)'|max=0.232; leading-order 2 om (log a)' RMS=0.476 vs exact-formula RMS=0.473
+k=0.6 |harmonic n| of log a, n=1..16
+  script  [0.4186 0.029  0.0437 0.0088 0.0191 0.0246 0.0021 0.0222 0.0038 0.0102 0.001  0.0119 0.0074 0.0012 0.0002 0.0055]
+  clean   [0.4151 0.003  0.0335 0.0261 0.0149 0.006  0.0006 0.0016 0.0017 0.0009 0.0001 0.0003 0.0003 0.     0.0002 0.0003]
+  clean: |(log a)'|max=0.499; leading-order 2 om (log a)' RMS=0.933 vs exact-formula RMS=0.919
+--- small-k scaling (clean, 4x supersampled, 64px canvas)
+  k=0.01 : fake RMS 0.0157  max 0.038   (RMS/k = 1.57)
+  k=0.03 : fake RMS 0.0470  max 0.115   (RMS/k = 1.57)
+  k=0.1  : fake RMS 0.1568  max 0.383   (RMS/k = 1.57)
+  k=0.2  : fake RMS 0.3152  max 0.772   (RMS/k = 1.58)
+--- affine camera: vertical foreshortening ys = yc/cos(phi) (pure Klein 'affine' level), clean
+  tilt 10 deg (scale cos=0.985): a max/min 1.000; fake RMS 0.000 max 0.00
+  tilt 20 deg (scale cos=0.940): a max/min 1.000; fake RMS 0.000 max 0.00
+  tilt 30 deg (scale cos=0.866): a max/min 1.000; fake RMS 0.000 max 0.00
+  tilt 45 deg (scale cos=0.707): a max/min 1.000; fake RMS 0.000 max 0.00

@@ -1,0 +1,33 @@
+A. near-uniform density: share vs k^2 d^2/(1+k^2 d^2)  (continuum k; discrete k_d in parens)
+  eps_bg=0.00 k=1: 0.0025/0.0025  0.0099/0.0099  0.0385/0.0385  0.2000/0.2000  0.5000/0.5000  0.8000/0.8000   max|share-formula_discrete|=1.2e-14
+  eps_bg=0.00 k=2: 0.0099/0.0099  0.0385/0.0385  0.1379/0.1379  0.5000/0.5000  0.8000/0.8000  0.9412/0.9412   max|share-formula_discrete|=8.8e-15
+  eps_bg=0.00 k=4: 0.0385/0.0385  0.1379/0.1379  0.3902/0.3902  0.8000/0.8000  0.9412/0.9412  0.9846/0.9846   max|share-formula_discrete|=1.9e-15
+  eps_bg=0.00 k=8: 0.1378/0.1379  0.3901/0.3902  0.7189/0.7191  0.9411/0.9412  0.9846/0.9846  0.9961/0.9961   max|share-formula_discrete|=1.2e-15
+  eps_bg=0.01 k=1: 0.0025/0.0025  0.0099/0.0099  0.0385/0.0385  0.2000/0.2000  0.5000/0.5000  0.8000/0.8000   max|share-formula_discrete|=1.0e-05
+  eps_bg=0.01 k=2: 0.0099/0.0099  0.0385/0.0385  0.1379/0.1379  0.5000/0.5000  0.8000/0.8000  0.9412/0.9412   max|share-formula_discrete|=8.3e-06
+  eps_bg=0.01 k=4: 0.0385/0.0385  0.1379/0.1379  0.3902/0.3902  0.8000/0.8000  0.9412/0.9412  0.9846/0.9846   max|share-formula_discrete|=3.2e-06
+  eps_bg=0.01 k=8: 0.1378/0.1379  0.3901/0.3902  0.7189/0.7191  0.9411/0.9412  0.9846/0.9846  0.9961/0.9961   max|share-formula_discrete|=1.0e-06
+
+B. envelope identity on strongly non-uniform rho (rho=1+0.9cos x, rhodot = cos5x + 0.3 sin2x + 0.1)
+  delta=0.1: share=0.193054  1-dlnA/dln(d^2)=0.193054
+  delta=0.3: share=0.609399  1-dlnA/dln(d^2)=0.609399
+  delta=1.0: share=0.770750  1-dlnA/dln(d^2)=0.770750
+
+C. non-uniform background, same rhodot=cos(5x): share depends on rho (Fourier filter only for near-uniform)
+  eps_bg=0.0: shares at delta=0.1,0.2,0.5 -> [0.1999 0.4999 0.862 ]
+  eps_bg=0.3: shares at delta=0.1,0.2,0.5 -> [0.2001 0.4999 0.8619]
+  eps_bg=0.9: shares at delta=0.1,0.2,0.5 -> [0.209  0.5054 0.8586]
+
+D. Gaussian bump (std w=1) on (almost) zero background, Neumann box [-10,10]
+  growth   (He0): share/[n d^2/(n d^2+w^2)] at delta=.25,.5,1,2,4: 0.0000/0.0000  0.0000/0.0000  0.0000/0.0000  0.0000/0.0000  0.0000/0.0000
+  translate(He1): share/[n d^2/(n d^2+w^2)] at delta=.25,.5,1,2,4: 0.0588/0.0588  0.2000/0.2000  0.5000/0.5000  0.8000/0.8000  0.9412/0.9412
+  spread   (He2): share/[n d^2/(n d^2+w^2)] at delta=.25,.5,1,2,4: 0.1111/0.1111  0.3333/0.3333  0.6667/0.6667  0.8889/0.8889  0.9697/0.9697
+  He3 mode      : share/[n d^2/(n d^2+w^2)] at delta=.25,.5,1,2,4: 0.1579/0.1579  0.4286/0.4286  0.7500/0.7500  0.9231/0.9231  0.9796/0.9796
+
+  translating Gaussian, true speed c=1: minimal-action v at x=0 vs c*d^2/(d^2+w^2)
+   delta=0.5: v(0)=0.2000  predicted=0.2000
+   delta=1.0: v(0)=0.5000  predicted=0.5000
+   delta=2.0: v(0)=0.8000  predicted=0.8000
+
+E. compact skewed profile (Lenia-like, support |x|<3), translation: share vs Gaussian-of-same-variance formula
+  (std=0.927) 0.0961/0.0679  0.2548/0.2255  0.5505/0.5381  0.8252/0.8233  0.9492/0.9491

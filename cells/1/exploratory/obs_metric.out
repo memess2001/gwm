@@ -1,0 +1,21 @@
+blob s=2.0px, grid step 0.5px; g normalised by its far-field value; K in units of 1/(g_far * px^2)
+
+[invisible walls]
+  metric anomaly ||g-g_far||/g_far: far max 7.72e-08 | near interior wall mean 0.000 max 0.000 | near image border mean 0.334 max 1.037
+  |K|: far max 8.36e-08 | near interior wall max 4.18e-08 | near image border max 1.72e+00
+  IoU(lit = anomaly>5%, band = free & d_wall<2s): all lit 0.02; lit excluding image-border zone 0.00
+
+[additive (o=blob+0.5W)]
+  metric anomaly ||g-g_far||/g_far: far max 7.72e-08 | near interior wall mean 0.000 max 0.000 | near image border mean 0.334 max 1.037
+  |K|: far max 8.36e-08 | near interior wall max 4.18e-08 | near image border max 1.72e+00
+  IoU(lit = anomaly>5%, band = free & d_wall<2s): all lit 0.02; lit excluding image-border zone 0.00
+
+[agent over wall (alpha)]
+  metric anomaly ||g-g_far||/g_far: far max 7.72e-08 | near interior wall mean 0.215 max 0.487 | near image border mean 0.334 max 1.037
+  |K|: far max 8.36e-08 | near interior wall max 9.27e-02 | near image border max 1.72e+00
+  IoU(lit = anomaly>5%, band = free & d_wall<2s): all lit 0.26; lit excluding image-border zone 0.68
+
+[wall over agent (opaque)]
+  metric anomaly ||g-g_far||/g_far: far max 7.72e-08 | near interior wall mean 0.286 max 0.650 | near image border mean 0.334 max 1.037
+  |K|: far max 8.36e-08 | near interior wall max 1.92e-01 | near image border max 1.72e+00
+  IoU(lit = anomaly>5%, band = free & d_wall<2s): all lit 0.27; lit excluding image-border zone 0.69

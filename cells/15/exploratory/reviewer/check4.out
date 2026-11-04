@@ -1,0 +1,10 @@
+supersampled 4x, 64px field of view:
+  generic affine [[.8,.35],[-.15,1.1]] (Klein: affine)           a max/min 1.000 | fake RMS (<=4) 0.000 | fake RMS (all) 0.000
+  affine + translation (pivot off-centre by (0.1,-0.08))         a max/min 1.001 | fake RMS (<=4) 0.001 | fake RMS (all) 0.001
+  projective k=0.3 (script homography)                           a max/min 1.567 | fake RMS (<=4) 0.473 | fake RMS (all) 0.473
+  radial lens distortion centred on pivot (Homeo, non-projective) a max/min 1.000 | fake RMS (<=4) 0.000 | fake RMS (all) 0.000
+  radial lens distortion centred 0.3 below pivot                 a max/min 1.264 | fake RMS (<=4) 0.244 | fake RMS (all) 0.244
+  identity camera + background gradient 0->0.4 (Klein: Euclidean) a max/min 1.288 | fake RMS (<=4) 0.262 | fake RMS (all) 0.262
+  identity camera + uniform background 0.3                       a max/min 1.000 | fake RMS (<=4) 0.000 | fake RMS (all) 0.000
+script-style pipeline (zoo float32 render + bilinear warp, 64px):
+  generic affine, bilinear (as the script would implement it)    a max/min 1.029 | fake RMS (<=4) 0.010 | fake RMS (all) 0.441

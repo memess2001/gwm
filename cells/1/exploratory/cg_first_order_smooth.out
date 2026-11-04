@@ -1,0 +1,38 @@
+
+===== SMOOTHED 1-step model (eps=0.05): grid 0.1, FD h=0.001, k=4, |d|=0.25 (band B=1.0) =====
+
+-- contact model: slide --
+  action  E: FTLE: face 0.000/3.2e-12, corner max 4e-12, far max 4e-12  COMP: face 0.223/0.8, corner max 0.8, far max 0.04  |K|: face 0.000/0, corner max 5.9, far max 0.2
+  action NE: FTLE: face 0.000/1.9e-12, corner max 3.2, far max 3e-12  COMP: face 0.159/0.78, corner max 0.78, far max 2e-12  |K|: face 0.000/8.9e-12, corner max 3.3e+05, far max 2e-09
+  max over 8 actions -> zone coverage (fraction of zone lit) and IoU(lit, all-wall band):
+    FTLE (thr 0.05): face 0.00  corner 0.05  outer 0.00  far 0.00   IoU 0.00
+    COMP (thr 0.05): face 1.00  corner 0.68  outer 1.00  far 0.00   IoU 0.98
+     |K| (thr 0.01): face 0.00  corner 0.76  outer 0.00  far 0.00   IoU 0.06
+     RES (thr 0.01): face 1.00  corner 0.69  outer 1.00  far 0.00   IoU 0.98
+
+-- contact model: stop --
+  action  E: FTLE: face 0.000/3.2e-12, corner max 4e-12, far max 4e-12  COMP: face 0.223/0.8, corner max 0.8, far max 0.04  |K|: face 0.000/0, corner max 5.9, far max 0.2
+  action NE: FTLE: face 0.062/0.26, corner max 4.2, far max 3e-12  COMP: face 0.164/0.78, corner max 0.8, far max 2e-12  |K|: face 0.000/8.9e-11, corner max 1.6e+07, far max 6e-05
+  max over 8 actions -> zone coverage (fraction of zone lit) and IoU(lit, all-wall band):
+    FTLE (thr 0.05): face 0.70  corner 0.56  outer 0.72  far 0.00   IoU 0.71
+    COMP (thr 0.05): face 1.00  corner 0.68  outer 1.00  far 0.00   IoU 0.98
+     |K| (thr 0.01): face 0.00  corner 0.78  outer 0.08  far 0.01   IoU 0.15
+     RES (thr 0.01): face 1.00  corner 0.70  outer 1.00  far 0.00   IoU 0.98
+
+-- contact model: reject --
+  action  E: FTLE: face 0.027/0.54, corner max 0.54, far max 4e-12  COMP: face 0.010/0.2, corner max 0.2, far max 3e-12  |K|: face 0.000/0, corner max 4.8, far max 9e-13
+  action NE: FTLE: face 0.005/0.09, corner max 5.1, far max 3e-12  COMP: face 0.006/0.11, corner max 0.8, far max 2e-12  |K|: face 0.000/1.5e-11, corner max 4.2e+08, far max 0.01
+  max over 8 actions -> zone coverage (fraction of zone lit) and IoU(lit, all-wall band):
+    FTLE (thr 0.05): face 0.25  corner 0.20  outer 0.11  far 0.00   IoU 0.15
+    COMP (thr 0.05): face 0.15  corner 0.13  outer 0.38  far 0.00   IoU 0.32
+     |K| (thr 0.01): face 0.00  corner 0.34  outer 0.06  far 0.00   IoU 0.09
+     RES (thr 0.01): face 1.00  corner 0.77  outer 1.00  far 0.08   IoU 0.91
+
+-- contact model: reflect --
+  action  E: FTLE: face 0.177/3.2, corner max 3.2, far max 4e-12  COMP: face 0.109/0.6, corner max 0.79, far max 0.08  |K|: face 0.000/0, corner max 2.8e+06, far max 0.3
+  action NE: FTLE: face 0.000/1.9e-12, corner max 3.9, far max 3e-12  COMP: face 0.128/0.65, corner max 0.69, far max 2e-12  |K|: face 0.000/6.1e-12, corner max 2.7e+07, far max 7e-09
+  max over 8 actions -> zone coverage (fraction of zone lit) and IoU(lit, all-wall band):
+    FTLE (thr 0.05): face 0.20  corner 0.15  outer 0.00  far 0.00   IoU 0.05
+    COMP (thr 0.05): face 0.85  corner 0.70  outer 0.91  far 0.08   IoU 0.82
+     |K| (thr 0.01): face 0.00  corner 0.86  outer 0.01  far 0.01   IoU 0.07
+     RES (thr 0.01): face 1.00  corner 0.75  outer 1.00  far 0.04   IoU 0.94

@@ -1,0 +1,11 @@
+[project]
+name = "gwm"
+version = "0.0.1"
+description = "Geometric / information-geometric world models: zoo of worlds with analytic ground truth, baselines, kill tests"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy", "scikit-learn", "torch", "ripser", "gudhi", "pyyaml", "matplotlib"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

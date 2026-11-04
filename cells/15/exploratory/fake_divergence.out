@@ -1,0 +1,7 @@
+true divergence of the undamped pendulum = 0; for scale, damping gamma=0.05 gives -2*gamma = -0.100
+warp k=0.0 [               all]: a max/min = 1.02; |(log a)'| max = 1.095; fake div max |.| = 2.817, RMS = 0.410
+warp k=0.0 [low (harmonics<=4)]: a max/min = 1.02; |(log a)'| max = 0.000; fake div max |.| = 0.000, RMS = 0.000
+warp k=0.3 [               all]: a max/min = 1.72; |(log a)'| max = 2.083; fake div max |.| = 5.191, RMS = 0.885
+warp k=0.3 [low (harmonics<=4)]: a max/min = 1.72; |(log a)'| max = 0.366; fake div max |.| = 1.775, RMS = 0.544
+warp k=0.6 [               all]: a max/min = 2.31; |(log a)'| max = 3.294; fake div max |.| = 11.731, RMS = 1.415
+warp k=0.6 [low (harmonics<=4)]: a max/min = 2.31; |(log a)'| max = 0.550; fake div max |.| = 2.740, RMS = 0.917

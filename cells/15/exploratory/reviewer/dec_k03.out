@@ -1,0 +1,6 @@
+/home/user/gwm/.venv/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+k=0.3 width=256 steps=3000 ntrain=4096 seed=0: train loss 3.62e-04, test rel L2 recon err 0.168, time 366s
+  a_g/a_true mean 0.827  | log a harmonics n=1..6: decoder [0.2697 0.0225 0.0079 0.0109 0.0103 0.0042]  camera(cont.) [0.2274 0.0097 0.0009 0.0014 0.0011 0.0009]
+  fake div RMS/max [harmonics <= 4]: decoder 0.574/1.84   vs continuum camera 0.473/1.19
+  fake div RMS/max [harmonics <= None]: decoder 5.346/29.11   vs continuum camera 0.473/1.17

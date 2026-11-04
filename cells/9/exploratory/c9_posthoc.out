@@ -1,0 +1,5 @@
+rssm_arrays_minstd0.01_sobs0.1_seed0.npz: n_traj=48, n_gaps=89
+  CV[fisher_line] - CV[whitened_frozen] = -0.0038  95% cluster-bootstrap CI [-0.0081, +0.0002]
+  CV[fisher_line] - CV[eucl_mu_raw] = -0.0310  95% cluster-bootstrap CI [-0.0414, -0.0221]
+  CV[fisher_line] - CV[eucl_h_mu] = -0.0005  95% cluster-bootstrap CI [-0.0035, +0.0027]
+  CV[fisher_geo_sum] - CV[whitened_frozen] = -0.0600  95% cluster-bootstrap CI [-0.0778, -0.0434]

@@ -1,0 +1,24 @@
+{"fix": "A", "r": 0, "alpha": 1.0, "kappa": 1.0, "SR": 0.99, "SR_adapt": 0.99, "pairs": 10582, "pairs_adapt": 10549, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 1.0, "kappa": 5.0, "SR": 0.91, "SR_adapt": 0.97, "pairs": 10582, "pairs_adapt": 2843, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 1.0, "kappa": 9.5, "SR": 0.88, "SR_adapt": 0.97, "pairs": 10582, "pairs_adapt": 1589, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.9, "kappa": 1.0, "SR": 6.44, "SR_adapt": 6.44, "pairs": 10582, "pairs_adapt": 10556, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.9, "kappa": 5.0, "SR": 3.44, "SR_adapt": 6.47, "pairs": 10582, "pairs_adapt": 2843, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.9, "kappa": 9.5, "SR": 2.15, "SR_adapt": 6.45, "pairs": 10582, "pairs_adapt": 1606, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.85, "kappa": 1.0, "SR": 9.44, "SR_adapt": 9.45, "pairs": 10582, "pairs_adapt": 10560, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.85, "kappa": 5.0, "SR": 4.98, "SR_adapt": 9.49, "pairs": 10582, "pairs_adapt": 2843, "status": "ok"}
+{"fix": "A", "r": 0, "alpha": 0.85, "kappa": 9.5, "SR": 3.02, "SR_adapt": 9.46, "pairs": 10582, "pairs_adapt": 1606, "status": "ok"}
+{"fix": "B", "r": 0, "chart": "glued_ref", "w0.12": {"SR_all_windows": 0.99, "SR_no_straddle": 1.01, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 0.99, "SR_no_straddle": 1.02, "status_ns": "ok"}}
+{"fix": "B", "r": 0, "chart": "torn", "w0.12": {"SR_all_windows": 49.47, "SR_no_straddle": 44.17, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 18.67, "SR_no_straddle": 16.63, "status_ns": "ok"}}
+{"fix": "B", "r": 0, "chart": "displaced_tear", "w0.12": {"SR_all_windows": 4.22, "SR_no_straddle": 44.17, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 9.52, "SR_no_straddle": 16.63, "status_ns": "ok"}}
+{"fix": "A", "r": 1, "alpha": 1.0, "kappa": 1.0, "SR": 0.99, "SR_adapt": 0.99, "pairs": 10234, "pairs_adapt": 10208, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 1.0, "kappa": 5.0, "SR": 0.88, "SR_adapt": 0.97, "pairs": 10234, "pairs_adapt": 3013, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 1.0, "kappa": 9.5, "SR": 0.84, "SR_adapt": 0.99, "pairs": 10234, "pairs_adapt": 1722, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.9, "kappa": 1.0, "SR": 6.61, "SR_adapt": 6.61, "pairs": 10234, "pairs_adapt": 10212, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.9, "kappa": 5.0, "SR": 3.48, "SR_adapt": 6.64, "pairs": 10234, "pairs_adapt": 3013, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.9, "kappa": 9.5, "SR": 2.16, "SR_adapt": 6.82, "pairs": 10234, "pairs_adapt": 1722, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.85, "kappa": 1.0, "SR": 9.7, "SR_adapt": 9.7, "pairs": 10234, "pairs_adapt": 10214, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.85, "kappa": 5.0, "SR": 5.05, "SR_adapt": 9.75, "pairs": 10234, "pairs_adapt": 3014, "status": "ok"}
+{"fix": "A", "r": 1, "alpha": 0.85, "kappa": 9.5, "SR": 3.04, "SR_adapt": 10.03, "pairs": 10234, "pairs_adapt": 1722, "status": "ok"}
+{"fix": "B", "r": 1, "chart": "glued_ref", "w0.12": {"SR_all_windows": 0.99, "SR_no_straddle": 1.01, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 1.0, "SR_no_straddle": 1.02, "status_ns": "ok"}}
+{"fix": "B", "r": 1, "chart": "torn", "w0.12": {"SR_all_windows": 50.99, "SR_no_straddle": 46.28, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 18.61, "SR_no_straddle": 16.39, "status_ns": "ok"}}
+{"fix": "B", "r": 1, "chart": "displaced_tear", "w0.12": {"SR_all_windows": 4.39, "SR_no_straddle": 46.28, "status_ns": "ok"}, "w0.35": {"SR_all_windows": 10.06, "SR_no_straddle": 16.39, "status_ns": "ok"}}

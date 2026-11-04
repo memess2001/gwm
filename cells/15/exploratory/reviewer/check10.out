@@ -1,0 +1,3 @@
+libration E=-0.28           : pointwise fake RMS along orbit 0.185; time-average +0.00005
+rotation  E=+1.65           : pointwise fake RMS along orbit 0.549; time-average +0.00044
+near-separatrix libration   : pointwise fake RMS along orbit 0.344; time-average -0.00003

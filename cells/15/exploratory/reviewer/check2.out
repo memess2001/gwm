@@ -1,0 +1,20 @@
+k=0.3: bob centre at theta=pi -> yo=-0.866 (frame edge at -1); fraction of circle with bob centre outside frame = 0.000; min margin = +4.3 px
+k=0.6: bob centre at theta=pi -> yo=-1.170 (frame edge at -1); fraction of circle with bob centre outside frame = 0.137; min margin = -5.4 px
+--- k = 0.0
+  script (zoo f32 + bilinear warp, 64px)       a max/min=1.02 | <=    4: RMS 0.000 max 0.00 | <=    8: RMS 0.000 max 0.00 | <=   16: RMS 0.000 max 0.00 | <= None: RMS 0.410 max 2.82
+  analytic warp, point-sampled, 64px           a max/min=1.02 | <=    4: RMS 0.000 max 0.00 | <=    8: RMS 0.000 max 0.00 | <=   16: RMS 0.000 max 0.00 | <= None: RMS 0.408 max 2.73
+  analytic warp, 4x supersampled (256px)       a max/min=1.00 | <=    4: RMS 0.000 max 0.00 | <=    8: RMS 0.000 max 0.00 | <=   16: RMS 0.000 max 0.00 | <= None: RMS 0.000 max 0.00
+  analytic, no crop (128px canvas, same pitch) a max/min=1.02 | <=    4: RMS 0.000 max 0.00 | <=    8: RMS 0.000 max 0.00 | <=   16: RMS 0.000 max 0.00 | <= None: RMS 0.408 max 2.73
+  analytic, no crop, 4x supersampled           a max/min=1.00 | <=    4: RMS 0.000 max 0.00 | <=    8: RMS 0.000 max 0.00 | <=   16: RMS 0.000 max 0.00 | <= None: RMS 0.000 max 0.00
+--- k = 0.3
+  script (zoo f32 + bilinear warp, 64px)       a max/min=1.72 | <=    4: RMS 0.544 max 1.77 | <=    8: RMS 0.657 max 2.60 | <=   16: RMS 0.699 max 2.84 | <= None: RMS 0.885 max 5.19
+  analytic warp, point-sampled, 64px           a max/min=1.63 | <=    4: RMS 0.473 max 1.19 | <=    8: RMS 0.473 max 1.17 | <=   16: RMS 0.473 max 1.17 | <= None: RMS 0.891 max 7.54
+  analytic warp, 4x supersampled (256px)       a max/min=1.57 | <=    4: RMS 0.473 max 1.19 | <=    8: RMS 0.473 max 1.17 | <=   16: RMS 0.473 max 1.17 | <= None: RMS 0.473 max 1.17
+  analytic, no crop (128px canvas, same pitch) a max/min=1.64 | <=    4: RMS 0.478 max 1.17 | <=    8: RMS 0.478 max 1.17 | <=   16: RMS 0.478 max 1.17 | <= None: RMS 0.893 max 7.54
+  analytic, no crop, 4x supersampled           a max/min=1.58 | <=    4: RMS 0.478 max 1.17 | <=    8: RMS 0.478 max 1.17 | <=   16: RMS 0.478 max 1.17 | <= None: RMS 0.478 max 1.17
+--- k = 0.6
+  script (zoo f32 + bilinear warp, 64px)       a max/min=2.31 | <=    4: RMS 0.917 max 2.74 | <=    8: RMS 1.003 max 3.39 | <=   16: RMS 1.027 max 3.63 | <= None: RMS 1.415 max 11.73
+  analytic warp, point-sampled, 64px           a max/min=2.38 | <=    4: RMS 0.906 max 2.77 | <=    8: RMS 0.919 max 2.57 | <=   16: RMS 0.919 max 2.54 | <= None: RMS 1.818 max 17.10
+  analytic warp, 4x supersampled (256px)       a max/min=2.21 | <=    4: RMS 0.906 max 2.77 | <=    8: RMS 0.918 max 2.57 | <=   16: RMS 0.919 max 2.54 | <= None: RMS 0.919 max 2.52
+  analytic, no crop (128px canvas, same pitch) a max/min=2.85 | <=    4: RMS 1.012 max 2.52 | <=    8: RMS 1.012 max 2.52 | <=   16: RMS 1.012 max 2.52 | <= None: RMS 1.867 max 17.10
+  analytic, no crop, 4x supersampled           a max/min=2.64 | <=    4: RMS 1.012 max 2.52 | <=    8: RMS 1.012 max 2.52 | <=   16: RMS 1.012 max 2.52 | <= None: RMS 1.012 max 2.52

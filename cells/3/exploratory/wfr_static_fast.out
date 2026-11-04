@@ -1,0 +1,27 @@
+
+translate d=0.5   (34s)
+  delta= 0.250  WFR^2=0.0145  share= 0.089   small-d prediction: WFR^2=0.0147, share=0.059
+  delta= 0.397  WFR^2=0.0336  share= 0.145   small-d prediction: WFR^2=0.0340, share=0.136
+  delta= 0.630  WFR^2=0.0703  share= 0.292   small-d prediction: WFR^2=0.0710, share=0.284
+  delta= 1.000  WFR^2=0.1242  share= 0.496   small-d prediction: WFR^2=0.1250, share=0.500
+  delta= 1.587  WFR^2=0.1784  share= 0.701   small-d prediction: WFR^2=0.1790, share=0.716
+  delta= 2.520  WFR^2=0.2158  share= 0.851   small-d prediction: WFR^2=0.2160, share=0.864
+  delta= 4.000  WFR^2=0.2352  share= 0.907   small-d prediction: WFR^2=0.2353, share=0.941
+
+grow x1.21   (73s)
+  delta= 0.250  WFR^2=0.0024  share=-0.026   exact: WFR^2=0.0025, share=0
+  delta= 0.397  WFR^2=0.0063  share=-0.016   exact: WFR^2=0.0063, share=0
+  delta= 0.630  WFR^2=0.0158  share=-0.004   exact: WFR^2=0.0159, share=0
+  delta= 1.000  WFR^2=0.0400  share=-0.001   exact: WFR^2=0.0400, share=0
+  delta= 1.587  WFR^2=0.1008  share=-0.000   exact: WFR^2=0.1008, share=0
+  delta= 2.520  WFR^2=0.2540  share=-0.000   exact: WFR^2=0.2540, share=0
+  delta= 4.000  WFR^2=0.6400  share=-0.000   exact: WFR^2=0.6400, share=0
+
+translate d=3.0   (107s)
+  delta= 0.250  WFR^2=0.3267  share= 0.051   pi*delta=0.79 (displacement 3.0)
+  delta= 0.397  WFR^2=0.7855  share= 0.083   pi*delta=1.25 (displacement 3.0)
+  delta= 0.630  WFR^2=1.7776  share= 0.184   pi*delta=1.98 (displacement 3.0)
+  delta= 1.000  WFR^2=3.5529  share= 0.363   pi*delta=3.14 (displacement 3.0)
+  delta= 1.587  WFR^2=5.7687  share= 0.599   pi*delta=4.99 (displacement 3.0)
+  delta= 2.520  WFR^2=7.4609  share= 0.801   pi*delta=7.92 (displacement 3.0)
+  delta= 4.000  WFR^2=8.3363  share= 0.880   pi*delta=12.57 (displacement 3.0)

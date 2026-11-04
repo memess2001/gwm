@@ -1,0 +1,5 @@
+raw eigenvalues of C_k: max |x-coords - z-coords| / value = 11.62
+raw log det C_k: max |difference| = 2.53  (= -2 log|det Dpsi|, a gauge term)
+relative eig(C_0^-1 C_k): max |x - z| / value = 7.2e-11
+relative log det(C_0^-1 C_k): max |difference| = 7.2e-11
+(sanity) relative lam_min in band: 1.00..5.00, far: 5.00..5.00 (free = 5)

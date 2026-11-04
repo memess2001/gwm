@@ -1,0 +1,2 @@
+A deterministic ODE, obs=counts: mean |dx| per step 0.0120; posterior sd range [0.0010, 0.0158]; median temporal CV(sd) over traj x type = 0.277
+B drift pop_size=200, obs=freq : mean |dx| per step 0.0239; posterior sd range [0.0000, 0.0000]; median temporal CV(sd) over traj x type = 0.000

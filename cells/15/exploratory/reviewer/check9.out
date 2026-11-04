@@ -1,0 +1,2 @@
+equal blobs (E1=E2) <-> m1=m2     : det g / det M  max/min = 1.0314   (det g alone max/min = 1.939)
+bob 2 drawn larger (s2=4)         : det g / det M  max/min = 1.1525   (det g alone max/min = 1.737)

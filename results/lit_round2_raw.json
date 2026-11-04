@@ -1,0 +1,2577 @@
+[
+ {
+  "cells": [
+   10
+  ],
+  "new_papers": [
+   {
+    "title": "Data driven modeling for self-similar dynamics",
+    "authors": "Ruyi Tao, Ningning Tao, Yi-zhuang You, Jiang Zhang",
+    "venue": "Physica D: Nonlinear Phenomena (2025-02, DOI 10.1016/j.physd.2024.134505, per Crossref metadata); arXiv 2310.08282 v3 (2024-03)",
+    "year": "2023/2025",
+    "url": "https://arxiv.org/abs/2310.08282",
+    "cells": [
+     10
+    ],
+    "closeness": "high (closest neighbour found; missed in round 1)",
+    "what_they_did": "学一个粗粒化映射 P（加 decoder 防平凡解）和一个动力学核，微观和宏观层共用同一网络和参数（自相似先验，作者称之为 RG 迭代的不动点）。判定方法：比较一步宏观演化与直接粗粒化的未来态，用 MSE 衡量一致性（接近可交换性检验）。实验覆盖全部 256 条 ECA（找回前人人工搜索得到的 21 条自相似规则）、扩散（R(C)=0 的反应扩散）、Vicsek 噪声扫描（定位临界区）和 Ising 临界指数。不用 MI，也不用 EI（EI 只在讨论里作为未来方向）。没有计算跨多级的、不共享的规则流。",
+    "implication": "第一轮说「Israeli–Goldenfeld 的规则流没有被学习化」，现在只部分成立：在不动点处的学习化版本已正式发表。本格剩下的差异只有四点：不共享的 F_k、F_k 离开不动点的流轨迹、RSMI 判据、连续 CA（Lenia / Gray–Scott）。必须作为直接基线。抢先风险：作者与 NIS+ 是同一个 Jiang Zhang，文中已写 EI 可作动态自相似的指标，把 EI 判据和多尺度流结合起来只差一步。",
+    "verified": true
+   },
+   {
+    "title": "From pixels to planning: scale-free active inference",
+    "authors": "Karl Friston, Conor Heins, Tim Verbelen, Lancelot Da Costa, Tommaso Salvatori, Dimitrije Markovic, Alexander Tschantz, Magnus Koudahl, Christopher Buckley, Thomas Parr",
+    "venue": "Frontiers in Network Physiology 5:1521963 (2025), DOI 10.3389/fnetp.2025.1521963; arXiv 2407.20292 (2024-07)",
+    "year": "2024/2025",
+    "url": "https://arxiv.org/abs/2407.20292",
+    "cells": [
+     10
+    ],
+    "closeness": "mid-high (slogan/naming collision plus partial content overlap)",
+    "what_they_did": "提出 renormalising generative models (RGM)：尺度不变的层级 POMDP 生成模型，在空间（图像分块逐层分组，SVD 降维）和时间（路径为潜变量，高层变化更慢）两个方向都做重整化。层间映射靠基于互信息的 fast structure learning 构建。原文称 'the functional form of the dynamics ... is conserved over levels or scales'，层与层之间只变参数，并说 'The implicit RG flow rests on the inclusion of dynamics in the generative model'。任务：MNIST、视频、音乐、Atari-like 游戏中的规划。可见正文没有 RG 不动点分析（页面截断，后半未读）。",
+    "implication": "「重整化（生成 / 世界）模型」这个口号已被占用，而且时空重整化、每层动力学、MI 驱动的结构学习、用于规划也都有了。本格不能叫 renormalizing world model，只能以 RSMI 判据、把规则流 F_k 及其不动点当作输出不变量、空间扩展动力系统上有答案的校准来区分。第一轮没有覆盖这篇。",
+    "verified": true
+   },
+   {
+    "title": "Predictor-Driven Diffusion for Spatiotemporal Generation",
+    "authors": "Yuki Yasuda, Tobias Bischoff",
+    "venue": "arXiv 2604.00327 (physics.flu-dyn)",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2604.00327",
+    "cells": [
+     10
+    ],
+    "closeness": "mid",
+    "what_they_did": "做基于 RG 的空间粗粒化：前向过程是规定好的尺度依赖 Laplacian 阻尼加噪声，得到一族以尺度 λ 为索引的粗粒场。物理时间用路径积分单独处理，学的是一个 predictor，刻画被消去的小尺度如何统计地影响大尺度演化。在两个多尺度湍流系统上验证。无 MI，无规则流，无不动点。",
+    "implication": "「尺度 λ 与物理时间是两根独立轴」这个 (k, t) 平面框架已出现在生成建模里。本格不能以二维流本身为新颖点，新颖点必须落在学到的规则 F_k 随 k 的轨迹上。",
+    "verified": true
+   },
+   {
+    "title": "Minimizing couplings in renormalization by preserving short-range mutual information",
+    "authors": "Christian Bertoni, Joseph M. Renes",
+    "venue": "J. Phys. A 55, 375004 (2022), DOI 10.1088/1751-8121/ac8383; arXiv 2107.00990",
+    "year": "2021/2022",
+    "url": "https://arxiv.org/abs/2107.00990",
+    "cells": [
+     10
+    ],
+    "closeness": "mid (theoretical critique of the criterion itself)",
+    "what_they_did": "论证：要让重整化后哈密顿量的长程耦合最少，应当最小化块与其边界之间短程互信息的损失，作者自称 'somewhat counterintuitively'。Koch-Janusz–Ringel 的长程 MI 判据只是这一做法的松弛，两个目标 'related in a nontrivial way'。",
+    "implication": "本格的核心预测是「粗动力学描述长度下降」，本质上就是耦合少，不能预设 RSMI（长程 MI）最优。判据对比必须加入短程块–边界 MI。",
+    "verified": true
+   },
+   {
+    "title": "Causal Emergence: When Distortions in a Map Obscure the Territory",
+    "authors": "Frederick Eberhardt, Lin Lin Lee",
+    "venue": "Philosophies 7(2):30 (2022-03-09), DOI 10.3390/philosophies7020030",
+    "year": "2022",
+    "url": "https://api.crossref.org/works/10.3390/philosophies7020030",
+    "cells": [
+     10
+    ],
+    "closeness": "mid (critique of the EI criterion; cited by NIS+)",
+    "what_they_did": "批评 Hoel 的 EI 因果涌现：宏观变量导致干预含糊，且 'the operations of marginalization and abstraction do not commute'。问题源于平均步骤和一个不属于被研究系统的最大熵分布。",
+    "implication": "NIS+ 引用此文并用预测误差约束作回应。所以「可交换性 P∘f ≈ F∘P」作为约束已经出现在竞争基线的叙事里，本格的可交换性损失本身不是新点。另外，这篇是 EI 判据的现成反方论据，可用于论证 MI 保持判据。（MDPI 页面返回 403，经 Crossref 元数据和摘要核实。）",
+    "verified": true
+   },
+   {
+    "title": "Renormalization of cellular automata and self-similarity",
+    "authors": "Erik Edlund, Martin Nilsson Jacobi",
+    "venue": "Journal of Statistical Physics 139(6):972-984 (2010), DOI 10.1007/s10955-010-9974-z; arXiv 1108.3982",
+    "year": "2010",
+    "url": "https://arxiv.org/abs/1108.3982",
+    "cells": [
+     10
+    ],
+    "closeness": "mid (theoretical warning)",
+    "what_they_did": "摘要原文：'We show that the RG fixed points for such self-similar CA are unstable in all directions under renormalization.' 并指出这类自相似 ECA 的大尺度结构会被任何有限错误概率破坏。",
+    "implication": "在 ECA 上，本格预测的「收敛到不动点」与已知定理冲突：自相似规则（包括 Tao et al. 找回的那 21 条）是全方向不稳定的不动点。预测应改为「找到不动点并测出其不稳定方向」，加噪声后不应期待收敛。",
+    "verified": true
+   },
+   {
+    "title": "Interpretable Hierarchical Normalizing Flows via a Gauge-Fixed Neural Renormalization Group",
+    "authors": "Oreoluwa Alao, Haiyun Huang, Peter Y. Lu",
+    "venue": "NeurIPS 2026 workshop (Interpretability for Discovery), poster",
+    "year": "2026",
+    "url": "https://neurips.cc/virtual/2026/164226",
+    "cells": [
+     10
+    ],
+    "closeness": "mid (equilibrium only)",
+    "what_they_did": "在 2D Ising 上构造精确似然的层级 normalizing flow，每层是作用于 2×2 块的连续 normalizing flow。固定 gauge 自由度后，各层可以读作 RG 步。独立训练的模型学到相同的块映射，温度梯子上的映射 'order themselves along the RG flow' 并落在三个不动点之间。没有物理时间。",
+    "implication": "这是 Iso et al. 2018 负面结果的正面对照：做了 gauge fixing，学到的映射方向可以是对的。可作为本格 Ising 校准的复现目标，也再次说明 2026 年的 neural RG 仍是平衡态。",
+    "verified": true
+   },
+   {
+    "title": "Application of deep neural networks for computing the renormalization group flow of the two-dimensional phi^4 field theory",
+    "authors": "Yueqi Zhao, Michael M. Fogler, Yi-Zhuang You",
+    "venue": "Mach. Learn.: Sci. Technol. 7, 025064 (2026); arXiv 2510.06508",
+    "year": "2025/2026",
+    "url": "https://arxiv.org/abs/2510.06508",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid",
+    "what_they_did": "RGFlow：双射（无信息损失）的 flow 网络从数据学实空间 RG 变换，按「最小互信息」原则优化。在 1D Gaussian 模型上学到经典 decimation，在 2D φ⁴ 上找到 Wilson–Fisher 型临界点并估计 ν。",
+    "implication": "neural RG 在 2025–26 仍是平衡态。注意它的 MI 原则是「最小 MI」（解纠缠），与 RSMI 的「最大 MI」方向相反。写判据时要说清本格属于哪一类。",
+    "verified": true
+   },
+   {
+    "title": "Learning of Statistical Field Theories",
+    "authors": "Shreya Shukla, Abhijith Jayakumar, Andrey Y. Lokhov",
+    "venue": "arXiv 2511.09859 (cond-mat.stat-mech)",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2511.09859",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid",
+    "what_they_did": "从样本反推微观耦合，在粗粒化下迭代，重建非微扰 RG 流，得到相边界、不动点和涌现相互作用。系统包括 Wegner Ising 规范理论、φ⁴、Schwinger、Sine-Gordon 和自旋–规范混合系统。均为作用量 / 哈密顿量（静态）。",
+    "implication": "学到的耦合沿尺度流动并带不动点，这件事在静态场论里已经有人做了。本格的差异必须是时间演化规则（动力学）沿尺度的流。",
+    "verified": true
+   },
+   {
+    "title": "Neural Renormalization Group Flow for Percolation",
+    "authors": "Anaclara Alvez, Luca Camagna, Sergio Chibbaro, Cyril Furtlehner, François Landes, Gianluca Manzan, Lorenzo Mensi",
+    "venue": "arXiv 2608.26764 (cond-mat.dis-nn)",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2608.26764",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid",
+    "what_they_did": "有监督、尺度共享的编码–解码网络，在各尺度递归使用同一个学到的粗粒化规则，预测跨越概率并重建最大团簇。潜表示显示与 RG 一致的 'scale-dependent flows'。只在 2D site percolation 上做，静态。",
+    "implication": "又一条静态 neural RG。尺度共享规则的设计与 Tao et al. 同构，即预设了不动点。",
+    "verified": true
+   },
+   {
+    "title": "Connecting the geometry and dynamics of many-body complex systems with message passing neural operators (ROMA)",
+    "authors": "Nicholas A. Gabriel, Neil F. Johnson, George Em Karniadakis",
+    "venue": "arXiv 2502.15913",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2502.15913",
+    "cells": [
+     10
+    ],
+    "closeness": "mid-low",
+    "what_they_did": "几何 RG 和 Laplacian RG 的神经类比与神经算子联合学习，用注意力把局部子图的几何表示接到动力学算子上，学多尺度演化算子。测试 Kuramoto 和类 Burgers 社会动力学，规模超过一百万节点。无 MI，无不动点分析。",
+    "implication": "在图上，「学到的 RG 粗粒化 + 每层动力学」已经出现，Kuramoto 也在本计划动物园里。但它没有把规则随尺度的漂移当作输出，也不在格点 CA / RD 上。",
+    "verified": true
+   },
+   {
+    "title": "Information bottleneck for learning the phase space of dynamics from high-dimensional experimental data (DySIB)",
+    "authors": "K. Michael Martini, Eslam Abdelaleem, Paarth Gulati, Ilya Nemenman",
+    "venue": "arXiv 2604.24662",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2604.24662",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "对称信息瓶颈：在潜空间最大化过去窗口与未来窗口之间的预测互信息，同时惩罚表示复杂度。在单摆视频上恢复相空间的维数、拓扑和几何。没有空间粗粒化。",
+    "implication": "相当于时空 RSMI 的「纯时间方向」那一半，可借用其估计器与超参自洽设定来实现带时间 buffer 的 RSMI。",
+    "verified": true
+   },
+   {
+    "title": "SAMPO: Scale-wise Autoregression with Motion PrOmpt for generative world models",
+    "authors": "Sen Wang, Jingyi Tian, Le Wang, et al. (10 authors)",
+    "venue": "arXiv 2509.15536",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2509.15536",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid (slogan level)",
+    "what_they_did": "帧内用 VAR 式 scale-wise 自回归，帧间用因果建模，配合多尺度 tokenizer 的视频世界模型。无物理粗粒化，无规则，无 RG。",
+    "implication": "next-scale 预测的世界模型已经存在，第一轮的 must「与 VAR 划清」因此更硬：本格轴上流动的是规律，不是像素或 token。",
+    "verified": true
+   },
+   {
+    "title": "Coarse--graining and hints of scaling in a population of 1000+ neurons",
+    "authors": "Leenoy Meshulam, Jeffrey L. Gauthier, Carlos D. Brody, David W. Tank, William Bialek",
+    "venue": "arXiv 1812.11904",
+    "year": "2018",
+    "url": "https://arxiv.org/abs/1812.11904",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid",
+    "what_they_did": "现象学 RG：对小鼠海马千余神经元记录做显式粗粒化。粗粒变量分布趋向一个固定的非高斯形式（作者称可能是 'non-trivial fixed point'），静态量和动态量在约两个数量级的尺度范围内呈幂律。",
+    "implication": "这是我找到的唯一一条「在非平衡时间序列数据上做 RG 并谈不动点」的线，但它研究的是统计分布的不动点，不涉及学到的转移规则。可作为「不动点读出」的方法学先例来引用。",
+    "verified": true
+   },
+   {
+    "title": "A Law of Emergence: Maximum Causal Power at the Mesoscale",
+    "authors": "Liang Chen",
+    "venue": "arXiv 2508.12016 (cs.IT)",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2508.12016",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "把空间尺度 ℓ 上的 EI_ℓ 定义为因果力，论证局域相互作用系统的 EI_ℓ 在介观尺度 ℓ* 有严格极大。用 2D Ising 近临界和一个集体行为 agent 模型做统计检验。无学习。",
+    "implication": "EI 随空间尺度的曲线已有人画过。本格「判据随 k 的曲线」需要与之区分，可当 EI 侧的参照。",
+    "verified": true
+   },
+   {
+    "title": "Causal Emergence 2.0: Quantifying emergent complexity",
+    "authors": "Erik Hoel",
+    "venue": "arXiv 2503.13395 (cs.IT)",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2503.13395",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "新的因果涌现理论：把各尺度视为高维对象的切片，做因果分摊，并定义涌现复杂度。只在 Markov 链粗粒上演示，无学习，无空间格点。",
+    "implication": "判据家族又多一个成员。不必纳入 head-to-head，引用即可。",
+    "verified": true
+   },
+   {
+    "title": "Frequency-Histogram Coarse Graining in Elementary Cellular Automata and 2D CA",
+    "authors": "Sanyam Jain, Stefano Nichele",
+    "venue": "arXiv 2507.18674 (nlin.CG)",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2507.18674",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "系统研究 1D / 2D CA 把宏观态粗粒成块的降维，动机是神经 CA 与开放式演化。摘要中没有学习宏观动力学，也没有 RG 流、不动点或 MI 判据。",
+    "implication": "CA 粗粒化在 ALife 侧仍是手工 / 枚举范式，本格的「学习 + 判据 + 规则流」在这一侧仍空。",
+    "verified": true
+   },
+   {
+    "title": "Natural Building Blocks for Structured World Models: Theory, Evidence, and Scaling",
+    "authors": "Lancelot Da Costa, Sanjeev Namjoshi, Mohammed Abbas Ansari, Bernhard Schölkopf",
+    "venue": "arXiv 2511.02091 (under review, World Modeling Workshop 2026)",
+    "year": "2025",
+    "url": "https://arxiv.org/html/2511.02091v1",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "用 HMM 与 sLDS 层级组合构造结构化世界模型。附录 C.1 把 Friston 的 RGM 描述为 'a hierarchical HMM with scale-invariant structural constraints'（'The renormalization operation is performed in both space and time.'），但只作为引用示例，不是本文方法。",
+    "implication": "RGM 已被放进「世界模型构件」的话语里，加重了命名冲突。",
+    "verified": true
+   },
+   {
+    "title": "Diffusion-Guided Renormalization of Neural Systems via Tensor Networks",
+    "authors": "Nathan X. Kodama",
+    "venue": "arXiv 2510.06361 (PhD dissertation, Case Western Reserve, 2025)",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2510.06361",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "从部分观测的随机神经轨迹学有效非平衡动力学。图 / 社区推断后，经 metagraph 与联合概率函数生成 RG 流（DTNR）。图上的 RG，不是空间格点，摘要未提不动点。",
+    "implication": "远邻。说明「非平衡 + RG 流 + 从轨迹学」在神经科学图数据上有零星尝试，但与 CA / RD 无关。",
+    "verified": true
+   },
+   {
+    "title": "Renormalizing Causality: A Framework for Multi-Scale Information Flow",
+    "authors": "Zoverions; Tyler Majik",
+    "venue": "Zenodo preprint (not peer-reviewed), 2026-02-03",
+    "year": "2026",
+    "url": "https://zenodo.org/records/18466241",
+    "cells": [
+     10
+    ],
+    "closeness": "low (fringe)",
+    "what_they_did": "提出 Causal Renormalization Group：把 EI 当作尺度依赖的 running coupling，定义 β_C(λ)，应用于宇宙学的 'Middle-Stack' 问题。无学习，无 CA。",
+    "implication": "只作命名提醒，「EI 沿尺度的 β 函数」已有人在非正式渠道提出。不必引用。",
+    "verified": true
+   },
+   {
+    "title": "Detecting emergent processes in cellular automata with excess information",
+    "authors": "David Balduzzi",
+    "venue": "arXiv 1105.0158 (ALIFE 2011, per search snippet)",
+    "year": "2011",
+    "url": "https://arxiv.org/pdf/1105.0158",
+    "cells": [
+     10
+    ],
+    "closeness": "low-mid",
+    "what_they_did": "(仅见搜索摘要) 给出 CA 可扩展粗粒化的工具和「哪种粗粒化描述动力学最好」的 excess information 判据，以 Game of Life 和 Hopfield 网络为例。",
+    "implication": "又一种 CA 粗粒化判据，且以 GoL 为例；判据比较的相关工作段应引。未打开页面核对。",
+    "verified": false
+   },
+   {
+    "title": "Israeli–Goldenfeld 粗粒化算法的复杂度降低（Magiera & Dzwinel, 2014；原标题未取得）",
+    "authors": "Magiera, Dzwinel",
+    "venue": "Springer LNCS chapter, 2014 (DOI 10.1007/978-3-319-11520-7_27, per search snippet)",
+    "year": "2014",
+    "url": "https://link.springer.com/10.1007/978-3-319-11520-7_27",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "(仅见搜索摘要) 指出把 Israeli–Goldenfeld 推广到更复杂 CA 规则受限于粗粒化算法的计算复杂度，并大幅降低了该复杂度。",
+    "implication": "Israeli–Goldenfeld 的非学习后续只找到这一条（2014）。佐证「穷举法难以推广到 2D / 连续 CA，学习化有必要」。未核对。",
+    "verified": false
+   },
+   {
+    "title": "Renormalisation of Quantum Cellular Automata",
+    "authors": "Trezzini, Bisio, Perinotti",
+    "venue": "Quantum (2025-05-28), per search snippet",
+    "year": "2025",
+    "url": "https://quantum-journal.org/papers/q-2025-05-28-1756/",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "(仅见搜索摘要) 把量子 CA 按 tile 粗粒化，把 renormalisation flow 定义为参数在 rescaling 下的运动，并给出可重整化的充要条件和不动点。",
+    "implication": "「CA 规则参数沿尺度的流与不动点」的形式化在量子侧已有，可作为本格「规则流」定义的形式参照。未核对。",
+    "verified": false
+   },
+   {
+    "title": "Equation-free local neural operators（Fabiani, Kevrekidis et al., Nature Machine Intelligence 2026；原标题未取得）",
+    "authors": "Fabiani, Kevrekidis, et al.",
+    "venue": "Nature Machine Intelligence 2026 (per Springer Nature 'Behind the Paper' post in search results)",
+    "year": "2026",
+    "url": "https://communities.springernature.com/posts/the-equation-free-journey-from-multiscale-computation-to-neural-operators",
+    "cells": [
+     10
+    ],
+    "closeness": "low",
+    "what_they_did": "(仅见搜索摘要) 让局部神经算子做 equation-free 的系统级粗粒分析，测试 Allen–Cahn、Liouville–Bratu–Gelfand 和 FitzHugh–Nagumo。",
+    "implication": "LED / equation-free 线在 2025–26 的后续只找到这类「单一宏观层的闭合或算子学习」，都不涉及跨多尺度的规则流。未核对。",
+    "verified": false
+   }
+  ],
+  "citation_checks": [
+   {
+    "citation": "Gökmen, Ringel, Huber, Koch-Janusz, Symmetries and phase diagrams with real-space mutual information neural estimation, PRE 104, 064106 (2021)；主张：远离平衡需要时间 buffer，留作未来工作",
+    "status": "confirmed",
+    "correct_details": "arXiv 2103.16887 (v1 2021-03-31, v3 2021-10-18), DOI 10.1103/PhysRevE.104.064106",
+    "note": "出处在正文 chipping 例子之后和结语，不在摘要（摘要只写 'consider also an example of a non-equilibrium problem'）。原文：'While this example reaches the steady-state distribution very quickly, in a more general scenario involving far-from-equilibrium systems the formalism can be extended to screen out short-time correlations by introducing a buffer in the temporal direction. This line of research merits a full development, which we leave for future study.' 结语另有：'This requires investigating the RSMI approach with spatio-temporal coarse-graining rules…'。chipping–aggregation 例子很快到达稳态，实际是对稳态快照做纯空间粗粒化。",
+    "url": "https://ar5iv.labs.arxiv.org/html/2103.16887"
+   },
+   {
+    "citation": "Gökmen et al., Statistical physics through the lens of real-space mutual information, PRL 127, 240603 (2021)",
+    "status": "confirmed",
+    "correct_details": "arXiv 2101.11633, DOI 10.1103/PhysRevLett.127.240603",
+    "note": "摘要写 'in and out of equilibrium'。",
+    "url": "https://arxiv.org/abs/2101.11633"
+   },
+   {
+    "citation": "NIS+：Yang, Zhang et al., Finding emergence in data by maximizing effective information, National Science Review 2024（EI 判据，含 Game of Life，Multistory NIS+，不提 RG）",
+    "status": "details_differ",
+    "correct_details": "作者 6 人：Mingzhe Yang, Zhipeng Wang, Kaiwei Liu, Yingqi Rong, Bing Yuan, Jiang Zhang。National Science Review 12(1): nwae279（2024-08-12 在线，卷期 2025），DOI 10.1093/nsr/nwae279；arXiv 2308.09952 v3",
+    "note": "(1) Game of Life 确有：NSR 正文提到，细节在 SI S7（arXiv v3 为 SI 第 13 节）。只有一级粗粒，输入 18×18×2（两个时间步）到宏观 6×6×1，用共享参数的 parallel encoder。(2) Multistory NIS+ 只出现在 arXiv v3 §5.1.3 / Fig. 7c：堆叠 encoder，多个宏观维度 q 的动力学学习器同时训练，用来搜索最优 q，用在 Boids 和 fMRI 而不是 GoL。NSR 正文中检索不到 multistory。它不是跨空间尺度的 RG 流。(3) 第一轮「不提 RG」有误：arXiv v3 引 Eberhardt & Lee 2022 的 'violations of commutativity'，并用预测误差约束回应；NSR 结语原文：'addressing the commutativity concerns of renormalization and time evolution operators raised by Eberhardt and Lee'。",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11697982"
+   },
+   {
+    "citation": "Israeli & Goldenfeld, PRL 92, 074105 (2004)",
+    "status": "confirmed",
+    "correct_details": "On computational irreducibility and the predictability of complex physical systems; arXiv nlin/0309047; DOI 10.1103/PhysRevLett.92.074105",
+    "note": "摘要：对 ECA 的四个 Wolfram 类都能粗粒化；计算不可约的过程在粗粒层可变得可预测、甚至可约。",
+    "url": "https://arxiv.org/abs/nlin/0309047"
+   },
+   {
+    "citation": "Israeli & Goldenfeld, PRE 73, 026203 (2006), Coarse-graining of cellular automata, emergence, and the predictability of complex systems",
+    "status": "confirmed",
+    "correct_details": "arXiv nlin/0508033; DOI 10.1103/PhysRevE.73.026203",
+    "note": "摘要确认：'The renormalization group flows that we construct induce a hierarchy of CA rules'；覆盖所有 Wolfram 类；大尺度规则的 Kolmogorov 复杂度；新的标度律。「粗粒化与时间演化可交换」摘要页没写，属于该方法的定义，未在原文核对。'105→150、150 为自身不动点' 的例子只来自课程资料，未核。",
+    "url": "https://arxiv.org/abs/nlin/0508033"
+   },
+   {
+    "citation": "Di Sante et al., Deep Learning the Functional Renormalization Group, PRL 129, 136402 (2022)",
+    "status": "confirmed",
+    "correct_details": "作者：Domenico Di Sante, Matija Medvidović, Alessandro Toschi, Giorgio Sangiovanni, Cesare Franchini, Anirvan M. Sengupta, Andrew J. Millis；arXiv 2202.13268",
+    "note": "2D t–t′ Hubbard 模型。'a deep learning architecture based on a Neural Ordinary Differential Equation solver in a low-dimensional latent space' 学习尺度依赖四点顶点的 fRG 动力学；DMD 显示少数模态即够。",
+    "url": "https://arxiv.org/abs/2202.13268"
+   },
+   {
+    "citation": "Iso, Shiba, Yokoo, Scale-invariant Feature Extraction of Neural Network and Renormalization Group Flow, PRE 97, 053304 (2018)",
+    "status": "confirmed",
+    "correct_details": "arXiv 1801.07172; DOI 10.1103/PhysRevE.97.053304",
+    "note": "摘要原文：RBM 'generates a flow along which the temperature approaches the critical value'；'This behavior is opposite to the typical RG flow of the Ising model.'",
+    "url": "https://arxiv.org/abs/1801.07172"
+   },
+   {
+    "citation": "Cotler & Rezchikov, Renormalization Group Flow as Optimal Transport, PRD 108, 025003 (2023)",
+    "status": "confirmed",
+    "correct_details": "arXiv 2202.11737 (v3 2023-03-12); DOI 10.1103/PhysRevD.108.025003（卷号由 DOI 推得）",
+    "note": "摘要：'Polchinski's equation for exact renormalization group flow is equivalent to the optimal transport gradient flow' of a field-theoretic relative entropy。",
+    "url": "https://arxiv.org/abs/2202.11737"
+   },
+   {
+    "citation": "Berman & Klinger, Bayesian Renormalization (MLST 2023)；RG 尺度 = Fisher 可分辨性",
+    "status": "details_differ",
+    "correct_details": "作者 3 人：David S. Berman, Marc S. Klinger, Alexander G. Stapleton；arXiv 2305.10491；DOI 10.1088/2632-2153/ad0102",
+    "note": "主张确认：'the Fisher metric defines a correlation length that plays the role of an emergent RG scale'，可分辨性对应 'the maximum number of unique observations'。cells.yaml 和 HANDOFF 写作 Berman & Klinger，应补上 Stapleton。",
+    "url": "https://arxiv.org/abs/2305.10491"
+   },
+   {
+    "citation": "Berman & Klinger, The Inverse of Exact Renormalization Group Flows as Statistical Inference, Entropy 2024",
+    "status": "confirmed",
+    "correct_details": "Entropy 26, 389 (2024); DOI 10.3390/e26050389; arXiv 2212.11379",
+    "note": "Dynamical Bayesian Inference 与 Bayesian Diffusion 等价，把重整化写成「统计推断的逆」。这是对应关系，不是严格证明。",
+    "url": "https://arxiv.org/abs/2212.11379"
+   },
+   {
+    "citation": "Barnett & Seth, Dynamical independence, PRE 108, 014304 (2023)",
+    "status": "confirmed",
+    "correct_details": "arXiv 2106.06511 (2021); DOI 10.1103/PhysRevE.108.014304",
+    "note": "演示只有线性状态空间系统和神经生理数据。CA、flocking 只列为 'potential application'，所以在 CA / Lenia 上做 head-to-head 需要自建非线性估计器，成本不低。",
+    "url": "https://arxiv.org/abs/2106.06511"
+   },
+   {
+    "citation": "Lenggenhager, Gökmen, Ringel, Huber, Koch-Janusz, Optimal Renormalization Group Transformation from Information Theory, PRX 10, 011037 (2020)",
+    "status": "confirmed",
+    "correct_details": "arXiv 1809.09632; DOI 10.1103/PhysRevX.10.011037",
+    "note": "'We prove that a perfect RSMI coarse-graining does not increase the range of interactions in the renormalized Hamiltonian' 已确认。无序系统部分原文是 'suppresses generation of correlations in the renormalized disorder distribution'，第一轮写的「不制造虚假关联」略强。",
+    "url": "https://arxiv.org/abs/1809.09632"
+   },
+   {
+    "citation": "Vlachas, Arampatzis, Uhler, Koumoutsakos, LED（Nature Machine Intelligence 2022，据记忆）",
+    "status": "unverifiable",
+    "correct_details": "arXiv 2006.13431, Multiscale Simulations of Complex Systems by Learning their Effective Dynamics (v3 2021-10-19)",
+    "note": "arXiv 页没有 journal ref，NMI 2022 未能确认。",
+    "url": "https://arxiv.org/abs/2006.13431"
+   },
+   {
+    "citation": "Rosas et al., Software in the natural world (arXiv 2024)",
+    "status": "confirmed",
+    "correct_details": "7 位作者：Rosas, Geiger, Luppi, Seth, Polani, Gastpar, Mediano；arXiv 2402.09090 v2 (2024-06-05)",
+    "note": "截至核对，abs 页仍无期刊信息。",
+    "url": "https://arxiv.org/abs/2402.09090"
+   },
+   {
+    "citation": "Eberhardt & Lee 2022（NIS+ 所引；第一轮未列）",
+    "status": "confirmed",
+    "correct_details": "Causal Emergence: When Distortions in a Map Obscure the Territory, Philosophies 7(2):30, 2022-03-09, DOI 10.3390/philosophies7020030",
+    "note": "摘要：'the operations of marginalization and abstraction do not commute'。MDPI 页面 403，经 Crossref 核实。",
+    "url": "https://api.crossref.org/works/10.3390/philosophies7020030"
+   },
+   {
+    "citation": "Chan, Lenia – Biology of Artificial Life（动物园 Lenia 的来源；与本格预测相关的尺度不变性）",
+    "status": "confirmed",
+    "correct_details": "arXiv 1812.05433（期刊信息未核）",
+    "note": "原文 §3.1.1：'For sufficiently fine space resolution (R>12), patterns in Lenia are minimally affected by spatial similarity transformations'，以及 'scale invariance is enabled by large neighborhoods'。Orbium 从 R=185 降采样到 R=15 再升采样 'eventually recovers'。空间连续极限已有数学证明（原文引 [26]）。",
+    "url": "https://ar5iv.labs.arxiv.org/html/1812.05433"
+   }
+  ],
+  "grade_updates": [
+   {
+    "cell": 10,
+    "old_grade": "B",
+    "new_grade": "B+",
+    "reason": "26 次检索后，关键交集（RSMI 型判据 + 时间演化 / 可交换性 + 学到的规则沿尺度流动且有不动点 + 空间扩展动力系统 CA / RD / Lenia）截至 2026-11 仍为空，neural RG 在 2025–26 也仍全是平衡态。但第一轮漏掉的三篇占住了交集周边的三个角：(1) Tao–Tao–You–Zhang, Physica D 2025：学习粗粒化 + 跨尺度共享动力学核（即不动点）+ 一致性检验，跑了全部 256 条 ECA，等于在不动点处把 Israeli–Goldenfeld 学习化了；(2) Friston et al. 2025 的 RGM：空间 + 时间重整化的生成模型，MI 结构学习，各层同形只变参数，用于规划，占住了口号；(3) NIS+ 已显式处理「重整化与时间演化可交换性」。理论侧又多两条风险：Bertoni–Renes 2022 指出 RSMI 只是最少耦合判据的松弛；Edlund–Nilsson Jacobi 2010 证明自相似 ECA 的 RG 不动点全方向不稳定。Lenia 的近似尺度不变（R>12）使 Lenia 上的不动点预测近乎平凡。没升到 A−，因为还没有人学不共享的 F_k 流，也没有人把 MI 保持判据用于动力学。建议 novel 由 mid 下调到 lowmid–mid。"
+   }
+  ],
+  "must_updates": [
+   {
+    "cell": 10,
+    "proposal": "nearest 和 must 加入 Tao, Tao, You, Zhang (Physica D 2025)，作为直接基线并要超过它。具体是：学不共享的 F_k，并报告 F_k 随 k 的轨迹（包括离开不动点的那一段），而不是像他们那样先假设共享核（等于假设了不动点）再检验一致性。在 ECA 上先复现他们找回的 21 条自相似规则（作为不动点），再复现 Israeli–Goldenfeld 的已知规则流（具体例子须在 PRE 2006 原文核对），作为 Ising 之外第二个有已知答案的校准世界。",
+    "reason": "第一轮漏了这篇。不做这个对照，审稿人会认为「学习化的 Israeli–Goldenfeld 已经有了」。另外作者与 NIS+ 同组，抢先风险高。"
+   },
+   {
+    "cell": 10,
+    "proposal": "kill_test 的判据对比改为四方：RSMI（长程 MI，Koch-Janusz）、短程块–边界 MI（Bertoni–Renes 2022）、EI（NIS+）、自相似一致性（Tao et al.）。Barnett–Seth 动力学独立降为可选，因为原文只在线性系统和神经数据上算过，CA 上没有现成估计器。死亡判据改为「RSMI 既不优于 EI，也不优于短程 MI」。",
+    "reason": "Bertoni–Renes 证明，要让粗粒后耦合最少，应保持短程 MI，RSMI 只是它的松弛。本格预测的「粗动力学描述长度下降」正是「耦合少」，不能预设 RSMI 最优。"
+   },
+   {
+    "cell": 10,
+    "proposal": "learn 字段写明时空 RSMI 的规格：块 V_t 与时空环境之间同时隔空间 buffer 和时间 buffer，用来屏蔽短时关联（这是 Gökmen PRE 2021 原文的建议），并报告结果对 buffer 宽度的敏感性。时间方向的估计器可以借用 DySIB（Martini…Nemenman 2026）的过去–未来对称 IB。",
+    "reason": "这正是文献自己承认的空白的确切形状（原文已核）。写清楚了，才能说本格补上的是作者留白的那一步。"
+   },
+   {
+    "cell": 10,
+    "proposal": "prediction 里的 Lenia 部分从「发现」降为「已知答案的校准」。Chan 的 Lenia 原文说 R>12 时斑图对空间缩放几乎不变，所以块平均下的规则流近似已知：核半径 R→R/b，生长函数不变，到 R≈12 附近破缺。本格应预测并恢复这条已知流和破缺尺度。「斑图区收敛到不动点、混沌区发散」这类发现性主张移到 ECA、Game of Life 和 Gray–Scott 上；Gray–Scott 只有当粗粒尺度接近斑图波长时才不平凡（这一点是我的推断，没找到文献）。ECA 部分按 Edlund–Nilsson Jacobi 改写：自相似规则的 RG 不动点全方向不稳定，所以预测应是「找到不动点并测出其不稳定方向」，而不是「收敛」。",
+    "reason": "不改的话，Lenia 上的阳性结果是构造使然，而 ECA 上「收敛到不动点」的预测与已知定理冲突。这样改的好处是两者都变成有定理答案的测试，符合动物园的原则。"
+   },
+   {
+    "cell": 10,
+    "proposal": "定位与命名：不用 renormalizing / renormalization world model。理由有三：Friston et al. 2025 的 RGM 已占住这个口号（空间 + 时间重整化、各层动力学同形只变参数、MI 结构学习、用于规划含 Atari-like 游戏）；「尺度轴 × 物理时间轴」已出现在 Predictor-Driven Diffusion (2026)；SAMPO (2025) 是 VAR 式 next-scale 世界模型。本格能主张的新颖点只剩三项：RSMI 判据；把学到的规则流 F_k 及其不动点（含稳定性）当作输出不变量；在空间扩展动力系统上做有答案的校准。",
+    "reason": "第一轮只与 VAR / diffusion 划了界，没有覆盖 RGM 和 2026 年的尺度 × 时间生成模型。"
+   },
+   {
+    "cell": 10,
+    "proposal": "Ising 方向校准保留（Iso et al. 2018 的负面结果仍然成立），另加 Alao–Huang–Lu (NeurIPS 2026 workshop) 作为正面参照：做 gauge fixing 后，温度梯子上学到的块映射沿 RG 流排列在三个不动点之间，而且跨种子一致。本格应先做同样的 gauge 处理，再去读 F_k 的方向。",
+    "reason": "它说明方向问题可以靠 gauge fixing 解决，校准因此有了可复现的目标，而不只有一个警告。"
+   },
+   {
+    "cell": 10,
+    "proposal": "更正 nearest 字段：(a) NIS+ 作者 6 人，出处 NSR 12(1) nwae279。它并非不提 RG：引了 Eberhardt & Lee 2022 (Philosophies 7(2):30)，并用预测误差约束处理重整化与时间演化的可交换性，所以可交换性损失本身不是新点。(b) Multistory NIS+ 是并行搜索最优宏观维度 q（用在 Boids / fMRI），不是跨空间尺度的流；GoL 实验只有一级粗粒（18×18×2→6×6×1）。(c) Bayesian Renormalization 的作者是 Berman, Klinger, Stapleton。(d) Lenggenhager 关于无序系统的结论是「抑制」而非「不制造」。(e) must 中「投稿前补做 2025–26 检索」可标为第二轮已完成（2026-11-03），投稿前再复查一次。",
+    "reason": "这些都是核对时发现的事实偏差。其中 (a) 会削弱「可交换性损失是本格创新」的论述。"
+   }
+  ],
+  "searches_executed": [
+   "renormalization group world model learned dynamics coarse-graining",
+   "real-space mutual information renormalization non-equilibrium dynamics time series RSMI",
+   "learning coarse-graining cellular automata renormalization group neural network",
+   "Lenia renormalization coarse-graining scale",
+   "neural renormalization group 2025 arXiv learned RG flow fixed point",
+   "Koch-Janusz 2025 renormalization mutual information",
+   "causal emergence neural information squeezer 2025 multiscale coarse-graining dynamics effective information",
+   "\"multiscale world model\" coarse-graining spatial scales",
+   "Israeli Goldenfeld coarse-graining cellular automata follow-up learning rules renormalization 2024 2025",
+   "neural cellular automata renormalization coarse-grained rule scale fixed point",
+   "space-time coarse-graining mutual information information bottleneck dynamical systems learned macrostates 2025",
+   "learned effective dynamics multiscale coarse-graining reaction-diffusion Gray-Scott neural closure 2025",
+   "causal emergence renormalization group coarse-graining commutes time evolution 2025 arXiv",
+   "computational closure coarse-graining hierarchy cellular automata Rosas 2025 emergent macroscopic dynamics learned",
+   "machine learning dynamic renormalization group from trajectories non-equilibrium spatiotemporal coarse-graining neural",
+   "[extended] learned coarse-graining elementary cellular automata Game of Life neural network renormalization 2025 2026",
+   "Gökmen Koch-Janusz 2025 2026 arXiv renormalization information coarse-graining new",
+   "Jiang Zhang Yi-Zhuang You renormalization dynamics learning self-similar multiscale 2025",
+   "equation discovery coarse-graining scale-dependent coefficients renormalization sparse regression learned PDE different scales",
+   "[extended] \"renormalization\" \"world model\" 2026 hierarchical latent scale-invariant dynamics",
+   "causal emergence cellular automata spatial coarse-graining Game of Life effective information 2025 2026",
+   "phenomenological renormalization group neural activity coarse graining fixed points dynamic scaling 2025 follow-up Meshulam Bialek",
+   "mutual information optimal coarse-graining non-equilibrium lattice model neural estimator directed percolation active matter renormalization 2024 2025",
+   "renormalization group inspired neural operator multiscale PDE learned coarse-grained dynamics across scales fixed point 2026",
+   "[extended] Jiang Zhang causal emergence 2026 arXiv machine learning coarse-graining multiscale dynamics renormalization cellular automata",
+   "flow in rule space cellular automata coarse-graining hierarchy fixed point rule learned neural 2025 2026 emergence",
+   "HF papers: real-space mutual information renormalization dynamics",
+   "HF papers: renormalization group world model",
+   "HF papers: learned coarse-graining cellular automata emergent macroscopic rules",
+   "HF papers: Lenia coarse-graining multiscale",
+   "HF papers: causal emergence coarse-graining neural 2025",
+   "HF papers: multiscale world model spatial scale hierarchy dynamics",
+   "HF papers: From pixels to planning: scale-free active inference",
+   "HF papers: renormalising generative models active inference",
+   "HF papers: renormalization group coarse-graining time evolution commute learned",
+   "HF papers: neural renormalization group fixed points learned couplings flow",
+   "Crossref: DOI 10.3390/philosophies7020030; bibliographic query 'Data driven modeling of self-similar dynamics Tao You Zhang'"
+  ],
+  "coverage_confidence": "中（第一轮为低–中）。检索量：26 次 WebSearch（其中 3 次 extended）、10 次 HF papers 索引、2 次 Crossref，另逐页核对约 40 个 abs / 全文页面；NIS+ 的 arXiv PDF 下载到本地抽文本后核对。2025–26 的四个方向都扫过：平衡态 neural RG、因果涌现 / NIS+、CA 粗粒化、多尺度 / RG 世界模型。剩余风险有五处：(a) Koch-Janusz / Gökmen 组 2024 年后的工作，两次检索都没找到，可能换了措辞（例如 information-theoretic coarse-graining of dynamics）；(b) 湍流 LES / 尺度相似闭合方向的学习型 RG 只扫了一次；(c) 中文渠道（集智、北师大张江组的学位论文和中文期刊）没查，而该组是最大的抢先风险；(d) Friston RGM 在 2025–26 的后续没有逐篇查；(e) 标为 verified=false 的 4 条只见过搜索摘要。",
+  "summary": "格 10 第二轮的问题是：RSMI 型判据、时间演化、学到的规则沿尺度流动并有不动点、空间扩展动力系统（CA / RD / Lenia），这四件事的交集截至 2026-11 是否仍为空。结论：仍为空。第一轮说「neural RG 线全是平衡态」，在 2025–26 仍成立：RGFlow (MLST 2026)、Alao–Huang–Lu (NeurIPS 2026 WS)、Shukla–Lokhov 2025、percolation 2026 全是静态。\n\n但交集周边明显变密，第一轮漏了三篇：\n(1) Tao–Tao–You–Zhang, Physica D 2025（arXiv 2310.08282）。学粗粒化，加一个跨尺度共享的动力学核（作者称之为 RG 不动点），用一致性 MSE 判定，跑了全部 256 条 ECA、扩散和 Vicsek。相当于在不动点处把 Israeli–Goldenfeld 学习化了，是目前最近的邻居。作者与 NIS+ 同组，文中已把 EI 列为未来方向，抢先风险高。\n(2) Friston et al., Front. Netw. Physiol. 2025（arXiv 2407.20292）的 renormalising generative models。空间加时间重整化，MI 驱动的结构学习，各层动力学同形只变参数，用于规划。占住了「RG 世界模型」这个口号。\n(3) Predictor-Driven Diffusion（Yasuda & Bischoff 2026）。已把尺度 λ 与物理时间做成两根独立的轴。\n\n理论侧多了三条风险：\n- Bertoni & Renes (J. Phys. A 2022)：要让粗粒后耦合最少，应保持短程 MI，RSMI 只是它的松弛。\n- Edlund & Nilsson Jacobi (J. Stat. Phys. 2010)：自相似 ECA 的 RG 不动点全方向不稳定。\n- Lenia 原文：R>12 时斑图对缩放几乎不变，所以 Lenia 上「收敛到不动点」是构造使然，不是发现。\n\n引用核查：\n- RSMI-NE 的「远离平衡需时间 buffer、留作未来工作」原文已确认，在 PRE 2021 正文和结语里，不在摘要。chipping 例子实为稳态快照上的纯空间粗粒化。\n- NIS+ 细节有出入：作者 6 人，NSR 12(1) nwae279；GoL 只有一级粗粒；Multistory NIS+ 只出现在 arXiv v3，作用是搜索最优宏观维度 q；第一轮说它「不提 RG」有误，它引了 Eberhardt & Lee 2022 处理重整化与时间演化的可交换性。\n- Bayesian Renormalization 的作者应补上 Stapleton。\n- Israeli–Goldenfeld 2004/06、Di Sante 2022、Iso 2018、Cotler–Rezchikov 2023、Berman–Klinger (Entropy 2024)、Barnett–Seth 2023、Lenggenhager 2020 均确认，Lenggenhager 关于无序系统的措辞应由「不制造」改为「抑制」。\n- LED 的 NMI 2022 期刊信息无法确认。\n\n建议：等级 B → B+。交集仍空，满足 audit_round_1「有条件投入」的条件，但 must 要收紧：\n- 以 Tao et al. 为基线，学不共享的 F_k 流；\n- 判据四方对比（RSMI / 短程 MI / EI / 自相似一致性）；\n- 时空 RSMI 按原文规格加时间 buffer；\n- Lenia 降为有已知答案的校准，发现性主张移到 ECA / GoL / Gray–Scott，ECA 上测不动点的不稳定方向而不是「收敛」；\n- 改名，避开 RGM；\n- Ising 上先做 gauge fixing。\n\n本次未修改任何文件；只写了一个临时文本文件 /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/nisplus/nisplus.txt。"
+ },
+ {
+  "cells": [
+   7,
+   9
+  ],
+  "new_papers": [
+   {
+    "title": "Differential geometry of nonequilibrium processes",
+    "authors": "T. Obata, H. Hara, K. Endo",
+    "venue": "Phys. Rev. A 45, 6997–7001",
+    "year": "1992",
+    "url": "https://journals.aps.org/pra/abstract/10.1103/PhysRevA.45.6997",
+    "cells": [
+     7
+    ],
+    "closeness": "root (B−)",
+    "what_they_did": "据 Fujiwara 1993 引言转述：证明 Ornstein–Uhlenbeck 过程是高斯模型上关于 e-联络的测地运动。",
+    "implication": "'OU ↔ α-联络'早于 Koide–van de Venn 2026 三十余年，作理论根源引用。与 Koide 的 α_K=2D/(γR²)−1 对上的读法（自推）：从平衡方差出发的纯均值弛豫就是 e 端。",
+    "verified": false
+   },
+   {
+    "title": "Completely integrable gradient systems on the manifolds of Gaussian and multinomial distributions",
+    "authors": "Y. Nakamura",
+    "venue": "Japan J. Indust. Appl. Math. 10, 179–189",
+    "year": "1993",
+    "url": "https://link.springer.com/article/10.1007/BF03167571",
+    "cells": [
+     7
+    ],
+    "closeness": "root (C+)",
+    "what_they_did": "高斯 / 多项分布流形上的梯度流是完全可积 Hamilton 系统（据搜索摘要：Lax 形式、指数收敛）；Fujiwara 1993 指出该流沿 m-测地线收敛到 δ 分布。",
+    "implication": "补齐 round-1 未查项：这是'平坦坐标里线性/可积'的又一根源，与学习、分类无关，不构成撞车。",
+    "verified": false
+   },
+   {
+    "title": "Parameter Learning for Alpha Integration",
+    "authors": "Heeyoul Choi, Seungjin Choi, Yoonsuck Choe",
+    "venue": "Neural Computation 25(6):1585–1604",
+    "year": "2013",
+    "url": "https://oasis.postech.ac.kr/handle/2014.oak/15480",
+    "cells": [
+     7
+    ],
+    "closeness": "B− (for the 'estimate α from data' step)",
+    "what_they_did": "从带积分目标值的数据中学习 Amari α-积分的 α 与权重，属于静态多测度融合；合成数据上能恢复真值 α。",
+    "implication": "'从数据学 α'本身不新。α-计的新意必须放在：α 是轨迹段动力学机制的读出量，不是融合超参。要引并划清。",
+    "verified": true
+   },
+   {
+    "title": "q-Paths: Generalizing the Geometric Annealing Path using Power Means",
+    "authors": "Vaden Masrani, Rob Brekelmans, Thang Bui, Frank Nielsen, Aram Galstyan, Greg Ver Steeg, Frank Wood",
+    "venue": "UAI 2021 (PMLR 161；venue 来自搜索结果，arXiv 页面未列)",
+    "year": "2021",
+    "url": "https://arxiv.org/abs/2107.00745",
+    "cells": [
+     7
+    ],
+    "closeness": "B− / C+",
+    "what_they_did": "用幂均值退火路径 p_t ∝ [(1−t)p^{1−q} + t q^{1−q}]^{1/(1−q)}（即 α-混合，含几何 = e 与算术 = m 两端），把它解释为 q-指数族，中间密度最小化到两端的 α-散度混合；q 按 SMC/AIS 采样表现调。",
+    "implication": "α-计用的路径族就是 q-paths，但方向相反：这里是设计路径，α-计是从观测路径读出 α。必须引。",
+    "verified": true
+   },
+   {
+    "title": "α-Flow: A Unified Framework for Continuous-State Discrete Flow Matching Models",
+    "authors": "Chaoran Cheng, Jiahan Li, Jiajun Fan, Ge Liu",
+    "venue": "arXiv preprint（页面无 venue）",
+    "year": "2025",
+    "url": "https://arxiv.org/html/2504.10283",
+    "cells": [
+     7
+    ],
+    "closeness": "B−",
+    "what_they_did": "用 α-表示统一连续态离散 flow matching，沿单纯形上的 α-测地线流动；α ∈ {−1,−0.5,0,0.5,1} 当超参，正文说'需要 α-tuning'，把 adaptive α 列为未来工作。App. B：单纯形上 α-测地线 = 归一化 α-插值再经时间重参数化 τ(t)；α=−1 时 τ=t，α=1 时直接归一化即可，α∈(−1,1) 的 τ 无闭式。记号与 Amari 相同（α=−1 概率，α=1 logits）。",
+    "implication": "文献层面确认了合作者的'秩-2 / 归一化幂均值'刻画：作为曲线的像它成立，但参数化不同，所以 α-计只能做参数化无关的检验，不能直接拿时间戳去拟合。",
+    "verified": true
+   },
+   {
+    "title": "A data-based power transformation for compositional data",
+    "authors": "Michail T. Tsagris, Simon Preston, Andrew T. A. Wood",
+    "venue": "Proc. CoDaWork'11 (4th Int. Workshop on Compositional Data Analysis)",
+    "year": "2011",
+    "url": "https://arxiv.org/abs/1106.1451",
+    "cells": [
+     7
+    ],
+    "closeness": "B− (closest 'choose the power on the simplex from data')",
+    "what_they_did": "对成分数据做单参数 α 幂变换（Aitchison 式留在单纯形内，或 Box–Cox 式），包含原始坐标与 log-ratio 两种分析为特例；α 用 profile likelihood（变换后多元正态）、判别准确率或伪 R² 选。后续有 α-regression（arXiv 2510.12663，2025–26，含'简单时间序列模型'）。",
+    "implication": "α-计的 λ 族就是 CoDA 的 α-变换。CoDA 按横截面准则选 λ，α-计按'让时间段落在一个 2 维平面上'选 λ，这是动力学准则。要引并划清；α-regression 可作'λ 坐标里线性模型'的非几何基线。",
+    "verified": true
+   },
+   {
+    "title": "Estimating Selection Coefficients in Spatially Structured Populations from Time Series Data of Allele Frequencies",
+    "authors": "Iain Mathieson, Gil McVean",
+    "venue": "Genetics 193(3):973–984",
+    "year": "2013",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3584010",
+    "cells": [
+     7
+    ],
+    "closeness": "B− (task-level competitor for the Wright–Fisher kill test)",
+    "what_they_did": "用 HMM 似然从等位基因频率时间序列估选择系数，并近似推广到空间结构群体，联合估计迁移率 m 与各 deme 的选择系数 s（s、m 交替更新；两者相关，m 估计较不可靠）。",
+    "implication": "'在时间序列里分开选择与迁移'是群体遗传学已有的参数化任务。Wright–Fisher kill test 必须带 (s, m) 似然基线；α-计的卖点只能是'不指定机制族也能读出'。",
+    "verified": true
+   },
+   {
+    "title": "Symplectic Representation of Legendre Dynamics",
+    "authors": "Robert Simon Fong, Gouhei Tanaka, Kazuyuki Aihara",
+    "venue": "arXiv preprint",
+    "year": "2025 (v2 2026-07)",
+    "url": "https://arxiv.org/abs/2512.19409",
+    "cells": [
+     7
+    ],
+    "closeness": "C+ / B−",
+    "what_they_did": "形式化'Legendre 动力学'：原始-对偶参数轨迹始终保持 Legendre 对偶的随机过程（包括 LTI 高斯过程回归与 OU）；刻画保持 Legendre 图的辛同胚，并据此构造 Hamiltonian 辛储备池网络，与储备池基线做数值比较。",
+    "implication": "近期'对偶坐标里的动力学 + 学习'近邻，但没有 e/m 判别，也没有 α 估计。放进 related work。",
+    "verified": true
+   },
+   {
+    "title": "Information Geometry of Reversible Markov Chains",
+    "authors": "Geoffrey Wolfer, Shun Watanabe",
+    "venue": "Information Geometry 4:393–433",
+    "year": "2021",
+    "url": "https://arxiv.org/abs/2106.05669",
+    "cells": [
+     7
+    ],
+    "closeness": "C",
+    "what_they_did": "可逆不可约 Markov 核同时构成 e-族与 m-族；给出 e/m 投影闭式与 Pythagoras 恒等式。",
+    "implication": "'Markov 链 / 时间序列的 e-m 结构'这条线研究的是转移核空间的几何，不是对观测轨迹分段，因此不撞车。",
+    "verified": true
+   },
+   {
+    "title": "Triangle for the entropic index q of non-extensive statistical mechanics observed by Voyager 1 in the distant heliosphere",
+    "authors": "L. F. Burlaga, A. F.-Viñas",
+    "venue": "Physica A 356, 375–384 (DOI 10.1016/j.physa.2005.06.065)",
+    "year": "2005",
+    "url": "https://arxiv.org/abs/physics/0507212",
+    "cells": [
+     7
+    ],
+    "closeness": "C+",
+    "what_they_did": "从 Voyager 1 太阳风磁场日均值序列估计 Tsallis q-三元组 (q_stat, q_sen, q_rel)。",
+    "implication": "统计物理里已有'从观测时间序列估形变指数'，但对象是标量 PDF 与弛豫拟合，不是分布轨迹的测地指数。统计物理背景的审稿人可能提，简要引即可。",
+    "verified": true
+   },
+   {
+    "title": "Differential Geometry of Curved Exponential Families—Curvatures and Information Loss",
+    "authors": "S. Amari",
+    "venue": "Ann. Statist. 10(2):357–385",
+    "year": "1982",
+    "url": "https://projecteuclid.org/euclid.aos/1176345779",
+    "cells": [
+     7
+    ],
+    "closeness": "root",
+    "what_they_did": "据搜索摘要：曲指数族的 e-/m-（嵌入）曲率，二阶信息损失分解为两项非负项，并把 Legendre 对偶推广到两种联络、两种曲率。",
+    "implication": "α-计的理论表述：一维曲线是 α-测地线当且仅当其 α-嵌入曲率为零，所以 α-计 ≈ 使观测曲线 α-曲率最小的 α。写论文时用这个框架并引 Amari 1982 与 Efron 1975。",
+    "verified": false
+   },
+   {
+    "title": "The Information-Geometric Perspective of Compositional Data Analysis",
+    "authors": "Ionas Erb, Nihat Ay",
+    "venue": "arXiv (v3 2021)",
+    "year": "2020",
+    "url": "https://arxiv.org/abs/2005.11510",
+    "cells": [
+     7
+    ],
+    "closeness": "C",
+    "what_they_did": "把成分数据当离散分布，用信息几何（Fisher 度量、散度、对偶结构）描述 CoDA 样本空间，并证明 Aitchison 距离的信息单调性。",
+    "implication": "连接 Tsagris 一线与信息几何的桥。注意：摘要没有明说'Aitchison 几何 = e-几何'。",
+    "verified": true
+   },
+   {
+    "title": "Entropic Time Schedulers for Generative Diffusion Models",
+    "authors": "Dejan Stancevic, Florian Handke, Luca Ambrogioni",
+    "venue": "arXiv（页面未列 venue；搜索结果显示 NeurIPS 2025 poster / ICLR 2025 workshop，未核实）",
+    "year": "2025",
+    "url": "https://arxiv.org/abs/2504.13612",
+    "cells": [
+     9
+    ],
+    "closeness": "B (nearest ML 'information time on a time axis')",
+    "what_they_did": "把噪声调度视为时间重参数化，按熵选采样时刻，使每步贡献等量信息；该熵时间与初始时间参数化无关，可从训练损失估计；EDM2 上相同 NFE 下 FID 改善。",
+    "implication": "'按信息量重计时'在设计好的生成路径上已是成熟做法。格 9 必须划清：这里重计时的是观测到的环境动力学，时钟来自世界模型潜后验的 Fisher 速度，检验对象是事件规律性。熵/惊奇时钟应作为额外对照。",
+    "verified": true
+   },
+   {
+    "title": "Adaptive Annealed Importance Sampling with Constant Rate Progress",
+    "authors": "Shirin Goshtasbpour, Victor Cohen, Fernando Perez-Cruz",
+    "venue": "arXiv preprint",
+    "year": "2023",
+    "url": "https://arxiv.org/abs/2306.15283",
+    "cells": [
+     9,
+     7
+    ],
+    "closeness": "B− / C+",
+    "what_they_did": "证明在每步变化受 KL 约束时几何退火路径是最优的，并导出恒速率离散化调度（推广到 f/α-散度，即 CR-AIS）。",
+    "implication": "'按信息速率匀速重计时'在退火里已有。格 9 放进 related work。对格 7 是旁证：几何路径 = e-路径具有最优性。",
+    "verified": true
+   },
+   {
+    "title": "Optimal schedules for annealing algorithms",
+    "authors": "Amin Barzegar, Firas Hamze, Christopher Amey, Jonathan Machta",
+    "venue": "Phys. Rev. E 109, 065301",
+    "year": "2024",
+    "url": "https://arxiv.org/abs/2402.14717",
+    "cells": [
+     9
+    ],
+    "closeness": "C+",
+    "what_they_did": "基于非平衡统计力学（与 Sivak–Crooks 最优控制密切相关）推导多维参数空间的最优退火调度，比较 population annealing 与 AIS，在自旋玻璃上数值验证。",
+    "implication": "热力学长度式的时间重参数化在退火里成熟。注意：摘要没有明写'恒热力学速度'。",
+    "verified": true
+   },
+   {
+    "title": "Activity in perceptual classification networks as a basis for human subjective time perception",
+    "authors": "Warrick Roseboom, Zafeirios Fountas, Kyriacos Nikiforou, David Bhowmik, Murray Shanahan, Anil K. Seth",
+    "venue": "Nature Communications 10:267",
+    "year": "2019",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6336826",
+    "cells": [
+     9
+    ],
+    "closeness": "B−",
+    "what_they_did": "把 AlexNet 各层相邻帧激活的欧氏距离与衰减阈值比较，累计显著变化次数作为主观时长（再用 SVR 映到秒），复现人类时长偏差；作者提出未来可换成概率度量。",
+    "implication": "'内在时钟 = 累积表征变化'已有欧氏、阈值化、感知侧的版本。它给出一个很自然的对照：在同一潜空间里算欧氏弧长，用来把'Fisher'与'潜空间'两种贡献分开。",
+    "verified": true
+   },
+   {
+    "title": "Variational Predictive Routing with Nested Subjective Timescales",
+    "authors": "Alexey Zakharov, Qinghai Guo, Zafeirios Fountas",
+    "venue": "ICLR 2022",
+    "year": "2021",
+    "url": "https://arxiv.org/abs/2110.11236",
+    "cells": [
+     9
+    ],
+    "closeness": "B−",
+    "what_they_did": "按特征变化率把视频潜表示组织成时间层级（层级更新过程），只靠自身潜表示检测事件边界，能做与时间无关的 rollout。",
+    "implication": "潜世界模型里的事件时间 / 嵌套主观时间尺度已有（无 Fisher 度量），与 Zakharov 2020 一起引。",
+    "verified": true
+   },
+   {
+    "title": "Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics (THICK)",
+    "authors": "Christian Gumbsch, Noor Sajid, Georg Martius, Martin V. Butz",
+    "venue": "ICLR 2024 (spotlight)",
+    "year": "2024",
+    "url": "https://iclr.cc/virtual/2024/poster/18558",
+    "cells": [
+     9
+    ],
+    "closeness": "C+ / B−",
+    "what_they_did": "低层潜状态稀疏更新形成不变上下文，高层只在上下文变化处预测；提升 MBRL 与规划。",
+    "implication": "事件时间世界模型是活跃线。格 9 要说明 Fisher 时钟多给了什么：连续、可度量的时钟，而不是离散的上下文切换。",
+    "verified": true
+   },
+   {
+    "title": "From Observations to Events: Event-Aware World Model for Reinforcement Learning (EAWM)",
+    "authors": "Zhao-Han Peng, Shaohui Li, Zhi Li, Shulan Ruan, Yu Liu, You He",
+    "venue": "ICLR 2026",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2601.19336",
+    "cells": [
+     9
+    ],
+    "closeness": "C+",
+    "what_they_did": "自动事件生成器加通用事件分割器，用事件预测塑造表征；在 Atari100K、Craftax、DMC 上比 MBRL 基线提升 10–45%。",
+    "implication": "2026 年的事件感知世界模型，与信息几何无关。作为近期事件时间线引用。",
+    "verified": true
+   },
+   {
+    "title": "Evaluating brain electroencephalogram signal dynamics across cognitive disorders using information geometry",
+    "authors": "Heng Jie Choong, Eun-jin Kim, Fei He",
+    "venue": "PLOS Complex Systems 2(7): e0000059",
+    "year": "2025",
+    "url": "https://journals.plos.org/complexsystems/article?id=10.1371%2Fjournal.pcsy.0000059",
+    "cells": [
+     9
+    ],
+    "closeness": "B− (information rate on real data)",
+    "what_they_did": "在真实 EEG 上计算 information rate（OpenNeuro ds004504 的 AD/FTD/对照；Isfahan 的 MCI），用其分布的矩与熵做非参数组间检验；ML 分类留作未来工作。",
+    "implication": "information length/rate 已用于真实数据，但只当诊断特征。格 9 不能说'首次用于数据'，只能说'首次作为学习转移模型的时间坐标'。",
+    "verified": true
+   },
+   {
+    "title": "Structures in sound: Analysis of classical music using the information length",
+    "authors": "S. B. Nicholson, E. Kim",
+    "venue": "Entropy 18, 258",
+    "year": "2016",
+    "url": "https://www.mdpi.com/1099-4300/18/7/258",
+    "cells": [
+     9
+    ],
+    "closeness": "B− (earliest data application found)",
+    "what_they_did": "据 Kim & Hollerbach PRE 95, 022137 的引述：从音乐数据构造随时间变化的 PDF 并计算 information length。",
+    "implication": "与上条相同：数据上的诊断用法 2016 年就有。MDPI 返回 403，原文未打开。",
+    "verified": false
+   },
+   {
+    "title": "Detection and Assessment of Ecosystem Regime Shifts from Fisher Information",
+    "authors": "A. T. Karunanithi, H. Cabezas, B. R. Frieden, C. W. Pawlowski",
+    "venue": "Ecology and Society 13(1):22 (DOI 10.5751/ES-02318-130122)",
+    "year": "2008",
+    "url": "https://agris.fao.org/search/en/records/6759a8380ce2cede71c943a4",
+    "cells": [
+     9
+    ],
+    "closeness": "C+",
+    "what_they_did": "据搜索摘要：对时间序列分窗、分箱构造状态 PDF，计算（Frieden 式平移）Fisher 信息，用窗间均值变化检测 regime shift；有湖泊模型与北太平洋实测数据。前身是 Mayer, Pawlowski, Cabezas 2006（Ecol. Modelling）。",
+    "implication": "'用 Fisher 信息在时间序列里检测转变'在生态学已有，但用的是状态空间的 Fisher 信息，不是时间方向的 Fisher 信息 / 信息长度。审稿人可能提，需划清。仅见搜索结果，未打开。",
+    "verified": false
+   }
+  ],
+  "citation_checks": [
+   {
+    "citation": "Fujiwara 1993, 'Dynamical Systems on Statistical Models', RIMS Kokyuroku 822",
+    "status": "confirmed",
+    "url": "https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/0822-04.pdf",
+    "correct_details": "Akio Fujiwara, RIMS Kôkyûroku 822 (1993) pp. 32–42。Thm 3.1：在对偶平坦流形上，U(p)=D(q‖p) 的梯度流满足 η̇ = −(η − η(q))，沿 ∇*-测地线收敛到 q。例子：Nakamura 的流沿 m-测地线收敛到 δ；熵上升流沿 e-测地线收敛到均匀分布（时间取对数重标后，Fujiwara 称之为 OU，实际是带漂移的自由扩散 μ=μ0+vt, σ²=2Dt）。Thm 3.2：维数为偶数时是完全可积 Hamilton 系统。Thm 4.2：指数族上 MLE 流沿 m-测地线。二阶 Lagrangian 类比给出独立谐振子。",
+    "note": "round-1 描述准确（小修正：是 η̇ = −(η−η_q)，不是 −η）。其参考文献带出两条更早的根源：Nakamura JJIAM 1993，以及 Obata–Hara–Endo PRA 45, 6997 (1992)。"
+   },
+   {
+    "citation": "Koide & van de Venn 2026, arXiv 2609.08870 (alpha sign convention; closed-form alpha)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2609.08870",
+    "correct_details": "'Stochastic Processes as Non-Metric Geodesics in Information Geometry'，T. Koide、A. van de Venn，2026-09-08，cond-mat.stat-mech（交叉 math-ph）。对象是一维高斯 (μ,σ²)。联络命名与 Amari 一致（Γ^(e)(θ)=Γ^(1)(θ)，Γ^(m)(η)=Γ^(−1)(η)），但'期望参数里的 α-测地线'这套分类索引是反过来的：η-直线即 m-测地线（Brownian bridge）对应 α=1（Sec. III.2 原话：'the m-geodesic corresponding to α=1'）；α>−1 为 boundary-connecting，α=−1 为 critical，α<−1 为 non-boundary-connecting；e-测地线落在 α=−1（据其 Sec. IV.4 映射推断）。闭式 α = 2D/(γR²) − 1（Eq. 89，由 Eq. 85 γ(α)=2D/((1+α)R²) 得），R=|μ_A−μ_0|。",
+    "note": "round-1 的记号警告正确。需补两点：α 依赖制备尺度 R，所以它是'段 + 初始条件'的性质，不是 OU 机制本身的性质；文中没有任何数据或估计程序。"
+   },
+   {
+    "citation": "Omiya & Komaki 2025, arXiv 2512.09358",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2512.09358",
+    "correct_details": "'Minimization of Functions on Dually Flat Spaces Using Geodesic Descent Based on Dual Connections'，Gaku Omiya、Fumiyasu Komaki，2025-12-10。m-测地更新理论上一步到达 MLE；参数空间测地完备时，e-测地更新可以不显式处理约束。",
+    "note": "纯优化方法，不对观测动力学建模。与 round-1 一致。"
+   },
+   {
+    "citation": "Hofrichter–Jost–Tran 2017 'Information Geometry and Population Genetics' treats selection as e-geodesic and migration as m-geodesic",
+    "status": "not_found",
+    "url": "https://ul.qucosa.de/api/qucosa%3A11463/attachment/ATT-0/",
+    "correct_details": "书确实存在（Springer 2017，副标题 'The Mathematical Structure of the Wright–Fisher Model'；Springer 页面需登录）。已取回的书评 PDF（Canadian Studies in Population）概括 10 章：带突变/选择的 WF 模型、单纯形上的 Riemann/Fisher 几何、扩散极限、重组、自由能泛函、大偏差、前向/后向 Kolmogorov 方程——没有提迁移，也没有提测地线。Tran 2012 年 Leipzig 博士论文（该书前身，已取回全文）：'geodesic' 出现 0 次；migration 只出现在泛泛列举里；书中写法是状态空间 = 混合族、对偶平坦，Fisher 度量 = 半径 2 的球面度量，Kolmogorov 算子 = 仿射 Laplacian。",
+    "note": "书正文未能打开（unverified）。建议把'选择 = e-测地线、迁移 = m-测地线'写成自证引理：常适应度 replicator 有 p_t ∝ p_0·w^t；确定性岛模型有 p_{t+1} = (1−m)p_t + m·p_mig。e-侧最近文献是 Harper 2009，m-侧是 Toussaint 2004（crossover 是 m-投影）。另一次针对性搜索也没找到任何文献把两者成对表述。"
+   },
+   {
+    "citation": "Amari 2007, Neural Computation, 'Integration of stochastic models by minimizing α-divergence'",
+    "status": "confirmed",
+    "url": "https://oasis.postech.ac.kr/handle/2014.oak/15480",
+    "correct_details": "Neural Computation 19(10):2780–2796 (2007)。α-积分是单参数族，含算术混合与指数（几何）混合为特例，在 α-散度意义下最优。",
+    "note": "原文摘要页（sciencegate）返回 403。书目信息来自搜索结果；内容由已取回的 Choi–Choi–Choe 2013 摘要与 q-paths 摘要转述确认。"
+   },
+   {
+    "citation": "Sumaya-Martinez 2026, 'Fisher-Informational Time' (arXiv 2605.03958)",
+    "status": "details_differ",
+    "url": "https://arxiv.org/abs/2605.03958",
+    "correct_details": "arXiv 页面标题为 'Fisher-Informational Time: A Causal-Geometric Framework for Emergent Clock Time Physical Distinguishability'，round-1 的标题是截断的。J. Sumaya-Martinez，2026-05-05，quant-ph（交叉 physics.optics）。文中引入 Λ_F = 沿因果可容许轨迹累积的 Fisher 几何距离，钟表时间由累积的 Fisher 可分辨性重建；与 Page–Wootters、thermal time、量子速度极限对照；作者自述关系时间本身不新。无数据，无学习。",
+    "note": "'时钟时间 = 累积 Fisher 距离'是合理转述（摘要原意是由 Λ_F 重建，未直接等同）。必须引的判断不变。"
+   },
+   {
+    "citation": "TOTR (Standridge 2026): Euclidean arc-length time reparametrisation of neural ODEs, loss down 1–2 orders of magnitude",
+    "status": "details_differ",
+    "url": "https://arxiv.org/html/2603.16583",
+    "correct_details": "arXiv 2603.16583（2026-03-17；v2 03-18），Joe Standridge、Daniel Livescu、Paul Cizmas，cs.LG。弧长定义为 s(t)=∫√(1+‖dy/dt′‖²)dt′，在（无量纲化的）增广状态 [y, t] 上算，是欧氏弧长，全文没有 Fisher 度量。方法：在拉伸时间里优化遍历速度剖面、惩罚加速度。测试系统：刚性线性系统、van der Pol、HIRES。'降 1–2 个数量级'是相对另两种时间重参数化方法（Caldana & Hesthaven 的 solver-directed TR；Cortés García et al. 的 extrema-based TR），主要指 τ-MSE；部分物理时间指标增益不到一个数量级；van der Pol 上 extrema-based 在部分指标胜出。",
+    "note": "TOTR 既没和纯墙钟比，也没和 Fisher 弧长比，所以 HANDOFF §7 第 4 条'TOTR（欧氏弧长就能带来大部分增益）'是过度解读。三元/四元对照仍然必要，但理由应改为 TOTR 自己的结论：时间映射的正则性决定可学性。"
+   },
+   {
+    "citation": "Tenkès, Hollerbach, Kim 2017 (logistic vs Gompertz more similar in information length)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/1708.02789",
+    "correct_details": "'Time-dependent probability density functions and information geometry in stochastic logistic and Gompertz models'，Lucille-Marie Tenkès、Rainer Hollerbach、Eun-jin Kim，J. Stat. Mech. (2017)，DOI 10.1088/1742-5468/aa9a66。摘要原句：'We show that the time-evolution of the two models become more similar when measured in units of the information length'。",
+    "note": "命题原样确认。"
+   },
+   {
+    "citation": "Kim & Hollerbach PRE 2017 (cells.yaml: 'information length L = ∫dt/τ 的定义')",
+    "status": "details_differ",
+    "url": "https://eprints.whiterose.ac.uk/id/eprint/112141/7/PhysRevE.95.022137.pdf",
+    "correct_details": "'Signature of nonlinear damping in geometric structure of a nonequilibrium process'，PRE 95, 022137 (2017)：L = 系统经过的统计可分辨状态总数；线性阻尼 L ∝ y0，三次阻尼 L ∝ y0^m。但 L 不是在这篇里首次定义的：文中写 'In our recent work [23–26], we proposed information length'，即 Nicholson & Kim, Phys. Lett. A 379, 83 (2015)；Nicholson & Kim, Entropy 18, 258 (2016，古典音乐数据)；Heseltine & Kim, J. Phys. A 49, 175002 (2016)；Kim, Lee, Heseltine, Hollerbach, PRE 93, 062127 (2016)。",
+    "note": "cells.yaml 的'定义'归属要改为 Nicholson & Kim 2015 / Kim et al. 2016。该文还写道 L 'can be applied to any data as long as time-dependent PDFs can be constructed from data'。"
+   },
+   {
+    "citation": "Kim & Hollerbach PRE 95, 062107 (2017), phase transitions",
+    "status": "confirmed",
+    "url": "https://pureportal.coventry.ac.uk/en/publications/geometric-structure-and-information-change-in-phase-transitions/",
+    "correct_details": "'Geometric structure and information change in phase transitions'，PRE 95(6) 062107，2017-06-06。前向过程由不稳定性驱动，后向过程主要由 PDF 峰移动驱动；前向 L ∝ ln γ，后向线性；L 对噪声 D 的标度为前向 |ln D|、后向 D^−1/2；前向增长阶段存在 τ 恒定的 geodesic 解。",
+    "note": "与 round-1 一致。"
+   },
+   {
+    "citation": "Zakharov, Crosby, Fountas 2020 (subjective-timescale world model), arXiv 2010.01430",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2010.01430",
+    "correct_details": "'Episodic Memory for Learning Subjective-Timescale Models'，2020-10-03，只有 arXiv 版（页面无 venue）。全文：当客观时间尺度转移模型的自由能 KL[q(s_t)‖p(s_t|s_{t−1},a_{t−1})] 超过人工设定的阈值 ε=5 时记一条记忆，转移模型在这些记忆序列（S-sequences）上训练。",
+    "note": "细节修正：这是'惊奇时钟'（后验对一步预测的偏离），不是'信念变化时钟'。cells.yaml 里'本格的阈值离散版'应改为'阈值化的惊奇时钟'。快但可预测的变化在 Fisher 时间里走得快、在 Zakharov 时间里走得慢，这本身可以做成一个判别实验。"
+   },
+   {
+    "citation": "Mao et al. PNAS 2024 (training trajectories re-indexed by Fisher–Rao geodesic progress)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2305.01604",
+    "correct_details": "'The Training Process of Many Deep Networks Explores the Same Low-Dimensional Manifold'，Mao, Griniasty, Teoh, Ramesh, Yang, Transtrum, Sethna, Chaudhari，PNAS 121(12) 2024，DOI 10.1073/pnas.2310002121。正文：'We shall measure progress along the trajectory by the projection onto the geodesic between ignorance and truth'（√p 球面，FIM / Bhattacharyya，arccos 距离）；checkpoint 插值成按进度等距；在相同进度处比较轨迹。",
+    "note": "这个命题在正文，摘要里没有。"
+   },
+   {
+    "citation": "Nakamura 1993 (completely integrable gradient systems, dually flat) — round-1 unsearched item",
+    "status": "confirmed",
+    "url": "https://link.springer.com/article/10.1007/BF03167571",
+    "correct_details": "Y. Nakamura, 'Completely integrable gradient systems on the manifolds of Gaussian and multinomial distributions', Japan J. Indust. Appl. Math. 10, 179–189 (1993)。",
+    "note": "只确认了存在与书目（见于 Fujiwara 1993 的参考文献 [8] 与搜索到的 Springer 记录；Springer 页面需登录）。内容来自二手：Fujiwara（沿 m-测地线收敛到 δ；完全可积）与搜索摘要（Lax 形式）。搜索摘要还提到期刊版 Fujiwara & Amari, Physica D (1995)，未打开。"
+   }
+  ],
+  "grade_updates": [
+   {
+    "cell": 7,
+    "old_grade": "B-",
+    "new_grade": "B-",
+    "reason": "等级不变。本轮 18 次针对性搜索（Markov/HMM 的 e-m 结构、时间序列 e/m 判别、从数据估 α、对偶坐标潜动力学、选择/迁移成对表述、CoDA 幂变换、Tsallis q 估计）没有找到任何工作把观测轨迹分段判成 e-直/m-直，或从观测分布轨迹读出 α。新找到的近邻都在 B−/C+：Tsagris α-变换（横截面）、Choi 2013（静态融合）、q-paths/α-Flow（α 是设计超参）、Legendre 动力学（无判别）、Mathieson–McVean（参数化、非几何），各自要么缺动力学，要么缺数据驱动的 α。Koide–van de Venn 仍是最近邻（高斯、闭式、依赖制备尺度、无数据）。覆盖信心从低–中升到中。"
+   },
+   {
+    "cell": 9,
+    "old_grade": "B",
+    "new_grade": "B",
+    "reason": "等级不变。extended 模式的直接撞车检查与 HF 索引都没有发现把 Fisher 弧长 / 信息长度当时间坐标来学习环境动力学的工作。三条新近邻线让它停在 B 而不是更低：(1) 设计路径的信息时间调度（扩散熵时间 2025、恒速率 AIS 2023、热力学长度退火 2024）；(2) 事件时间世界模型（VPR 2022、THICK 2024、EAWM 2026）与 Roseboom 2019 的累积表征变化时钟；(3) information rate 已在真实 EEG 上当诊断量（2025）。但它们都不是'观测动力学的 Fisher 速度 + 学习的转移模型'。覆盖信心从中升到中高。"
+   }
+  ],
+  "must_updates": [
+   {
+    "cell": 7,
+    "proposal": "在现有 must（定位为'从数据判别并学坐标'、引 Fujiwara、区分三种直线并对照 WFR-FM、作格 2 诊断前端）之外补六条：\n(1) 只做'像'的检验：α-Flow App. B 表明归一化 α-插值要经时间重参数化 τ(t) 才是单纯形上的 α-测地线（α∈(−1,1) 的 τ 无闭式），所以 α-计用秩-2 这类参数化无关的检验，不拿时间戳拟合。单纯形上只有 α=±1 有平坦坐标（标准结论，本轮未重取原文），因此'在对应平坦坐标里学线性转移'只在 e/m 两端成立；中间 α 只能做射影意义下的直线判定，否则要另行说明用哪种几何（候选：Amari–Ohara 的共形平坦化 q-几何，未核实）。\n(2) 记号与制备：统一用 Amari 约定（α=+1 为 e，−1 为 m，λ=(1−α)/2，与 α-Flow 相同）。对照 Koide–van de Venn 时要翻号：在其测地线分类里 m-直线 / Brownian bridge 是 α_K=1，e 落在临界 α_K=−1。其 α_K = 2D/(γR²) − 1 依赖制备尺度 R，预注册时要固定初始条件族。\n(3) 完整单纯形 vs 子族：秩-2 α-计只在完整单纯形（Wright–Fisher 等位基因频率向量）上等价于 α-测地线判定。在高斯等子族上，Koide 的 α 是诱导联络的测地线，而环境 α-混合会离开高斯族，秩-2 检验只认得出 e 端（自推）。所以'Gaussian 与 Koide 闭式一致'这条预测要么改用内禀拟合，要么删掉。\n(4) 加参数化基线：Mathieson & McVean 2013 式的 (s, m) 联合似然拟合。α-计必须证明不指定机制族也能读出相位，而且机制族已知时不输给这个基线。\n(5) '选择 = e-测地线、迁移 = m-测地线'不引 Hofrichter–Jost–Tran（未找到），写成自证引理：常适应度 replicator 有 p_t ∝ p_0·w^t；确定性岛模型有 p_{t+1} = (1−m)p_t + m·p_mig。e-侧引 Harper 2009，m-侧引 Toussaint 2004。\n(6) related work 必须覆盖并划清：Tsagris α-变换（数据选幂，横截面）、Choi et al. 2013（学 α-积分的 α，静态）、q-paths 与 α-Flow（α 是设计超参，α-Flow 把 adaptive α 列为未来工作）、Amari 1982 曲率（把 α-计表述为使 α-嵌入曲率最小的 α），以及理论根源 Obata–Hara–Endo 1992 与 Nakamura 1993。",
+    "reason": "这些条件来自本轮核实的内容：α-Flow 的重参数化结果、Koide 的 α_K 索引与 R 依赖、Tran 论文全文中找不到 e/m 表述，以及群体遗传学里现成的选择/迁移分离方法。不补上，kill test 的高斯对照与'坐标优势'两部分会在记号或可辨识性上出错。"
+   },
+   {
+    "cell": 9,
+    "proposal": "把 must 改为：\n(1) 对照从三元改成四元：墙钟 / 欧氏弧长（在同一潜空间里算，TOTR 与 Roseboom 2019 式）/ 惊奇或熵时钟（Zakharov 2020 的 KL[后验‖转移先验] 累积，或 Stancevic 2025 式熵时间）/ Fisher 弧长（相邻潜后验的 √(2·KL) 累积）。Fisher 必须同时胜过欧氏时钟与惊奇时钟，才算'Fisher 在起作用'。建议加一个判别世界：快但可预测的运动（Fisher 时钟快、惊奇时钟慢）对比慢但不可预测的跳变。\n(2) 改写对 TOTR 的引用：它只证明'重参数化的正则性决定可学性'，比较对象是其他时间重参数化方法，没和墙钟、也没和 Fisher 比；它的两个基线（Caldana–Hesthaven solver-directed TR、Cortés García extrema-based TR）可一并列为对照。\n(3) related work 加入'设计路径的信息时间调度'一线并划清：Stancevic 2025、Goshtasbpour 2023、Barzegar 2024 / Sivak–Crooks 重计时的是人造的生成或退火路径；本格重计时的是观测到的环境动力学，时钟由世界模型潜后验内生。\n(4) 引用事件时间世界模型线并说明差别：Zakharov 2020、VPR (ICLR 2022)、THICK (ICLR 2024)、EAWM (ICLR 2026) 都是离散或阈值化的事件，没有度量化的连续时钟。\n(5) 归属修正：information length 由 Nicholson & Kim 2015 / Kim et al. 2016 提出。已有工作在真实数据上算 information length/rate（Nicholson & Kim 2016 音乐；Choong–Kim–He 2025 EEG），但都只当诊断量，所以主张只能是'首次作为学习转移模型的时间坐标'。\n(6) 保留：时钟用模型内生潜后验的 Fisher 度量；引 Sumaya-Martinez 2026（标题按 arXiv 页面）与 Tenkès 2017。",
+    "reason": "原三元对照只排除了'弧长'这一种替代解释，没有排除'信息/惊奇累积'这一种。而 KL(q_{t+1}‖q_t) ≈ ½Γ²dt² 意味着审稿人会把 Fisher 时间读成'累积的平方根贝叶斯惊奇'，扩散 / AIS 的信息时间调度也已成熟。另外 TOTR 的结论被 HANDOFF 过度解读了。"
+   }
+  ],
+  "searches_executed": [
+   "[C7] Nakamura \"completely integrable gradient systems\" Gaussian multinomial distributions information geometry",
+   "[C7] Hofrichter Jost Tran \"Information Geometry and Population Genetics\" selection exponential family migration mixture geodesic",
+   "[C7] information geometry Markov chains exponential family mixture family e-flat m-flat Markov kernels Nagaoka Hayashi Watanabe Wolfer",
+   "[C7] information geometry time series trajectory e-geodesic m-geodesic classify segments exponential family versus mixture family dynamics data",
+   "[C7] Amari 2007 \"Integration of stochastic models by minimizing alpha-divergence\" Neural Computation alpha-mixture",
+   "[C7] \"alpha integration\" parameter learning alpha estimated from data Choi Choe Neural Computation",
+   "[C7] q-paths power mean annealing path generalizing geometric path alpha-mixture Masrani Brekelmans Nielsen",
+   "[C7] alpha-geodesic probability simplex flow matching alpha representation categorical α-Flow information geometry",
+   "[C7, extended] estimate alpha connection from data \"alpha-geodesic\" fitting trajectory curve statistical manifold which alpha best fits",
+   "[C7] Tsagris Preston Wood \"data-based power transformation for compositional data\" alpha-transformation estimate alpha log-ratio limit",
+   "[C7] dually flat latent space neural network dynamics natural/expectation parameters \"dual coordinates\" exponential family latent dynamics linear Amari",
+   "[C7] Obata Hara Endo \"Differential geometry of nonequilibrium processes\" Phys Rev A 45 6997 1992",
+   "[C7] replicator dynamics constant fitness exponential family / e-geodesic + migration/mixing m-geodesic information geometry population",
+   "[C7] estimating selection coefficients and migration rates from allele frequency time series (Mathieson McVean)",
+   "[C7] Amari 1982 curved exponential families curvatures information loss / Efron statistical curvature",
+   "[C7] Tsallis q-triplet q_rel estimated from relaxation of time series data (Burlaga Viñas)",
+   "[C7] compositional time series alpha-transformation / power transformation / Box-Cox vs log-ratio dynamics VAR",
+   "[C7] Amari information geometry time series linear systems AR ARMA e-flat m-flat dually flat",
+   "[C9] \"information length\" neural network OR machine learning OR deep learning Fisher information rate time-dependent PDF",
+   "[C9, extended] \"information rate\" OR \"information length\" applied to data EEG / time series / real data (Kim, Hollerbach, Thiruthummal, Guel-Cortez 2022–2025)",
+   "[C9] Nicholson \"time-information uncertainty\" OR Ito \"intrinsic speed\" Fisher information measured from experimental data application learning",
+   "[C9, extended] Fisher information time reparameterization neural ODE / sequence model / recurrent learned intrinsic time Fisher-Rao constant-speed latent dynamics",
+   "[C9] diffusion model noise schedule thermodynamic length / entropic time / Fisher constant speed time reparameterization 2024 2025",
+   "[C9] world model subjective time / event-based time / adaptive temporal abstraction latent dynamics surprise event boundaries 2024–2026",
+   "[C9] Fisher information regime shift detection time series ecosystem (Cabezas, Mayer, Karunanithi)",
+   "[C9, extended] \"information time\" / \"Fisher time\" / \"information length\" / \"statistical arc length\" time coordinate learned world model latent transition 2025 2026 (direct-collision check)",
+   "[C9] annealed importance sampling optimal schedule constant speed Fisher metric thermodynamic length (Grosse, Maddison, Salakhutdinov)",
+   "[C9] change point detection time series Fisher-Rao distance / information geometry / statistical length segmentation 2023–2025",
+   "[C9] Gumbsch hierarchical world models with adaptive temporal abstractions (THICK, ICLR 2024)",
+   "[C9] subjective time from accumulated change in network activations (Roseboom 2019) / Fountas time perception",
+   "[HF papers index, no web budget] information length Fisher time-dependent PDF; Fisher-Rao arc length time reparameterization learning dynamics; alpha-geodesic estimate alpha from data; dually flat latent space dynamics world model; information geometry world model intrinsic time; information length Kuramoto; Fisher information Gray-Scott; Lenia information geometry; power transformation alpha trajectory simplex geodesic; q-exponential family conformal flattening (x2) — no collisions",
+   "[Direct fetches, no web budget] arXiv abs/html: 2609.08870 (x3), 2512.09358, 2605.03958 (x2), 2603.16583 (abs+html), 1708.02789, 2010.01430 (PDF text), 2305.01604 (html), 2504.10283 (abs+html), 2107.00745, 1106.1451, 2512.19409, 2402.14717, 2504.13612, 2601.19336, 2106.05669, 2306.15283, 2110.11236, physics/0507212, 2005.11510, 2510.12663, 2609.11063; Fujiwara RIMS PDF (full text); Kim–Hollerbach PRE 95 022137 PDF (full text); Coventry page PRE 95 062107; Tran 2012 thesis PDF (full text); HJT book review PDF; PLOS Complex Systems EEG paper; PMC Mathieson–McVean; PMC Roseboom 2019; ICLR THICK page; POSTECH Choi 2013. Failed: APS PRA 45 6997 (403), Scilit (403), Springer Nakamura and HJT (login), MDPI Entropy 18 258 (403), sciencegate Amari 2007 (403), projecteuclid Amari 1982 (empty), MPI THICK page (bot check)"
+  ],
+  "coverage_confidence": "Cell 7：从低–中升到中。本轮 18 次针对性搜索，并核对了 Fujiwara 1993、Koide 2026 html、α-Flow html、Tran 2012 论文的全文。残余缺口：球面（√p，α=0 特例）上的测地回归 / 主测地分析；Hofrichter–Jost–Tran 书正文；Amari 1982 / Efron 1975 原文；Amari–Ohara 共形平坦化 q-几何（中间 α 是否有平坦结构）；HMM 的 em 几何未单独搜索。Cell 9：从中升到中高。本轮 12 次搜索（含 extended 直接撞车检查）加 HF 索引。残余缺口：Kim 组 2025–26 的最新预印本、序列模型里基于惊奇的事件切分（EM-LLM 类）、Karunanithi 2008 与 Nicholson & Kim 2016 原文（403 或未打开）。",
+  "summary": "用了 30 次 WebSearch（4 次 extended），另有 arXiv/期刊页直接抓取和 HF 索引，未改任何文件。\n\n【Cell 7，等级 B− 不变】\n- 没有找到任何工作把观测轨迹分段判为 e-直/m-直，或从观测分布轨迹读出 α。\n- 除 Koide–van de Venn（高斯、闭式、无数据）外，\"从数据估 α\"只出现在静态或横截面场景：Choi et al. 2013 学 α-积分的 α；Tsagris et al. 2011 选单纯形幂变换的 α（λ→0 即 log-ratio）；Burlaga–Viñas 2005 从太阳风序列估 Tsallis q。\n- 幂均值路径本身是成熟对象（q-paths UAI 2021；α-Flow 2025 在单纯形上沿 α-测地线做 flow matching），但 α 都是设计超参，α-Flow 明确把 adaptive α 列为未来工作。\n- 改 kill test 的三条技术发现：\n  - α-Flow App. B 证明归一化 α-插值要经时间重参数化 τ(t) 才是 α-测地线。合作者的\"秩-2 / 归一化幂均值\"刻画作为曲线的像成立，但只能做参数化无关的检验。\n  - Koide 的测地线分类索引与 Amari 相反：m-直线 / Brownian bridge 是 α_K=1，e 在临界 α_K=−1。闭式 α_K = 2D/(γR²) − 1 依赖制备尺度 R。\n  - 秩-2 检验在高斯子族上只认得出 e 端（自推），所以\"与 Koide 闭式一致\"这条预测要改为内禀拟合，或删掉。\n- Hofrichter–Jost–Tran：书存在，但\"选择 = e、迁移 = m\"在 Tran 2012 论文全文（\"geodesic\" 0 次）和书评章节概要里都没有；书正文没打开。建议写成自证引理。\n- 新增根源：Obata–Hara–Endo 1992（\"OU 是高斯上的 e-测地运动\"，经 Fujiwara 转引，原文 403）、Nakamura 1993。\n- 新增必要基线：Mathieson & McVean 2013 的 (s, m) 联合似然。\n\n【Cell 9，等级 B 不变】\n- extended 直接撞车检查与 HF 索引都无命中。\n- 三条新近邻线：\n  - 设计路径的信息时间调度：Stancevic 2025 熵时间、Goshtasbpour 2023 恒速率 AIS、Barzegar 2024 热力学长度退火。\n  - 事件时间世界模型：VPR ICLR 2022、THICK ICLR 2024、EAWM ICLR 2026；以及 Roseboom 2019 用累积欧氏表征变化做的主观时钟。\n  - information rate/length 已在真实数据上当诊断量：Nicholson & Kim 2016（音乐）、Choong–Kim–He 2025（EEG）；生态学有用滑窗 Fisher 信息检测 regime shift 的工作。\n- 引文修正：\n  - information length 的定义来自 Nicholson & Kim 2015 / Kim et al. 2016，不是 PRE 2017。\n  - TOTR 的\"降 1–2 个数量级\"是相对另外两种时间重参数化方法，主要是 τ-MSE，且没和 Fisher 比。HANDOFF §7 的\"欧氏弧长就能带来大部分增益\"是过度解读。\n  - Zakharov 2020 是惊奇时钟（KL[后验‖转移先验] > ε=5），不是信念变化时钟。\n  - Sumaya-Martinez 的标题按 arXiv 页面多出 \"Physical Distinguishability\"。\n- 建议把三元对照改成四元，加入惊奇/熵时钟。\n\n【其余核对全部通过】Fujiwara 1993（Thm 3.1：η̇ = −(η−η_q)）、Omiya–Komaki 2025、Tenkès 2017（原句确认）、Kim–Hollerbach PRE 95 062107、Mao PNAS 2024（正文确认按 ignorance→truth 测地线进度重索引）、Amari 2007（经 Choi 2013 摘要转述确认）。\n\n【抽取的全文文本】\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/fujiwara_pdf/f.txt\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/tran_thesis/t.txt\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/kimh_pdf/k.txt\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/zakharov_pdf/z.txt\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/hjt_review/r.txt"
+ },
+ {
+  "cells": [
+   6,
+   12,
+   2
+  ],
+  "new_papers": [
+   {
+    "title": "A Geometric Decomposition of Finite Games: Convergence vs. Recurrence under Exponential Weights",
+    "authors": "Davide Legacci, Panayotis Mertikopoulos, Bary Pradelski",
+    "venue": "ICML 2024 (PMLR 235, spotlight)",
+    "year": "2024",
+    "url": "https://arxiv.org/abs/2405.07224",
+    "cells": [
+     2
+    ],
+    "closeness": "A-（命题层）",
+    "what_they_did": "在 Shahshahani 度量下做 Helmholtz 型分解，摘要明说欧氏 Helmholtz 和 exponential weights 动力学的几何不相容。证明 incompressible 等价于 harmonic；EW（replicator 型）动力学在其中保体积、有守恒量、Poincaré 回归；并接上 Candogan 的 potential/harmonic 分解。",
+    "implication": "格 2 在 replicator 世界上的预测（纯选择时旋度约 0，RPS 时旋度主导）在 Fisher 度量下已是定理。wright_fisher 这个 kill test 只能校准估计器，杀不死想法。新意只剩两件：从数据估计这个分解，把它当世界模型诊断。",
+    "verified": true
+   },
+   {
+    "title": "The potential and flux landscape theory of evolution",
+    "authors": "Feng Zhang, Li Xu, Kun Zhang, Erkang Wang, Jin Wang",
+    "venue": "J. Chem. Phys. 137, 065102 (DOI 10.1063/1.4734305)",
+    "year": "2012",
+    "url": "https://www.sciencedaily.com/releases/2012/08/120808132454.htm",
+    "cells": [
+     2
+    ],
+    "closeness": "B+（概念）",
+    "what_they_did": "演化驱动力等于适应度景观的梯度加 curl 概率通量。curl 来自物种间相互作用，可以在环境不变时维持无尽演化（Red Queen）。打开的只是新闻稿，JCP 全文没开。",
+    "implication": "“演化是下降加打转”这句话 2012 年就发表了。差别在于他们用的是随机稳态 U = -ln P_ss，不是在 Fisher 度量下学 F。",
+    "verified": true
+   },
+   {
+    "title": "Landscape and flux theory of non-equilibrium dynamical systems with application to biology",
+    "authors": "Jin Wang",
+    "venue": "Advances in Physics (DOI 10.1080/00018732.2015.1037068)",
+    "year": "2015",
+    "url": "https://www.tandfonline.com/doi/abs/10.1080/00018732.2015.1037068",
+    "cells": [
+     2,
+     6
+    ],
+    "closeness": "B+（概念）",
+    "what_they_did": "综述：非平衡动力学等于景观梯度加 curl 通量；通量衡量细致平衡被破坏的程度，是规范场曲率与类 Berry 相位的来源。以上只来自搜索摘要，页面返回 403。",
+    "implication": "检索到的摘要都没有用 Fisher/Shahshahani 的说法。但其分解 F = -D grad U + J/P + div D 的梯度项按扩散矩阵 D 加权；在 Wright-Fisher 里 D 与 Shahshahani 逆度量成正比。所以在 WF 世界里，它就是 Fisher 度量下的梯度加通量分解（这是我的推断，不是文献原话）。“通量等于曲率”这一说法把格 2 和格 6 连到了一起。",
+    "verified": false
+   },
+   {
+    "title": "The Potential and Flux Landscape Theory of Ecology",
+    "authors": "Li Xu, Feng Zhang, Kun Zhang, Erkang Wang, Jin Wang",
+    "venue": "PLoS One 9(1): e86746",
+    "year": "2014",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3907570/",
+    "cells": [
+     2
+    ],
+    "closeness": "B",
+    "what_they_did": "在零噪声极限下用 Hamilton-Jacobi 方程求 intrinsic potential，它是全局 Lyapunov 函数，通量与负梯度正交。全文不提 Fisher、Shahshahani 或信息几何。",
+    "implication": "这是格 2“学 F 加旋度”的确定性对应物，但分解口径不同（HJ 正交分解 vs Hodge 投影）。预注册时必须选定一种口径。",
+    "verified": true
+   },
+   {
+    "title": "MPL resolves genetic linkage in fitness inference from complex evolutionary histories",
+    "authors": "M. S. Sohail, R. H. Y. Louie, M. R. McKay, J. P. Barton",
+    "venue": "Nature Biotechnology 39(4): 472-479",
+    "year": "2021",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8044047",
+    "cells": [
+     2
+    ],
+    "closeness": "B+（方法层，学 F 这一步）",
+    "what_they_did": "从 Wright-Fisher 扩散出发，经路径积分推导，在给定频率时间序列下得到闭式选择系数：s = (C_int + gamma I)^-1 (dx - mu_fl)，C 为频率协方差。",
+    "implication": "这正是“用 WF 协方差（即 Shahshahani 逆度量）加权、按梯度流拟合观测轨迹来学线性 F”的闭式特例。F 取线性时，natural deviation 损失就退化成它。格 2 在 wright_fisher 上必须用 MPL 作基线。",
+    "verified": true
+   },
+   {
+    "title": "On Bayesian Mechanics: A Physics of and by Beliefs",
+    "authors": "M. J. D. Ramstead, D. A. R. Sakthivadivel, C. Heins, M. Koudahl, B. Millidge, L. Da Costa, B. Klein, K. J. Friston",
+    "venue": "Interface Focus 13(3): 20220029",
+    "year": "2023",
+    "url": "https://arxiv.org/abs/2205.11543",
+    "cells": [
+     2
+    ],
+    "closeness": "B-（概念）",
+    "what_they_did": "Bayesian mechanics 综述：信念空间（摘要原话：on a statistical manifold）上的动力学；path-tracking、mode-tracking、mode-matching 三类；FEP 与约束最大熵的对偶。摘要没有出现 Fisher、Helmholtz、natural gradient。",
+    "implication": "仍属于“设定”层，没有把 Hodge 残差当作可估计量。格 2 维持原定位：FEP 假设了这个分解，我们从数据估计并检验。",
+    "verified": true
+   },
+   {
+    "title": "Gauge-invariant representation holonomy",
+    "authors": "Vasileios Sevetlidis, George Pavlidis",
+    "venue": "ICLR 2026",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2601.21653",
+    "cells": [
+     6
+    ],
+    "closeness": "B-（工具）",
+    "what_they_did": "特征沿输入空间小环路平行移动后会累积扭转。做法是全局 whitening 固定 gauge，再用共享子空间加 rotation-only Procrustes 对齐。证明该量对正交/仿射变换不变、小半径时趋零，并能区分 CKA 区分不了的模型。",
+    "implication": "对象是静态表征的输入环路，不撞格 6 的核心主张。它正好可以修格 6 的 gauge 洞，应取代 Wang & Wang（参数空间）作为首选估计器参照。",
+    "verified": true
+   },
+   {
+    "title": "Inference of Finite Automata Using Homing Sequences",
+    "authors": "Ronald L. Rivest, Robert E. Schapire",
+    "venue": "Information and Computation 103(2): 299-347（STOC 1989 版）",
+    "year": "1993",
+    "url": "https://people.csail.mit.edu/rivest/pubs/RS93a.bib.txt",
+    "cells": [
+     6
+    ],
+    "closeness": "B-（经典根源）",
+    "what_they_did": "不需要 reset，就能从输入/输出行为学出未知有限自动机：用 homing sequence 替代 reset；另给出 diversity-based 表示；对 permutation automata 给出不需要 teacher 的算法。",
+    "implication": "HCDP 的置换搬运和可重置诊断有 30 年的根。主动探测优于被动观测不是新结论；toggle_grid 里可以用 homing sequence 代替真 reset。",
+    "verified": true
+   },
+   {
+    "title": "Looping Suffix Tree-Based Inference of Partially Observable Hidden State",
+    "authors": "Michael P. Holmes, Charles Lee Isbell Jr.",
+    "venue": "ICML 2006",
+    "year": "2006",
+    "url": "https://mlanthology.org/icml/2006/holmes2006icml-looping",
+    "cells": [
+     6
+    ],
+    "closeness": "C+",
+    "what_they_did": "证明确定性 POMDP 总能由有限的 looping PST 完美预测，并给出健全完备的学习算法。",
+    "implication": "离散、基于历史的隐状态推断经典，不涉及联络。相关工作里一句带过即可。",
+    "verified": true
+   },
+   {
+    "title": "The Berry phase and the pump flux in stochastic chemical kinetics",
+    "authors": "N. A. Sinitsyn, I. Nemenman",
+    "venue": "EPL 77, 58001",
+    "year": "2007",
+    "url": "https://arxiv.org/abs/q-bio/0612018",
+    "cells": [
+     6,
+     2
+    ],
+    "closeness": "C",
+    "what_they_did": "让控制参数缓慢绕环调制，通量统计中出现纯几何的 Berry 相项，产生随机泵流。",
+    "implication": "这是“控制环路产生和乐、和乐有可测净效应”的物理先例，测到的是泵流而不是隐状态，不撞。可作为格 6 与格 2 之间的桥。只看了搜索结果，页面未打开。",
+    "verified": false
+   },
+   {
+    "title": "From Connectivity to Rewards: Dense Reward Learning with Directed State Graphs",
+    "authors": "Shuyuan Zhang, Zihan Wang, Xiao-Wen Chang, Doina Precup",
+    "venue": "TMLR 2026",
+    "year": "2026",
+    "url": "https://arxiv.org/abs/2609.10781",
+    "cells": [
+     12,
+     8
+    ],
+    "closeness": "B-",
+    "what_they_did": "在探索中建有向状态图，学一个神经网络预测状态间连通强度，再转成多层级 dense reward（G2QDR）。面向不对称（quasimetric）环境的分层 GCRL，不用曲率。",
+    "implication": "“学到的模型预测图量，再喂给分层 RL”这一层已有人做。格 12 应把它当宿主或基线之一。",
+    "verified": true
+   },
+   {
+    "title": "Option Discovery in the Absence of Rewards with Manifold Analysis",
+    "authors": "Amitay Bar, Ronen Talmon, Ron Meir",
+    "venue": "ICML 2020",
+    "year": "2020",
+    "url": "https://icml.cc/virtual/2020/poster/52942",
+    "cells": [
+     12
+    ],
+    "closeness": "B-（非曲率几何基线）",
+    "what_they_did": "用图 Laplacian 全谱做无奖励 option 发现，并给出流形理论依据。",
+    "implication": "补进非曲率瓶颈/子目标对照组。",
+    "verified": true
+   },
+   {
+    "title": "Ricci curvature of Markov chains on metric spaces",
+    "authors": "Yann Ollivier",
+    "venue": "arXiv math/0701886",
+    "year": "2007",
+    "url": "https://arxiv.org/abs/math/0701886",
+    "cells": [
+     12
+    ],
+    "closeness": "根源（决定技术路线）",
+    "what_they_did": "把 Ricci 曲率定义为度量空间上 Markov 链对测度的局部 Wasserstein 收缩系数。",
+    "implication": "MDP 在固定策略或模型下的转移核就是 Markov 链，ORC 可以直接作用于 WM 预测的非对称核，不必等 Wiesler 的有向图推广。真正要定的是基础度量。摘要没说是否要求可逆；按我对原文的记忆，定义本身不要求可逆。",
+    "verified": true
+   },
+   {
+    "title": "Geometric Token Transport: Riemannian Parallel Transport as Sequential State Accumulation in Neural Sequence Processing",
+    "authors": "Bee Rosa Davis",
+    "venue": "Zenodo 自发布预印本",
+    "year": "2026",
+    "url": "https://zenodo.org/records/18883346",
+    "cells": [
+     6
+    ],
+    "closeness": "C",
+    "what_they_did": "用学到的低秩联络做逐步旋转来替代 attention，声称非交换累积可以编码词序。",
+    "implication": "质量存疑，也不是世界模型；只说明“学到的联络 + 非交换累积”在序列模型里有人在试。",
+    "verified": true
+   },
+   {
+    "title": "Simulation-Free Learning of Population Dynamics with Wasserstein Lagrangian Residuals",
+    "authors": "未核",
+    "venue": "arXiv 2610.03679",
+    "year": "2026",
+    "url": "https://huggingface.co/papers/2610.03679",
+    "cells": [
+     2
+    ],
+    "closeness": "B-",
+    "what_they_did": "据 HF 索引摘要：Wasserstein Residuals 的 Lagrangian 续作。",
+    "implication": "W 度量下的残差模板在扩张；Fisher-Rao 版本（相当于 natural deviation）仍未见。论文未打开。",
+    "verified": false
+   }
+  ],
+  "citation_checks": [
+   {
+    "citation": "Zhang, Chen, Imani, Lan 2026, Minimal Markovization via Stable Quotients in Holonomy-Cover Decision Processes, arXiv 2607.27132",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2607.27132",
+    "correct_details": "Zuyuan Zhang, Yongshan Chen, Mahdi Imani, Tian Lan；2026-07-29 v1；cs.LG；无 venue",
+    "note": "“被动不可辨识”在正文，不在摘要：Thm 4.2 写作 unrestricted passive logs admit no uniformly consistent estimator，其构造依赖 behavior policy 漏掉一个可区分动作；passive HMRL 只有条件保证（Thm E.4）。Thm 4.6 需要 resettable、calibrated 的诊断。Thm 6.4 与 Cor 6.5 是 abelianization/commutator barrier；LoopGuess 生成 S3；Count-Q 为 0.342，HMRL-D 为 1.000。附录 G.2 明确把连续理论列为 out of scope。"
+   },
+   {
+    "citation": "Blattner 2025, Tangential Action Spaces, arXiv 2509.03399",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2509.03399v2",
+    "correct_details": "单作者；v1 2025-09-02，v2 2025-09-12；eess.SY",
+    "note": "Ehresmann connection 见正文 Def. 4。摘要原话是 excess energy grows quadratically with the size of the induced memory，与第一轮“随 holonomy 平方”基本同义。纯解析加手工玩具，不从数据学联络。"
+   },
+   {
+    "citation": "Hayashi / Koyama, WLA, arXiv 2503.09911",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2503.09911v1",
+    "correct_details": "Kohei Hayashi, Masanori Koyama, Julian Jorge Andrade Guerreiro；2025-03；无 venue",
+    "note": "Assumption 1 与附录 A.2 明确假设 G 为阿贝尔群（同构于 R^J1 x T^J2，作用为块对角的 scale-rotation），结论把“转移先验可交换”列为局限。第一轮的判断成立。"
+   },
+   {
+    "citation": "Delliaux 2025, Learning Abstract World Models with a Group-Structured Latent Space, arXiv 2506.01529",
+    "status": "details_differ",
+    "url": "https://arxiv.org/html/2506.01529",
+    "correct_details": "Delliaux, Vu, François-Lavet, van der Pol, Rachelson；v2 2026-05-19；无 venue",
+    "note": "并没有“明确假设可交换”：全文没有 abelian/commutative 字样。实验用的群（Z/nZ、环面、方向圆周）确实是阿贝尔的，但转移写作 z' = z ⊕ Δ(z,a)（Eq. 10），Δ 依赖状态，学到的模型不保证与动作顺序无关。所列局限里也没有非交换。"
+   },
+   {
+    "citation": "Dehdarirad 2026, Commutator-Induced Uncertainty in VAEs, arXiv 2605.23449",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2605.23449",
+    "correct_details": "Tahereh Dehdarirad, Michael Felsberg, Gabriel Eilertsen, Ziliang Xiong；2026-05-22",
+    "note": "Δij >= C·Dij 是 Phase 2 中强制施加的建模假设（C 取 90 分位）。“对称 Riemann 度量抓不到顺序效应”出现在相关工作部分；把交换子比作 torsion 只是类比，作者承认没有实现真正的联络结构。模型是静态 VAE，没有动力学。"
+   },
+   {
+    "citation": "Wang & Wang, Gauge Fiber Bundle Geometry of Transformers, NeurIPS 2025 workshop",
+    "status": "confirmed",
+    "url": "https://neurips.cc/virtual/2025/136821",
+    "correct_details": "NeurIPS 2025 NeurReps workshop poster；OpenReview sPCLRX1yOY",
+    "note": "环路取在参数更新空间。Ehresmann 联络由环境欧氏度量诱导，曲率一般非零，并给出小环路和乐估计器。"
+   },
+   {
+    "citation": "US Patent 12651010",
+    "status": "confirmed",
+    "url": "https://patents.google.com/patent/US12651010B1/en",
+    "correct_details": "US12651010B1, Holonomy-based cognitive state representation and reasoning in persistent cognitive machines；Atombeam Technologies；发明人 Brian Galvin；2026-02-09 申请，2026-06-09 授权",
+    "note": "状态 S=(x,H_x)；描述子由预测误差触发生成，按路径顺序合成，会衰减和剪枝；用到 Christoffel 测地线方程与 Ricci 曲率。没有提部分可观测或隐状态检测。"
+   },
+   {
+    "citation": "Saheb Pasand, Castro, Bashivan, A Geometric Lens on RL Environment Complexity Based on Ricci Curvature, RLC 2025 workshop",
+    "status": "confirmed",
+    "url": "https://rlbrew2-workshop.github.io/papers.html",
+    "correct_details": "列在 RLC 2025 RLBrew workshop（2025-08-05）论文页；Mila 页面则标为 RLC 2025 Finding the Frame workshop",
+    "note": "OpenReview 的 PDF 与 API 都被 challenge 页拦截，第一轮“增益小、count-based 反超”的细节本轮无法复核。Mila 摘要的口径相反（substantially improves，outperforming random and count-based）。截至本轮未见 2026 正式版。"
+   },
+   {
+    "citation": "Fei et al. ICML 2026, VPS",
+    "status": "confirmed",
+    "url": "https://icml.cc/virtual/2026/poster/64243",
+    "correct_details": "Yiming Fei, Ziming Wang, Rui Yan, Huajin Tang；ICML 2026 poster",
+    "note": "原文是 rely on topological analysis of the state-transition graph, limiting their scalability。批评语气温和，属于立论动机。"
+   },
+   {
+    "citation": "Liang et al. ICML 2026, Bottleneck-Guided Spectral Subgoals",
+    "status": "confirmed",
+    "url": "https://icml.cc/virtual/2026/poster/61973",
+    "correct_details": "Hebin Liang 等 8 人（含 Jianye Hao）",
+    "note": "Laplacian 谱聚类找瓶颈，再建有向关键点可达图。理论在 metastable 分解下成立。AntMaze 96.5%，Kitchen 84.7%。"
+   },
+   {
+    "citation": "Micaletto & Nigrelli NeurIPS-W 2026",
+    "status": "confirmed",
+    "url": "https://neurips.cc/virtual/2026/159361",
+    "correct_details": "workshop 全名 Bridging Optimal Transport, Learning and Structured Data；OpenReview K4WX3Yef3j",
+    "note": "给出 BF 与 ORC 之间的双侧分段仿射界，每条边 O(max deg^1.5)。"
+   },
+   {
+    "citation": "Wiesler 2026, ORC on directed graphs, arXiv 2604.14211",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2604.14211",
+    "correct_details": "Eleanor P Wiesler 单作者学位论文，math.DG；v2 2026-08-24",
+    "note": "以综述为主，摘要声称有有向图推广，摘要中没有 MDP。Ollivier 2007/2009 已经能覆盖 Markov 核，格 12 不必依赖这篇。"
+   },
+   {
+    "citation": "HHD-GP, Xu & Pan, NeurIPS 2024",
+    "status": "confirmed",
+    "url": "https://nips.cc/virtual/2024/poster/95052",
+    "correct_details": "Hao Xu, Jia Pan；NeurIPS 2024 poster",
+    "note": "摘要只说对称先验“使模型可辨识”，没说先验是必需的。第一轮写成“需要”，措辞偏强。"
+   },
+   {
+    "citation": "ddHodge, Maehara & Ohkawa, Nature Communications 2025",
+    "status": "confirmed",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12749697",
+    "correct_details": "Nat Commun 16:11342，2025-12-29，DOI 10.1038/s41467-025-67782-6",
+    "note": "梯度分量 88.2%，循环分量 11.7%；FUCCI 对照的循环分量为 49.0%。作者自承 curl 没有严格重建；几何用局部切片加 sheaf Laplacian，没有 Fisher 度量。"
+   },
+   {
+    "citation": "Velde, Jia & Chen, arXiv 2311.10403",
+    "status": "details_differ",
+    "url": "https://arxiv.org/abs/2311.10403",
+    "correct_details": "仅 arXiv 预印本（v1 2023-11-17，q-bio.QM），没有期刊记录",
+    "note": "第一轮提到的 Nature Communications 2025 找不到依据，很可能与 ddHodge 混淆了。"
+   },
+   {
+    "citation": "Wasserstein Residuals, Heinonen et al., arXiv 2607.04738",
+    "status": "confirmed",
+    "url": "https://neurips.cc/virtual/2026/poster/149651",
+    "correct_details": "NeurIPS 2026 poster（track 未标）；另有 ICML 2026 SPIGM workshop poster",
+    "note": "残差只当训练目标用，没有当“是否梯度流”的诊断。"
+   },
+   {
+    "citation": "Conjugate Natural Selection, arXiv 2208.13898",
+    "status": "details_differ",
+    "url": "https://arxiv.org/abs/2208.13898",
+    "correct_details": "作者顺序 Raab, de Alfaro, Liu；v4 2023-06-12；无 venue",
+    "note": "cells.yaml 写作 de Alfaro et al.，应改。natural deviation 在正文 Def. 8，即 Fisher（Shahshahani）加权误差；Lemma 10 的 Hessian 等于 Fisher，凸性是对速度而言。摘要中没有这个词。未找到后续工作。"
+   },
+   {
+    "citation": "Jin Wang 2015 Advances in Physics review（第一轮凭记忆）",
+    "status": "unverifiable",
+    "url": "https://www.tandfonline.com/doi/abs/10.1080/00018732.2015.1037068",
+    "correct_details": "Landscape and flux theory of non-equilibrium dynamical systems with application to biology，DOI 10.1080/00018732.2015.1037068",
+    "note": "存在性与摘要内容只见于搜索片段；出版社页 403，x-mol 页面是空壳。"
+   }
+  ],
+  "grade_updates": [
+   {
+    "cell": 6,
+    "old_grade": "B",
+    "new_grade": "B（不变）",
+    "reason": "四组精确短语（parallel transport/holonomy 与 world model/latent dynamics 搭配）加 HF 语义检索，都没有找到学到的联络或和乐被用来探测隐状态的世界模型工作。HCDP 附录 G.2 自己把连续理论划出范围。新近邻只是工具（Sevetlidis ICLR 2026）和离散经典（Rivest-Schapire、Holmes-Isbell）。"
+   },
+   {
+    "cell": 12,
+    "old_grade": "A-",
+    "new_grade": "A-（不变）",
+    "reason": "三次 WebSearch 加 HF 检索都没有找到 Saheb Pasand 一线的 2026 正式版，也没有找到曲率做子目标的工作。但 Liang 2026 的谱瓶颈子目标已经很强，SR 与 WM 之间的差异点也偏弱，只剩分析型贡献。"
+   },
+   {
+    "cell": 2,
+    "old_grade": "B+",
+    "new_grade": "A-（命题层）/ B+（方法层）",
+    "reason": "命题层：Legacci 2024 已在 Shahshahani 度量下给出势/调和分解与回归性，加上 Harper 2009 的对称收益为梯度，replicator 的三个预测都成了定理；Wang 2012 发表了演化等于梯度加 curl。方法层：学线性 F 有 MPL 先例，W 度量版有 Wasserstein Residuals；Fisher 残差加旋度作为世界模型诊断仍然是空的。"
+   }
+  ],
+  "must_updates": [
+   {
+    "cell": 6,
+    "proposal": "对照组改正：Delliaux 不能当“必然把和乐压成零”的对照。必然为零的对照应用 WLA 式阿贝尔线性作用，或自建状态无关增量 z' = z + δ_a 的消融；它在交换子环路上必然失败，这是 HCDP Thm 6.4/Cor 6.5 的直接推论。Delliaux 保留为中间对照。",
+    "reason": "Delliaux 的转移依赖状态，也没有阿贝尔假设；WLA 有明文的阿贝尔假设。"
+   },
+   {
+    "cell": 6,
+    "proposal": "把“被动 vs 主动”改为数据是否覆盖可区分环路，分三档：被动且不覆盖、被动但覆盖、主动或 reset。可以用 homing sequence（Rivest-Schapire 1993）代替真 reset。",
+    "reason": "Thm 4.2 的构造依赖 behavior policy 漏掉可区分动作。小网格里的随机游走会覆盖开关环路，原预测可能被“证伪”，但这并不与定理矛盾。"
+   },
+   {
+    "cell": 6,
+    "proposal": "和乐量必须对潜空间重参数化不变。可选做法：线性化和乐的谱或迹；观测层探针差异（即 HCDP 的 diagnostic fingerprint）；Sevetlidis-Pavlidis 的 gauge 固定估计器。Wang & Wang 的估计器降为次要参照。",
+    "reason": "‖T_loop - I‖ 在共轭变换 φTφ^-1 下会变，违反跨格原则 (2)。"
+   },
+   {
+    "cell": 12,
+    "proposal": "把 SR 行算出的 ORC（Saheb Pasand 的做法）列为基线，并说明 WM 版多出什么：动作条件曲率、连续域地标、对未访问区域的泛化。",
+    "reason": "SR 本身就是学到的折扣多步转移模型，“WM 预测而非经验计数”不是干净的差异点。"
+   },
+   {
+    "cell": 12,
+    "proposal": "去掉对 Wiesler 2026 的依赖，直接对 WM 预测的转移核算 Ollivier 曲率；预注册基础度量。有向最短路是 quasimetric，可与格 8 合并。",
+    "reason": "Ollivier 的 Markov 链曲率已经覆盖非对称转移核。"
+   },
+   {
+    "cell": 12,
+    "proposal": "分层规划部分必须打平或超过 Liang 2026 的谱瓶颈子目标；基线加 Bar-Talmon-Meir 2020 与 G2QDR。动用 Saheb Pasand 一文的结论前，先人工打开 PDF 复核其增益大小。",
+    "reason": "Liang 2026 在 AntMaze 达到 96.5% 且带理论保证；Saheb Pasand 一文的增益，第一轮与 Mila 摘要的口径相反。"
+   },
+   {
+    "cell": 2,
+    "proposal": "kill test 改成度量归因：在同一批轨迹上对比 Fisher 度量的 Hodge 分解与欧氏 HHD。预测：对一般对称收益，欧氏版会报出假旋度，Fisher 版约为 0；如果欧氏版同样好，格 2 判死。三世界测试降级为估计器校准。",
+    "reason": "数值核对：A=[[0,1,0],[1,0,0],[0,0,0]] 时欧氏旋度 0.069，Shahshahani 约 1e-12；A=I 时两者都为 0，所以要选一般收益矩阵。"
+   },
+   {
+    "cell": 2,
+    "proposal": "带突变的世界要指定突变矩阵。均匀突变 μ(1/n - x) 正是 (μ/n)Σlog x 的 Shahshahani 梯度，加上对称选择后旋度仍为 0。连续梯子改用循环突变（旋度随 μ 线性增长）或 RPS 加突变（旋度比随 μ 下降）。",
+    "reason": "解析推导加数值核对（循环突变：μ=0.05 时旋度 0.59，μ=0.1 时 1.17）。"
+   },
+   {
+    "cell": 2,
+    "proposal": "两个不变量合并为一个：标量势约束下 natural deviation 的最优值，就是 L²(μ, Fisher) 下投影到梯度场后的残差。需预注册状态测度 μ 和分解口径（Hodge / Wang HJ / natural deviation）。F 必须限制为标量势：fitness 若可任意依赖频率，任何内部动力学都是 replicator，natural deviation 恒可为 0。",
+    "reason": "CNS Def. 8 的 tabular 情形。"
+   },
+   {
+    "cell": 2,
+    "proposal": "学 F 这一步以 MPL 为基线，新意放在非线性 F、旋度残差、部分可观测和有限 N 噪声下的稳健性。叙事上定位为 Wasserstein Residuals 的 Fisher-Rao 对应物，并引用 Wang 2012 与 Legacci 2024。同时改正引用：CNS 作者顺序、Velde 仅为预印本、Wasserstein Residuals 的 venue 为 NeurIPS 2026。",
+    "reason": "MPL 是线性 F 时的闭式特例；其余为本轮引用核对结果。"
+   }
+  ],
+  "searches_executed": [
+   "[std] \"parallel transport\" \"world model\" latent dynamics learned connection",
+   "[std] \"holonomy\" \"world model\" reinforcement learning hidden state",
+   "[std] holonomy POMDP partial observability detect hidden state loop actions",
+   "[std] non-commutative actions latent world model non-abelian Lie group transitions 2026",
+   "[std] \"Riemannian RSSM\" OR \"Riemannian world model\" OR \"latent-riemannian-world\"",
+   "[std] commutator of learned latent action operators detects partial observability hidden variable world model",
+   "[ext] learned latent connection holonomy around action loops as signal of hidden state or memory in world models arXiv 2026",
+   "[std] \"parallel transport\" \"latent dynamics\" learned connection neural sequence model holonomy",
+   "[std] Rivest Schapire homing sequences inference of finite automata",
+   "[std] Sinitsyn Nemenman Berry phase pump stochastic kinetics",
+   "[std] Ollivier-Ricci curvature \"successor representation\" reinforcement learning exploration bonus",
+   "[std] Saheb Pasand Castro Bashivan Ricci curvature RL 2026",
+   "[std] graph Ricci curvature option/subgoal discovery bottleneck states RL",
+   "[ext] Ricci curvature reinforcement learning state graph exploration intrinsic reward 2026 arXiv",
+   "[std] Forman Ricci curvature MDP transition graph planning landmarks hierarchical",
+   "[ext] curvature-driven intrinsic reward Ollivier-Ricci successor representation Castro 2026",
+   "[std] Jin Wang landscape and flux theory review Advances in Physics",
+   "[std] Jin Wang landscape flux Fisher information OR information geometry",
+   "[std] potential and flux landscape theory of evolution / replicator Wright-Fisher curl flux",
+   "[std] Ramstead On Bayesian mechanics 2023 Interface Focus",
+   "[std] Da Costa Bayesian mechanics for stationary processes Helmholtz information geometry",
+   "[std] Conjugate Natural Selection natural deviation follow-up",
+   "[std] Legacci Mertikopoulos Pradelski geometric decomposition of finite games",
+   "[std] learning fitness landscape from frequency time series Shahshahani inverse problem",
+   "[std] learning Fisher-Rao gradient flow from data energy potential population snapshots",
+   "[std] marginal path likelihood selection coefficients Wright-Fisher Barton",
+   "[std] ddHodge Maehara Ohkawa Nature Communications",
+   "[std] Velde Jia Chen journal published",
+   "[std] Wasserstein Residuals Heinonen ICML OR NeurIPS 2026",
+   "HF papers 语义检索共 13 次：holonomy/POMDP、parallel transport WM、non-commutative latent actions、ORC exploration、Ricci subgoal、Saheb Pasand 标题、FR gradient flow from data、HHD Fisher、Bayesian mechanics IG、natural deviation、Shahshahani Hodge games、curvature HRL WM、landscape flux"
+  ],
+  "coverage_confidence": "格 6：中高。精确短语检索和 HF 语义检索都没有命中；HCDP 自己把连续理论划出了范围。\n格 12：中高（就是否已有 2026 正式版而言，答案是未见）；离散曲率在 RL 之外的新应用没有系统查，那部分为中。\n格 2：中高。博弈几何分解、landscape-flux、群体遗传选择推断三处盲区已补；但 JCP 2012 和 Adv Phys 2015 的全文没能打开。\nWebSearch 共用 29 次。",
+  "summary": "这一轮最大的变化在格 2；格 6 和格 12 都没有新的撞车，但实验设计各有要改的地方。所有文件都没有改动。\n\n**格 6（联络 / 和乐）：维持 B。**\n- 精确短语检索和 HF 检索都没有找到“学到的联络或和乐被用来探测隐状态”的世界模型工作。HCDP 附录 G.2 自己写明连续理论不在范围内，这可以直接当空位证据。\n- HCDP“被动日志不可辨识”的主张在正文 Thm 4.2，不在摘要里。它的构造依赖采数据的策略漏掉某个可区分动作，所以 kill test 里要操纵的变量应该是“数据有没有覆盖那些环路”，而不是“被动还是主动”。否则小网格上随机游走的被动数据可能直接成功，结果难以解读。\n- Delliaux 那篇并没有假设动作可交换，而且它的转移依赖当前状态，所以不能当“必然把和乐压成零”的对照。WLA 才是明文假设阿贝尔群的。\n- 和乐量 ‖T_loop − I‖ 会随潜空间的坐标变换而变，需要换成不随坐标变的统计量，或者借用 Sevetlidis & Pavlidis（ICLR 2026）的估计器。\n- 相关工作里补上经典根源：Rivest–Schapire 1993（用 homing sequence 代替 reset）和 Holmes–Isbell 2006。\n\n**格 12（离散曲率）：维持 A−。**\n- 截至 2026-11-03 没有找到 Saheb Pasand、Castro、Bashivan 那篇 workshop 论文的正式版。\n- 这篇 workshop 论文的 OpenReview PDF 打不开。第一轮写的“增益小”，和 Mila 页面摘要的说法（明显优于随机和 count-based 基线）相反，引用前需要人工打开 PDF 复核。\n- 他们用的 successor representation（SR）本身就是一个学到的多步转移模型，所以“由世界模型预测曲率、而非经验计数”这个差异点偏弱。\n- Liang 2026 用 Laplacian 谱找瓶颈子目标，AntMaze 已到 96.5%，并且有理论保证。格 12 的分层规划部分必须打平或超过它。\n- 有向转移核直接用 Ollivier 原始的 Markov 链曲率就行，不必依赖 Wiesler 2026。\n\n**格 2（自然梯度流）：B+ 改为命题层 A− / 方法层 B+。**\n- Legacci、Mertikopoulos、Pradelski（ICML 2024）已经在 Shahshahani（即 Fisher）度量下给出博弈动力学的势 / 调和分解，并证明调和类博弈的动力学会回归。Wang 组 2012 年也发表了“演化 = 势景观梯度 + 旋转通量”。所以 replicator 世界上的三条预测已是定理，wright_fisher 那个 kill test 杀不死这个想法，只能用来校准估计器。\n- MPL（Nature Biotechnology 2021）是“用 Wright–Fisher 协方差加权拟合线性势 F”的闭式解，等于 natural deviation 损失在线性 F 时的特例，应当作基线。\n- 我自己推导并做了数值核对：\n  - 均匀突变恰好是 Shahshahani 梯度，所以“带突变的 replicator 落在纯选择和 RPS 之间”这条预测不成立；循环突变的旋度则随突变率线性增长。\n  - 对一般的对称收益矩阵，欧氏 Hodge 分解会报出假旋度，而 Fisher 版约为 0。\n- 由此建议把 kill test 改成：同一批轨迹上对比 Fisher 版与欧氏版 Hodge 分解，欧氏版同样好就判死。\n- “旋度比”和“natural deviation 最优值”其实是同一个量，需要预注册在哪个状态分布上取平均。\n\n**引用核对需要改的地方：**\n- Conjugate Natural Selection 的第一作者是 Raab，cells.yaml 和 HANDOFF 写成了 de Alfaro et al.；natural deviation 的定义在正文 Def. 8，已确认。\n- Velde 只是 arXiv 预印本，没有 Nature Communications 记录。\n- Wasserstein Residuals 是 NeurIPS 2026 poster，另有 ICML 2026 workshop 版。\n- ddHodge 是 Nature Communications 16:11342（2025-12-29），梯度分量占 88.2%。\n- 美国专利 12651010 属于 Atombeam Technologies，发明人 Brian Galvin，2026-06-09 授权。\n- 其余引用均已确认。Jin Wang 2015 年的综述只在搜索摘要里见到，出版社页面打不开，记为未核实。\n\n数值核对脚本：\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/checks/curl_check.py\n- /tmp/claude-0/-home-user/8bc92419-2f30-547d-8b18-8324b70c6f75/scratchpad/checks/curl_check2.py"
+ },
+ {
+  "cells": [
+   3,
+   15
+  ],
+  "new_papers": [
+   {
+    "title": "LeHami: Symplectic Latent Dynamics for World Models",
+    "url": "https://arxiv.org/abs/2610.15267",
+    "cells": [
+     15
+    ],
+    "closeness": "高：第一轮之后出现的最近邻，是本格升到 B+ 的主因",
+    "what_they_did": "把 JEPA 世界模型的预测器换成动作条件 Hamiltonian 流，用 leapfrog 积分（辛、保体积）。§3.2 用一步预测器 Jacobian 的累积量 (1/n)Σlog|det J(z_i)|（K 步 rollout）作为“相体积变化”诊断，App. B 点名 Liouville。在保守与驱动的 64×64 视觉单摆上，LeHami 保持 0，LeWM 基线收缩。App. C.4 论证（无证明）：收缩的数据无法被同维辛映射拟合，补维会逼出指数发散的非物理潜变量。原文：“Because both systems studied in this work preserve volume, we leave dissipative modeling to future work”，并提出 port-Hamiltonian 扩展。（HTML 全文已核）",
+    "implication": "推翻第一轮“2026 年 Hamiltonian WM 都不碰相体积”的说法。“量潜相体积”的仪器已由高曝光组发表，耗散版也已预告，有被抢先的风险。无约束预测器在保守世界里会虚假收缩，这是本格读耗散之前必须先控制的混淆。累积 log|det J| 在长 rollout 下对重参数化渐近不变（边界项伸缩抵消，属标准恒等式），可直接借来做“不变量”版本。",
+    "verified": true,
+    "authors": "Romina Yalovetzky, Randall Balestriero, Yann LeCun",
+    "venue": "arXiv preprint (cs.LG), 2026-10-11",
+    "year": "2026"
+   },
+   {
+    "title": "PH-Dreamer: A Physics-Driven World Model via Port-Hamiltonian Generative Dynamics",
+    "url": "https://arxiv.org/abs/2605.18303",
+    "cells": [
+     15
+    ],
+    "closeness": "中高",
+    "what_they_did": "Dreamer 式 RSSM 加 port-Hamiltonian 转移。§3.2 学状态依赖的正对角阻尼 D，耗散功率 q̇ᵀDq̇ 可逐状态计算，但没有画成图。用 DMC 六任务，与 DreamerV3、R2Dreamer 等比较。§4.3 用“基于 PCA 的 Log Phase Volume”，把潜相体积降低 4.18–8.41% 当作优点（“更紧凑的 PH 相空间”）。全文不提 Liouville，也不算潜向量场散度。（HTML 全文已核）",
+    "implication": "这是第二篇量潜相体积的世界模型，读法与 LeHami 相反（PH-Dreamer：越小越好；LeHami：保守数据上收缩是错的），两者都不声明体积形式。说明“潜体积”在这个领域没有标定，这正是本格的位置；但“测潜相体积”本身已不新。",
+    "verified": true,
+    "authors": "Xueyu Luan, Chenwei Shi",
+    "venue": "arXiv preprint, 2026-05-18",
+    "year": "2026"
+   },
+   {
+    "title": "Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State (H-JEPA)",
+    "url": "https://arxiv.org/abs/2609.33497",
+    "cells": [
+     15
+    ],
+    "closeness": "中",
+    "what_they_did": "JEPA 宽感知码加 Bures–Wasserstein 先验；取一个固定正交切片作为控制态，按相位条件化的耗散 port-Hamiltonian 动力学演化；提出 port-inverse consistency。在四个像素控制基准（含 PushT、OGB-Cube，91.9% vs 79.3%）上评测。摘要不报告任何耗散、体积或散度量。",
+    "implication": "耗散 pH 预测器放进 JEPA 世界模型已有先例（LeHami 称其为最接近的设定）。若用 pH 结构做对照组，应以它为基线。",
+    "verified": true,
+    "authors": "Tamim Zoabi, Ameen Ali, Lior Wolf",
+    "venue": "arXiv preprint, 2026-09-27",
+    "year": "2026"
+   },
+   {
+    "title": "When Do Conservation Laws Survive Learned Representations? Certified Horizons for Latent World Models",
+    "url": "https://arxiv.org/abs/2606.24945",
+    "cells": [
+     15
+    ],
+    "closeness": "中",
+    "what_they_did": "提出“certified horizon”：从可测的表示缺陷、读出缺陷和潜动力学缺陷，预先算出 rollout 能在不变量水平集上停留多少步。关键选择是认证解码后的物理不变量，而不是学到的潜 Hamiltonian（模型可以守恒潜量而真实能量漂移）。硬辛结构在已知坐标下视界最长，但跨不过学到的 chart。只做保守系统。",
+    "implication": "直接支持本格的体积形式选择：散度应在解码后的物理坐标（声明的 μ）下计算。它与 2606.13092 一起，构成第一轮漏掉的“世界模型不变量认证”小纲领（与 U 相关）。",
+    "verified": true,
+    "authors": "Hongbo Wang",
+    "venue": "arXiv preprint, v1 2026-06-23, v2 2026-07-02",
+    "year": "2026"
+   },
+   {
+    "title": "Localizing entropy production along non-equilibrium trajectories",
+    "url": "https://arxiv.org/abs/2503.20427",
+    "cells": [
+     15
+    ],
+    "closeness": "中（随机热力学侧）",
+    "what_they_did": "短时 TUR 推断加深度网络，重建高维、可含时的耗散力场，再沿非平衡轨迹在时空中定位涨落熵产生。",
+    "implication": "“从学到的模型给出耗散发生在哪里”在随机侧已成熟（加上 Zhu 2025、Boffi & Vanden-Eijnden 2024 共三篇）。本格不能以“耗散地图”本身立新，只能押确定性潜流的 div_μ f、世界模型设定和解析真值。",
+    "verified": true,
+    "authors": "Biswajit Das, Sreekanth K Manikandan",
+    "venue": "Communications Physics (2026), DOI 10.1038/s42005-026-02667-8",
+    "year": "2026"
+   },
+   {
+    "title": "Model-free learning of probability flows: Elucidating the nonequilibrium dynamics of flocking",
+    "url": "https://arxiv.org/abs/2411.14317",
+    "cells": [
+     15
+    ],
+    "closeness": "中低",
+    "what_they_did": "从随机轨迹直接学概率流，给出两种局部 EPR，显示熵在鸟群界面上产生和消耗，摘要原话是“direct visualization of when and where a given system is out of equilibrium”。",
+    "implication": "同上，是随机侧局部耗散图的先例。",
+    "verified": true,
+    "authors": "Nicholas M. Boffi, Eric Vanden-Eijnden",
+    "venue": "arXiv preprint",
+    "year": "2024"
+   },
+   {
+    "title": "A Path-Space Formulation of Prediction in World Models: From a Single Action to Prediction, Planning, and Irreversibility",
+    "url": "https://arxiv.org/abs/2606.28751",
+    "cells": [
+     15,
+     8
+    ],
+    "closeness": "中（审计已在 Cell 8 列出，Cell 15 未列）",
+    "what_they_did": "把世界模型看成未来路径测度（局部为 Onsager–Machlup 形式），潜动力学分成可逆与不可逆两部分，从 rollout 定义熵产生；注意力的反对称部分驱动不可逆漂移。",
+    "implication": "交叉列入 Cell 15 的 nearest。它不涉及相体积或散度。",
+    "verified": true,
+    "authors": "Gunn Kim",
+    "venue": "arXiv preprint, 2026-06-27",
+    "year": "2026"
+   },
+   {
+    "title": "ODEWorld: A Continuous Predictive Architecture via Physical-Time Flow",
+    "url": "https://arxiv.org/abs/2607.27924",
+    "cells": [
+     15
+    ],
+    "closeness": "低",
+    "what_they_did": "在物理时间里学连续潜速度场，用 ODE 积分做视频生成和机器人控制；对表示空间和速度场施加“ODE 性质”以对抗表示塌缩。摘要没有说这些性质是什么，也没有提散度或体积。",
+    "implication": "可作为“有连续潜向量场、散度可直接计算”的宿主架构或出口候选。NeurIPS 2026 的身份只见于搜索结果（neurips.cc 页面未打开），arXiv 页不写会议。",
+    "verified": true,
+    "authors": "Dongxiu Liu, Haoyi Niu, Peng Cheng, Yuan Gao, Xirui Kang, Sangli Teng, Koushil Sreenath, Xianyuan Zhan",
+    "venue": "arXiv preprint (v3 2026-08-14)",
+    "year": "2026"
+   },
+   {
+    "title": "Energy-Structured Latent World Models with Neural Time Fields for Physically Constistent Open-World Motion Planning",
+    "url": "https://arxiv.org/abs/2608.09876",
+    "cells": [
+     15
+    ],
+    "closeness": "低",
+    "what_they_did": "潜态显式携带能量与动量，转移经过耗散与控制端口（port-Hamiltonian 式），再配 Eikonal 到达时间场做导航规划。摘要不报告体积、散度或耗散图。",
+    "implication": "耗散 pH 潜世界模型的又一例，不撞本格的主张。",
+    "verified": true,
+    "authors": "Yapeng Liu, Yuanzhao Zhai, Bo Ding, Huaimin Wang, Lin Wang",
+    "venue": "arXiv preprint, 2026-08-10",
+    "year": "2026"
+   },
+   {
+    "title": "Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction (HamJEPA)",
+    "url": "https://arxiv.org/abs/2605.20107",
+    "cells": [
+     15
+    ],
+    "closeness": "低",
+    "what_they_did": "把每个视图编码成相空间态 (q,p)，用学到的 Hamiltonian leapfrog 映射预测视图之间的变换，做 CIFAR-100 / ImageNet-100 自监督表示。",
+    "implication": "是 SSL 图像表示，不是动力学世界模型，不撞车。",
+    "verified": true,
+    "authors": "Robert Jenkinson Alvarez",
+    "venue": "arXiv preprint (v2 2026-10-31)",
+    "year": "2026"
+   },
+   {
+    "title": "Using Dynamical Systems Theory to Quantify Complexity in Asymptotic Lenia",
+    "url": "https://ar5iv.labs.arxiv.org/html/2508.02935",
+    "cells": [
+     3,
+     15
+    ],
+    "closeness": "低",
+    "what_they_did": "（只见搜索摘要）用吸引子、Lyapunov 指数、分形维数分析 asymptotic Lenia 的 PDE 形式。",
+    "implication": "可能为 Lenia 提供 Lyapunov 谱参考值（谱之和 = 平均散度）。页面未打开，按未核实处理。",
+    "verified": false,
+    "authors": "Yevenko（据搜索摘要）",
+    "venue": "arXiv 2508.02935（未核实）",
+    "year": "2025"
+   },
+   {
+    "title": "Branched Schrödinger Bridge Matching (BranchSBM)",
+    "url": "https://arxiv.org/abs/2506.09007",
+    "cells": [
+     3
+    ],
+    "closeness": "中",
+    "what_they_did": "从共同起点到多个终点分布做分支 SB matching，参数化多个时变速度场和生长过程；应用于细胞命运分岔和扰动响应分化。",
+    "implication": "Cell 3 的“分裂”类过程已有单细胞先例，而且是显式按分支分解。δ-谱区分分裂的预测需要与它对照，至少要引用。",
+    "verified": true,
+    "authors": "Sophia Tang, Yinuo Zhang, Alexander Tong, Pranam Chatterjee",
+    "venue": "ICLR 2026 (arXiv comments)",
+    "year": "2026"
+   },
+   {
+    "title": "Cellular Automata on Probability Measures (CAMs)",
+    "url": "https://arxiv.org/abs/2503.15086",
+    "cells": [
+     3
+    ],
+    "closeness": "远（C）",
+    "what_they_did": "每个格子的状态是一个概率测度；配置空间距离由每格的 Monge–Kantorovich 距离构成（全文式 1、定义 1，PDF 已 grep 核实）；用于随机图动力学。ALIFE 2026 程序册里有同组报告 “Random Graph Dynamics using Cellular Automata on Probability Measures”（La Torre, Formenti, Kunze）。",
+    "implication": "这是“CA + Wasserstein/MK”的唯一命中，但 MK 只用来给状态空间定拓扑，不是空间质量搬运分析。不改变“Lenia/CA 的 OT 动力学分析为零”的结论，related work 里一句带过即可。",
+    "verified": true,
+    "authors": "Enrico Formenti, Faizal Hafiz, Amelia Kunze, Davide La Torre",
+    "venue": "arXiv (nlin.CG), 2025-03-19",
+    "year": "2025"
+   },
+   {
+    "title": "Projected Wasserstein-Fisher-Rao Flows for Hawkes Background-Intensity Estimation",
+    "url": "https://arxiv.org/abs/2610.19588",
+    "cells": [
+     3
+    ],
+    "closeness": "低",
+    "what_they_did": "用 WFR 几何对 Hawkes 过程的背景强度（未知正测度）做似然变分估计，给出一致性结果和高斯混合的有限维算法。",
+    "implication": "本轮找到的唯一 2026 下半年 WFR 新作，与动力学归因无关；方法层没有新撞车。",
+    "verified": true,
+    "authors": "Isaias Banales, Arturo Jaramillo",
+    "venue": "arXiv preprint, 2026-10-14",
+    "year": "2026"
+   },
+   {
+    "title": "Globally Solving Unbalanced Optimal Transport and Density Control for Gaussian Distributions",
+    "url": "https://arxiv.org/abs/2605.04246",
+    "cells": [
+     3
+    ],
+    "closeness": "低",
+    "what_they_did": "二次代价加 KL 边际罚的 Gaussian UOT 可精确化为质量、均值、协方差上的有限维问题，最优搬运质量有闭式；动态版（UDC）用 SDP 加闭式质量更新。",
+    "implication": "它是 KL 罚的 UOT，不是 WFR；但可能可以做 δ-谱的解析参考或平凡基线工具，前提是先确认它与 WFR 的对应关系。",
+    "verified": true,
+    "authors": "Haruto Nakashima, Siddhartha Ganguly, Kenji Kashima",
+    "venue": "arXiv (math.OC), 2026-05-05",
+    "year": "2026"
+   },
+   {
+    "title": "FluidWorld: Reaction-Diffusion Dynamics as a Predictive Substrate for World Models",
+    "url": "https://arxiv.org/abs/2603.21315",
+    "cells": [
+     3
+    ],
+    "closeness": "低–中（只针对“世界模型方向”）",
+    "what_they_did": "用反应-扩散 PDE 积分代替注意力作为世界模型预测器（UCF-101 64×64，约 800K 参数，对比 Transformer 和 ConvLSTM）。摘要没有把搬运项和反应项分开，也没有 OT 或质量守恒。",
+    "implication": "“反应-扩散当世界模型底座”已有单作者先例。本格“搬运头 + 改权头”的世界模型方向要引用并区分：本格的读出是比值和归因，不是预测质量。",
+    "verified": true,
+    "authors": "Fabien Polly",
+    "venue": "arXiv preprint, 2026-03-22",
+    "year": "2026"
+   },
+   {
+    "title": "ALIFE 2026 programme (ver. 2026-06-30) — e.g. 'Mass Conservation as an Inductive Bias for Self-Organized Criticality in NCA Reservoirs' (Guichard, Nichele, Pontes-Filho, Zhang)",
+    "url": "https://2026.alife.org/wp-content/uploads/sites/2/2026/06/ALIFE2026-Program-Ver-2026-06-30.pdf",
+    "cells": [
+     3
+    ],
+    "closeness": "低",
+    "what_they_did": "下载程序册全文 grep（Waterloo，2026-08-17 至 21）。CA/Lenia 相关条目有：质量守恒 NCA 储备池；Lenia 函数族、几何、表达式的系统搜索（Zhe Hong, Mingyang Song，poster）；Lenia 中的 agent（Hartl, Petti, Cool, Levin）；CA on probability measures（La Torre 等）；Emergent Models（Guichard 等）。没有任何含 transport / Wasserstein / optimal transport 的标题。",
+    "implication": "第一轮的盲区（ALIFE 2026）已补，无撞车。未覆盖 late-breaking posters 和 workshop 摘要。论文内容未读，只核了标题和作者。",
+    "verified": true,
+    "authors": "various",
+    "venue": "ALIFE 2026 (MIT Press proceedings)",
+    "year": "2026"
+   },
+   {
+    "title": "World Model Interpretability: From Decoding Representations to Understanding Latent Worlds",
+    "url": "https://arxiv.org/abs/2610.25296",
+    "cells": [],
+    "closeness": "中（U：伞状议程的近似物）",
+    "what_they_did": "Perspective 文：JEPA 潜世界的可解释性应从“解码表示”转向研究变量如何交互、演化、因果驱动预测；提出 Ground / Structure / Verify / Act 四阶段议程。",
+    "implication": "[U] 2026-09 以来唯一新的“潜世界结构”研究议程，没有几何不变量。可作定位参照：本计划的不变量地图可以写成其 Structure/Verify 阶段的几何特例。不撞车。",
+    "verified": true,
+    "authors": "Jize Wang, Yongcheng Jing, Xinyi Le, Cailian Chen, Xinping Guan, Dacheng Tao",
+    "venue": "arXiv preprint, 2026-10-18",
+    "year": "2026"
+   },
+   {
+    "title": "Anatomical Review of Geometric Deep Learning for World Models: Ontological and Epistemological Verticals, Comparative Analysis of Contemporary Architectures, and Ideation Pathways",
+    "url": "https://zenodo.org/records/22990459",
+    "cells": [],
+    "closeness": "低（U：命名）",
+    "what_they_did": "未经同行评议的评论文（24.6 kB PDF），评的是 Patrick R. Nicolas 的 Substack 文章 “The Geometric Future of World Models”。论点是 GDL（对称、等变、流形约束、拓扑不变量、Hamiltonian/Lagrangian 偏置）可以补世界模型的短板，并与 Dreamer、JEPA、Genie、PINN 等比较。没有可测不变量的纲领，不提信息几何或 OT。",
+    "implication": "[U] “geometric world models”在 GDL 语义下又多一处占用。Substack 原文本轮搜不到。",
+    "verified": true,
+    "authors": "Syed Muntasir Mamun",
+    "venue": "Zenodo, DOI 10.5281/zenodo.22990459（publication date 2026-08-18；record created 2026-09-27）",
+    "year": "2026"
+   },
+   {
+    "title": "Four Principles for Physically Interpretable World Models",
+    "url": "https://arxiv.org/abs/2503.02143",
+    "cells": [],
+    "closeness": "中低（U：部分伞，第一轮漏检）",
+    "what_they_did": "四条原则：按物理意图组织潜空间；学对齐的不变 / 等变表示；把多种监督放进同一训练过程；分割生成输出以便扩展和验证。",
+    "implication": "[U] 与 Cui & Ma、Kori & Russo、Thorpe 等同属部分伞，同样没有“可测不变量 + 真值”这一层。",
+    "verified": true,
+    "authors": "Jordan Peper, Zhenjiang Mao, Yuang Geng, Siyuan Pan, Ivan Ruchkin",
+    "venue": "arXiv preprint (v2 2025-06)",
+    "year": "2025"
+   },
+   {
+    "title": "Robot World Models Are Not Invariant to How the Actions Are Written",
+    "url": "https://arxiv.org/abs/2609.23252",
+    "cells": [],
+    "closeness": "低（U；对 Cell 14 更相关）",
+    "what_they_did": "同一轨迹改用另一种动作参数化（绝对目标 vs 增量）后，潜世界模型检索退化 2.6–13.4 倍；提出区分“合法重参数化”与“有损摘要”的测试，它否决了作者自己提出的 4 个轴中的 3 个。",
+    "implication": "[U] “世界模型的不变性要认证而不是假设”的又一例。",
+    "verified": true,
+    "authors": "Ahmed Karim, Leon Chlon",
+    "venue": "arXiv preprint, 2026-09-19",
+    "year": "2026"
+   },
+   {
+    "title": "OPINE-World: Programmatic World Modeling with Ontology-error-Prioritized Interactive Exploration for ARC-AGI-3（另：Rodionov, Executable World Models for ARC-AGI-3 in the Era of Coding Agents, https://arxiv.org/html/2605.05138）",
+    "url": "https://www.alphaxiv.org/abs/2607.01531",
+    "cells": [],
+    "closeness": "低（U：AWM 的前驱或竞品，不是跟进）",
+    "what_they_did": "（只见搜索摘要）在 ARC-AGI-3 上做程序化 / 可执行世界模型：OPINE-World 无逐游戏训练解 20/25 款；Rodionov 完全解决 7 款，公开集平均 RHAE 32.58%。",
+    "implication": "[U] AWM 所在赛道已有多篇程序世界模型，AWM 的独特处在 Lean 证明不可能性。两篇页面均未打开，按未核实处理。",
+    "verified": false,
+    "authors": "(unverified)",
+    "venue": "arXiv 2607.01531 / 2605.05138（未核实）",
+    "year": "2026"
+   }
+  ],
+  "citation_checks": [
+   {
+    "citation": "UPFI — Zhang et al., NeurIPS 2025, arXiv 2505.13197；主张“(v, r) 分解不可辨识，需 WFR 能量正则”",
+    "status": "details_differ",
+    "correct_details": "Stephen Zhang, Suryanarayana Maddu, Xiaojie Qiu, Victor Chardès；arXiv 评论写 NeurIPS 2025；v3 2026-02-03。摘要不提不可辨识或 WFR，主张只在全文第 2 节。Cor. 2.2：OU 加二次 fitness 与另一 OU（漂移平移、含时二次 fitness）不可区分，强制 autonomous drift 也成立；Fig. 2 是 8 维 OU 例子。正则 ∫(‖v_t‖²+α|g_t|²)dρ_t dt，原文“we opt for the Wasserstein-Fisher-Rao energy function as a natural choice”，作用是“at least … a unique solution”。Thm 2.3 只在线性-二次情形、ε→0、Δt→0 极限下证明唯一性。",
+    "note": "第一轮写的“承认非线性情形的辨识性仍未解决”在原文里找不到明确陈述，属过度转述；“需 WFR 正则”应改为“选 WFR 能量作为自然的正则之一”。α 起 δ² 的作用，δ-谱的设计依然成立。",
+    "url": "https://arxiv.org/html/2505.13197v3"
+   },
+   {
+    "citation": "WFR-FM — Peng et al., ICLR 2026, arXiv 2601.06810",
+    "status": "confirmed",
+    "correct_details": "Qiangwei Peng, Zihan Wang, Junda Ying, Yuhao Sun, Qing Nie, Lei Zhang, Tiejun Li, Peijie Zhou；v1 2026-01-11，v2 2026-04-02；journal-ref 为 ICLR 2026，proceedings 页已打开确认。摘要：同时回归位移向量场和标量生长率，声称损失最小值精确恢复 WFR 测地线。",
+    "note": "第一轮引用的 proceedings URL 有效。",
+    "url": "https://arxiv.org/abs/2601.06810"
+   },
+   {
+    "citation": "WFR-MFM 2026, arXiv 2601.20606",
+    "status": "confirmed",
+    "correct_details": "Xinyu Wang, Ruoyu Wang, Qiangwei Peng, Peijie Zhou, Tiejun Li；仅 v1，2026-01-28；无会议信息。内容是 mean-flow 版 unbalanced FM，学平均速度场和平均质量增长场，一步推断。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2601.20606"
+   },
+   {
+    "citation": "USB 2026, arXiv 2605.00545",
+    "status": "confirmed",
+    "correct_details": "Junda Ying, Yuxuan Wang, Bowen Yang, Peijie Zhou, Lei Zhang；v1 2026-05-01，v2 2026-06-10；无会议信息。摘要确实批评现有 UOT “treat mass as a continuous fluid”。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2605.00545"
+   },
+   {
+    "citation": "VGFM 2025, arXiv 2505.13413",
+    "status": "confirmed",
+    "correct_details": "标题 “Joint Velocity-Growth Flow Matching for Single-Cell Dynamics Modeling”；Dongyi Wang, Yuanwei Jiang, Zhenyi Zhang, Xiang Gu, Peijie Zhou, Jian Sun；v1 2025-05-19，v2 2025-11-08；arXiv 页无会议信息。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2505.13413"
+   },
+   {
+    "citation": "DeepRUOT — Zhang, Li, Zhou, ICLR 2025 oral, arXiv 2410.00844",
+    "status": "confirmed",
+    "correct_details": "Zhenyi Zhang, Tiejun Li, Peijie Zhou；v5 2025-05-08；arXiv 评论 “Published as a conference paper at ICLR 2025 (oral)”。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2410.00844"
+   },
+   {
+    "citation": "TIGON — Sha et al., Nature Machine Intelligence 2024",
+    "status": "confirmed",
+    "correct_details": "Yutong Sha, Yuchi Qiu, Peijie Zhou, Qing Nie；Nat. Mach. Intell. 6(1):25–39 (2024)；DOI 10.1038/s42256-023-00763-w。摘要明确写 “a dimensionless formulation based on the Wasserstein–Fisher–Rao (WFR) distance”。",
+    "note": "nature.com 页面 303 跳转登录、无法打开，经 NSF PAR 页面核实。",
+    "url": "https://par.nsf.gov/biblio/10503782"
+   },
+   {
+    "citation": "Flow-Lenia — Plantec et al., Artificial Life 2025；主张“不提 OT”，以及“Lenia = A + dt·U 再 clip；Flow-Lenia 沿 ∇U 搬运”",
+    "status": "confirmed",
+    "correct_details": "Erwan Plantec, Gautier Hamon, Mayalen Etcheverry, Bert Wang-Chak Chan, Pierre-Yves Oudeyer, Clément Moulin-Frier；Artificial Life 31(2):228–248 (2025)，DOI 10.1162/artl_a_00471；arXiv 2506.08569（2025-06-10）；会议版 arXiv 2212.07906v2。两版 PDF 全文 grep（含去断字）：“transport / Wasserstein / Monge / Kantorovich”零次。Eq. 4：A_{t+dt} = [A_t + dt·U_t]_0^1；Eq. 5：F = (1−α)∇U − α∇A_Σ，α = [(A_Σ/β_A)^n]_0^1；质量用 reintegration tracking 搬运。",
+    "note": "某次 WebSearch 的自动摘要称 Flow-Lenia 摘要写了 “inspired by … optimal transport”，经全文核对是假的；又追查了一次该短语，在任何 Lenia/CA 论文里都找不到。",
+    "url": "https://arxiv.org/abs/2506.08569"
+   },
+   {
+    "citation": "WFR 截断距离（第一轮标“据记忆，页面未确认”）：LMS 归一化下 π/2，Chizat δ 参数化下 πδ",
+    "status": "confirmed",
+    "correct_details": "Chizat, Peyré, Schmitzer, Vialard 2015（arXiv 1506.06430）Cor. 4.1：|x1−x0| < πδ 时 WF_δ(h0δ_x0, h1δ_x1) = 2δ·sqrt(h0+h1−2·sqrt(h0h1)·cos((x1−x0)/2δ))，并给出从 ]0, δπ[ 上 Dirac 测度到 ℂ 的局部等距嵌入。Liero–Mielke–Savaré（arXiv 1508.07941）式 (1.19)：d < π/2 时 c = −log cos²(d)，否则 +∞；式 (1.21)/(1.22) 的截断阈值分别为 π/2 和 π。",
+    "note": "两份 PDF 全文已下载核对。",
+    "url": "https://arxiv.org/abs/1506.06430"
+   },
+   {
+    "citation": "“Lenia + optimal transport / Wasserstein 零命中”（第一轮）",
+    "status": "confirmed",
+    "correct_details": "本轮 2 次 WebSearch、1 次短语追查、HF 索引、ALIFE 2026 程序册全文 grep，均为零。唯一的 CA + Monge–Kantorovich 命中是 CAMs（arXiv 2503.15086：格子状态是测度，MK 只用于配置空间拓扑），属远邻。",
+    "note": "",
+    "url": "https://2026.alife.org/wp-content/uploads/sites/2/2026/06/ALIFE2026-Program-Ver-2026-06-30.pdf"
+   },
+   {
+    "citation": "Zhu, Soh, Pavliotis, Li 2025 “Identifiable learning of dissipative dynamics”（局部熵产生地图）",
+    "status": "confirmed",
+    "correct_details": "Aiqing Zhu, Beatrice W. Soh, Grigorios A. Pavliotis, Qianxiao Li；arXiv 2510.24160，v1 2025-10-28，v2 2025-11-25；无会议信息。Eq. 1：f = −(M+W)∇V + ∇·M + ∇·W。局部总 EPR ṡ_tot = f_irrᵀM⁻¹f_irr，画在 Fig. 4c–f；Eq. 5 是全局 EPR 对平稳密度的积分。App. B.2：ṡ_sys = −f_irr·∇V = ∇·f_irr = −∇·(W∇V)，不可逆流保持平稳密度。App. B.3：∇·(g_irr ρ) = 0。",
+    "note": "第一轮说散度公式“在方法里”，实际在 Appendix B.2，属小出入。附录正好给出体积形式依赖的现成例子：Lebesgue 散度等于 system EPR，而对平稳密度的散度为 0。",
+    "url": "https://arxiv.org/html/2510.24160v2"
+   },
+   {
+    "citation": "Wang 2026 “Certified World Models”（从 WM Jacobian 恢复 Lyapunov 谱；等变只保证误差平坦不保证小；第一轮称“没检验谱之和 = 散度”）",
+    "status": "details_differ",
+    "correct_details": "Hongbo Wang（单作者）；arXiv 2606.13092，v3 2026-07-02，无会议信息。谱的来源：§5.16 对学到映射的 autograd Jacobian 做 Benettin QR；40 维 Lorenz-96 上 R² 0.98–0.995，Kaplan–Yorke 维数 27–28（真值约 27）。“平坦不等于小”有原文：§3.1 “held constant across the orbit, not made small”，§7 “flat is not good”。但 §3.4 用 “Liouville anchor ∑λ_j = −N” 校准 bootstrap 置信区间；§5.16 写明 Lorenz-96 “divergence is −N, so by Liouville the spectrum sums to −N”，估计器在真系统上复现到 0.0%；§5.17 摆环 “Liouville sum = −Nγ exact”。",
+    "note": "“谱之和 = 散度”这个恒等式已被 Wang 当作仪器校验，只是没有报告学到模型的谱之和，也没有空间图。所以本格的“三估计器互校”不能算新颖点。",
+    "url": "https://arxiv.org/html/2606.13092v3"
+   },
+   {
+    "citation": "GENERIC-FNO 2026（分解 gauge 不唯一），arXiv 2606.08343",
+    "status": "confirmed",
+    "correct_details": "Jason Sulskis, Sathya Ravi；现为 v9（2026-11-01，第一轮看到的是 v8），评论 “Under review”。摘要原话：“the (E,S,L,M) decomposition is not unique”，“we make this gauge freedom explicit”，并提出 “gauge-invariant dissipation diagnostic independent of the learned functionals”。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2606.08343"
+   },
+   {
+    "citation": "HaM-World（Tang 等，arXiv 2605.05951）",
+    "status": "confirmed",
+    "correct_details": "Haoyun Tang, Haodong Cui, Keyao Xu, Zhandong Mei, Kun Wang；v2 2026-09-25，现已注明 “Accepted as a poster at NeurIPS 2026”。摘要：“memory accounts for the larger share of the observed gains”；长开环下误差增长更快，“overtaken between k=7 and k=20”。不量体积或散度。",
+    "note": "会议身份要更新为 NeurIPS 2026。",
+    "url": "https://arxiv.org/abs/2605.05951"
+   },
+   {
+    "citation": "DreamSAC（CVPR 2026，arXiv 2603.07545）",
+    "status": "confirmed",
+    "correct_details": "CVPR 2026 poster（2026-06-06）。CVPR 页列 7 位作者（Jinzhou Tang, Fan Feng, Minghao Fu, Wenjun Lin, Jing Yang, Biwei Huang, Keze Wang），arXiv 只列 6 位（少 Jing Yang）。摘要只写 “Hamiltonian-based curiosity bonus”。",
+    "note": "第一轮写的 “|ΔH| 当好奇心奖励”“自报高耗散系统可能失效”在摘要和 CVPR 页上都看不到，未读全文，这两点仍未核实。",
+    "url": "https://cvpr.thecvf.com/virtual/2026/poster/38220"
+   },
+   {
+    "citation": "LaWM（Xiao, Ghaffari，arXiv 2605.08279）",
+    "status": "confirmed",
+    "correct_details": "Qixin Xiao, Maani Ghaffari；2026-05-08，仅 v1；潜空间离散 Lagrangian + 离散积分条件；摘要无耗散、体积、散度。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2605.08279"
+   },
+   {
+    "citation": "Cui & Ma 2026 “Physically Native World Models”（arXiv 2605.00412）",
+    "status": "confirmed",
+    "correct_details": "Sen Cui, Jingheng Ma；v3 2026-07-02。立场文性质（从摘要推断，页面未标注）；含 “control, dissipation, and residual terms”，并把摩擦、接触、非保守力列为开放挑战；不提 Liouville、相体积或散度。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2605.00412"
+   },
+   {
+    "citation": "第一轮：“2026 年 Hamiltonian 世界模型四篇（HaM-World、DreamSAC、LaWM、Cui & Ma）均不碰相体积”",
+    "status": "details_differ",
+    "correct_details": "对这四篇本身仍成立，但结论已过时：PH-Dreamer（arXiv 2605.18303，2026-05）报告潜相体积（PCA 对数体积）降低 4.18–8.41%；LeHami（arXiv 2610.15267，2026-10-11）用 (1/n)Σlog|det J| 量相体积变化，并点名 Liouville。另有耗散 pH-JEPA：H-JEPA（arXiv 2609.33497）。",
+    "note": "HANDOFF §7 表格和 cells.yaml 的 nearest 需要改写。",
+    "url": "https://arxiv.org/html/2610.15267v1"
+   },
+   {
+    "citation": "Gruver, Finzi, Stanton, Wilson, ICLR 2022（HNN 收益来自二阶结构）",
+    "status": "confirmed",
+    "correct_details": "arXiv 2202.04836（v2 2022-02-12），评论 “ICLR 2022”。摘要明确说收益来自直接建模加速度和简化坐标系，“rather than symplectic structure or energy conservation”。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2202.04836"
+   },
+   {
+    "citation": "Kim 2026（arXiv 2606.28751）——第一轮在 Cell 8 引用",
+    "status": "confirmed",
+    "correct_details": "Gunn Kim；2026-06-27，仅 v1，13 页；可逆/不可逆分解，从 rollout 定义熵产生；摘要不提相体积或散度。",
+    "note": "建议交叉列入 Cell 15。",
+    "url": "https://arxiv.org/abs/2606.28751"
+   },
+   {
+    "citation": "Algebraic World Model: From Exploration to Proofs（Pan, Tan, Yuan, Yao；arXiv 2610.40503，2026-10-29）",
+    "status": "confirmed",
+    "correct_details": "Guancheng Pan（浙大）、Qixin Tan（清华）、Yang Yuan（清华）、Andrew Chi-Chih Yao（清华 + 上海期智研究院，通讯作者）；Pan 与 Tan 共同一作。v1 2026-10-29，v2 2026-10-30；29 页，附 lp85 的 Lean 4 模型。ARC-AGI-3 公开集 25 款 183 关。两个不可能关卡上 6/6 次给出 kernel-checked 证明；带代码工具的 Claude Opus 5.5 与 GPT-6 Astra 共 12 次为 0。初始界 4/6 对 1/6 和 0/6，得到反馈后 6/6。Lean 可回放全部 183 关的制胜轨迹。配合 Claude Opus 5 全部通关，得分 99.9，认证轨迹用的动作数为人类基线的 43%。全文要点：证明只在学到的模型的显式前提下成立；两个封闭关卡上“their numerical thresholds disagree with the game”；范畴论是 Set 上的投射/归纳极限，cone/cocone 陈述经 kernel 检查；不可能性证明依赖颜色计数守恒定理（“every press preserves color counts”）；隐状态、延迟反馈、随机动力学都没测；全文不涉及几何。",
+    "note": "HANDOFF 写作“清华姚期智 / 袁洋组”，一作实际在浙大，小出入。",
+    "url": "https://arxiv.org/abs/2610.40503"
+   },
+   {
+    "citation": "WorldBench（arXiv 2601.21282）",
+    "status": "confirmed",
+    "correct_details": "Rishi Upadhyay, Howard Zhang, Jim Solomon, Ayush Agrawal, Yunhao Ba, Alex Wong, Celso M de Melo, Achuta Kadambi；v1 2026-01-29，v2 2026-08-18；arXiv 页无会议信息。每次只隔离一个物理概念：直觉物理层（物体恒存、尺度/透视）和物理常数层（摩擦系数、粘度）。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2601.21282"
+   },
+   {
+    "citation": "GeoWorld: Geometric World Models（arXiv 2602.23058，CVPR 2026）",
+    "status": "confirmed",
+    "correct_details": "Zeyu Zhang, Danning Li, Ian Reid, Richard Hartley；v1 2026-02-26，v2 2026-05-17；评论 “Accepted to CVPR 2026”。Hyperbolic JEPA + Geometric RL；CrossTask/COIN 上 3 步规划 SR 比 V-JEPA 2 高约 3%，4 步高约 2%。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2602.23058"
+   },
+   {
+    "citation": "命名：“information-geometric world model(s)” 零命中",
+    "status": "confirmed",
+    "correct_details": "2026-11-03 精确短语 WebSearch 零命中（只返回 GeoWorld 和一篇 MDPI 信息几何数据分析）；另搜 Fisher-Rao / Fisher 度量 + world model，也没有用 Fisher 度量的世界模型。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2602.23058"
+   },
+   {
+    "citation": "命名：“invariant-structured world model(s)” 零命中",
+    "status": "confirmed",
+    "correct_details": "2026-11-03 精确短语 WebSearch 零命中；最接近的是 bisimulation-JEPA（2602.18639）、PLSM（2401.17835）、Four Principles（2503.02143），用词都不同。",
+    "note": "",
+    "url": "https://arxiv.org/abs/2503.02143"
+   }
+  ],
+  "grade_updates": [
+   {
+    "cell": 15,
+    "old_grade": "B",
+    "new_grade": "B+",
+    "reason": "第一轮之后（或第一轮漏检）出现了三类更近的工作。(1) 两篇世界模型已经量潜相体积：PH-Dreamer（2026-05，PCA 对数相体积）和 LeHami（LeCun/Balestriero 组，2026-10-11，(1/n)Σlog|det J|，点名 Liouville，实测无约束 LeWM 在保守摆上虚假收缩，并明确把耗散留作 future work）。(2) 耗散 port-Hamiltonian 预测器已进 JEPA / 潜世界模型（H-JEPA 2026-09，ELWM 2026-08）。(3) Wang 2606.13092 已用 Liouville 恒等式 ∑λ = −N 校验估计器。随机侧的局部耗散图也已有三篇（Zhu 2025；Boffi & Vanden-Eijnden 2024；Das & Manikandan, Commun Phys 2026）。不到 A−：还没有人在耗散世界上输出带解析真值、声明体积形式的局部 div_μ f(z) 地图，也没人处理散度对重参数化的依赖。"
+   },
+   {
+    "cell": 3,
+    "old_grade": "A/B",
+    "new_grade": "A/B",
+    "reason": "不变。方法层：2026 下半年没有新的 WFR 轨迹推断方法（只找到 Hawkes 背景强度的 projected WFR flow 和 BranchSBM ICLR 2026），Zhou/Li 组链条之后没有新环节。试验场层仍然是空的：Lenia/CA + OT 零命中（两次 web、HF、ALIFE 2026 程序册全扫），唯一 CA + MK 命中 CAMs 是远邻。真正需要改的不是等级，而是 must（见 must_updates）：试验场里的“真值”有一部分在密度层不可辨识。"
+   }
+  ],
+  "must_updates": [
+   {
+    "cell": 3,
+    "proposal": "把 must(2)“Lenia↔Flow-Lenia 有真值对照”改为：只把能从 ρ_t 辨识的量当真值，即全局和每个孤立分量的质量收支（Flow-Lenia 恒为 0，Lenia 一般不为 0）。删除或改写 prediction 里“标准 Lenia glider 给中间值、静止振子给 ≈0”这类机制层预测。如果主张是机制归因，必须用学到的世界模型做离轨干预（加入或扰动质量团，看模型是否局部守恒、怎样响应）。这也是本格“世界模型”部分唯一不可被轨迹 OT 替代的用途。",
+    "reason": "依据是 UPFI Cor. 2.2（全文第 2 节已核）加上 WFR 动态形式（Chizat 2015）：任何帧间或整条曲线上的 WFR 分解只依赖密度曲线 ρ_t。所以一个刚性平移的 Lenia glider（机制上是逐点改权）和同形同速的 Flow-Lenia glider 会得到同一条 δ-谱。“标准 Lenia 是纯改权实现”是机制真值，不是密度真值。这是我的推论，没有文献明说，但它只用到上面两份已核实的结果。"
+   },
+   {
+    "cell": 3,
+    "proposal": "预注册平凡基线：δ-谱必须在“平移 / 生长 / 死亡 / 分裂”四类过程的分类上，优于由（净质量变化率，∂tρ/ρ 的空间功率谱）构成的基线。δ 以“每帧位移 / 斑图宽度”为单位报告；“动力学指纹”只取相对于同形刚性平移参考曲线的偏离。",
+    "reason": "近均匀密度 ρ₀ 下，瞬时 WFR 极小作用问题的解是 v = −∇φ、g = −φ/δ²、∂tρ = ∇·(ρ∇φ) − ρφ/δ²。于是波数 k 上的搬运占比是 k²δ²/(1+k²δ²)，k=0（净质量）上全是改权。也就是说 ratio(δ) 大致是 ∂tρ 的谱滤波，与机制无关。这是我从 Chizat 2015 的动态形式推出来的，需要先数值核对。另外 WFR 截断（Chizat Cor. 4.1 的 |Δx| < πδ；LMS 式 1.19 的 π/2）已原文核实：平移过程 δ-谱的拐点由运动学决定。"
+   },
+   {
+    "cell": 3,
+    "proposal": "改写 notes 和 fix 里的 UPFI 引述：“对 OU 加二次生长显式构造了 (drift, growth) 的不可辨识（Cor. 2.2；强制 autonomous drift 也成立）；作者选 WFR 能量（权重 α）作为自然的正则之一；唯一性只在线性-二次情形证明（Thm 2.3）。”删去“承认非线性情形未解决”。“分裂”类必须引用 BranchSBM（ICLR 2026，分支各自的速度场 + 生长）。如果做世界模型方向，引用 FluidWorld（反应-扩散 PDE 当 WM 底座）并说明区别。",
+    "reason": "原转述比原文略强；BranchSBM 和 FluidWorld 是本轮新找到的近邻。"
+   },
+   {
+    "cell": 15,
+    "proposal": "把“对潜重参数化稳健”拆成两条。(a) 不变量用轨道平均散度（等于 Lyapunov 谱之和；LeHami 的累积 log|det J| 同理）：它对时间无关、log-Jacobian 有界的微分同胚不变，因为 div 的变化量是 d/dt log|det Dφ|，沿轨道伸缩抵消。(b) 局部地图 div_μ f(z) 只有在声明 μ 后才有意义；friction-patch 的 IoU 测试用解码后物理坐标里的 Lebesgue 体积，并引用 Wang 2606.24945 的“认证解码后的物理不变量”。用 Zhu App. B.2/B.3 当体积形式依赖的现成例子：对不可逆漂移，Lebesgue 散度等于 system EPR（ṡ_sys = ∇·f_irr），对平稳密度的散度为 0。这样“散度 vs EPR”的对照可以写成具体等式，而不是口号。",
+    "reason": "(a) 是标准恒等式，由我推导；Zhu 附录 B 已核原文；Wang 2606.24945 已核摘要。原 must 只说“散度不是不变量，必须指定体积形式”，没给出哪个量是不变的。"
+   },
+   {
+    "cell": 15,
+    "proposal": "增加虚假收缩对照。(1) 先在保守世界里、在多种架构（包括无约束的 JEPA / LeWM 式预测器）上量散度，读数 ≈0 才允许去读耗散。(2) 做观测噪声扫描：误差-变量回归会把一步映射压扁，产生与噪声方差成比例的负散度（这是待检验的假设）。(3) 报告相对于保守世界标定值的“超额收缩”，而不是原始散度。",
+    "reason": "LeHami 实测无约束 LeWM 在保守摆上潜体积收缩。所以 prediction 里“无阻尼单摆 ≈ 0”对普通世界模型可能因为学习伪影而失败，而这个失败与本格的主张无关。"
+   },
+   {
+    "cell": 15,
+    "proposal": "nearest 和基线加入 LeHami（log|det J|）、PH-Dreamer（PCA 对数相体积）、H-JEPA / ELWM（耗散 pH 预测器）、Wang 2606.13092 的 Liouville anchor，并把 Kim 2606.28751 交叉列入。“三种估计器互校”只当仪器验证写，不当新颖点。新颖性只押在：耗散世界 + 解析真值 + 声明体积形式的局部散度图 + 与 EPR 的等式关系。",
+    "reason": "第一轮漏检。两篇已量潜相体积，而且读法相反（LeHami：收缩是错；PH-Dreamer：更小是好），说明领域缺标定，这是本格的位置；但“测潜相体积”本身已不新。Wang 已用 ∑λ = −N 当估计器校验。"
+   },
+   {
+    "cell": 15,
+    "proposal": "两条注意事项。(1) 时效：LeHami 明确把耗散建模（port-Hamiltonian 扩展）留作 future work，本格成本只有 1 天；如果想拿“第一个耗散地图结果”，这件事对时间敏感。(2) 动物园约定：damped_pendulum 的真值 −2γ 对应 θ'' + 2γθ' + sinθ = 0 的写法；若写成 θ'' = −sinθ − γθ'，散度是 −γ（Wang 的摆环用的是 −Nγ）。代码里要统一。",
+    "reason": "(1) 依据 LeHami App. C.4 和结论；搜索结果还显示已有社区复现和 stable-pretraining 的实现 PR，但页面未打开。(2) 是记号一致性检查。"
+   }
+  ],
+  "searches_executed": [
+   "WebSearch(standard): divergence-free OR volume preserving latent dynamics neural ODE conservative world model video learned invariant volume 2025 2026  [第一轮未执行项]",
+   "WebSearch(standard): entropy production learned latent dynamics neural network world model irreversibility map interpretable 2025 2026  [第一轮未执行项]",
+   "WebSearch(standard): \"Algebraic World Model\" Lean ARC-AGI-3 Yao Yuan",
+   "WebSearch(standard): \"information-geometric world model\" OR \"information geometric world models\"",
+   "WebSearch(standard): \"invariant-structured world model\" OR \"invariant-structured world models\"",
+   "WebSearch(extended): world models geometric invariants position paper 2026 curvature holonomy symmetry \"world model\" research agenda geometry",
+   "WebSearch(standard): Lenia \"optimal transport\" OR Wasserstein continuous cellular automata",
+   "WebSearch(standard): \"Flow-Lenia\" 2026",
+   "WebSearch(standard): ALIFE 2026 Lenia mass conservation continuous cellular automata paper",
+   "WebSearch(standard): \"inspired by physics, optimal transport\" potential landscapes \"partial differential equations\" Lenia OR \"cellular automata\"  [核对一条可疑的搜索摘要]",
+   "WebSearch(extended): \"Wasserstein-Fisher-Rao\" flow matching OR \"unbalanced flow matching\" arXiv 2026 growth transport decomposition",
+   "WebSearch(extended): \"dynamic unbalanced optimal transport\" OR \"unbalanced Schrödinger bridge\" 2026 new method growth rate identifiability",
+   "WebSearch(standard): DreamSAC \"Hamiltonian World Models via Symmetry Exploration\" CVPR 2026",
+   "WebSearch(standard): \"phase space contraction rate\" entropy production learned dynamics neural network OR \"machine learning\" 2025 2026",
+   "WebSearch(extended): Liouville \"phase-space volume\" latent \"world model\" OR \"neural ODE\" learned vector field divergence dissipation localization 2026  [找到 LeHami]",
+   "WebSearch(standard): \"H-JEPA\" Zoabi Hamiltonian JEPA",
+   "WebSearch(standard): \"log-determinant\" Jacobian latent volume contraction world model predictor rollout collapse 2026",
+   "WebSearch(standard): ALIFE 2026 conference proceedings MIT Press isal papers list  [找到程序册 PDF，已全文 grep]",
+   "WebSearch(standard): \"Random Graph Dynamics using Cellular Automata on Probability Measures\" La Torre Formenti Kunze",
+   "WebSearch(extended): \"Algebraic World Model\" AWM Lean 4 category theory world model November 2026",
+   "WebSearch(standard): \"The Geometric Future of World Models\" Patrick Nicolas",
+   "WebSearch(standard): learning Wasserstein-Fisher-Rao gradient flow from data JKO unbalanced energy reaction-diffusion population dynamics neural 2025 2026",
+   "WebSearch(standard): \"unbalanced optimal mass transport\" OR \"unbalanced optimal transport\" image sequence velocity \"source\" decomposition transport vs growth 2025 2026 urOMT",
+   "WebSearch(extended): LeHami symplectic JEPA follow-up dissipative latent volume world model damped pendulum friction phase-space contraction 2026",
+   "WebSearch(standard): \"port-Hamiltonian\" world model latent dissipation reinforcement learning 2026 arXiv",
+   "WebSearch(standard): NeurIPS 2026 \"unbalanced\" optimal transport \"growth\" flow matching OR \"Wasserstein-Fisher-Rao\" poster",
+   "WebSearch(standard): \"world model\" latent \"Fisher-Rao\" OR \"Fisher information metric\" OR \"information geometry\" planning dynamics 2026 arXiv",
+   "WebSearch(extended): position paper world models should have measurable invariants conservation symmetry geometry \"world models\" perspective October 2026",
+   "HF papers: Lenia optimal transport Wasserstein（零相关）",
+   "HF papers: Algebraic World Model Lean proofs ARC-AGI-3（索引未收录 AWM）",
+   "HF papers: Lenia（按 createdAt 排序，3 篇，均与 OT 无关）",
+   "HF papers: Hamiltonian JEPA symplectic latent predictor world model（未收录 LeHami 和 H-JEPA）",
+   "HF papers: Lyapunov spectrum learned world model Jacobian dissipation",
+   "HF papers: entropy production world model latent irreversibility（找到 FluidWorld）",
+   "HF papers: geometric deep learning world models survey symmetry manifold invariants",
+   "HF papers: volume preserving latent dynamics JEPA world model symplectic contraction",
+   "HF papers: 另有一批 6 条并行查询因输出截断没有可读结果（Lenia OT / AWM / phase space volume WM / WFR 2026 / geometric invariants WM / Flow-Lenia），已逐条单独重跑其中关键的几条",
+   "全文核对（非搜索）：Flow-Lenia 两版 PDF；Chizat 2015 与 LMS 2015 PDF；CAMs PDF；ALIFE 2026 程序册 PDF；以下各篇的 arXiv HTML 全文：UPFI v3、Zhu v2（两段）、Wang 2606.13092 v3（三段）、LeHami v1（三段）、PH-Dreamer、AWM v1"
+  ],
+  "coverage_confidence": "Cell 3：高。方法层主干已饱和，2026 下半年没有新环节；试验场层用 web、HF 和 ALIFE 2026 程序册（2026-06-30 版）交叉确认为空。盲区：ALIFE 2026 late-breaking posters 和 workshop 摘要不在该版程序册里；NeurIPS 2026 接收论文尚未完全公开。Cell 15：中高。本轮新找到 4 篇第一轮漏掉的近邻（LeHami、PH-Dreamer、H-JEPA、Wang 2606.24945），而 HF 索引一篇都没收录，说明第一轮在预算耗尽后只靠 HF 补查确实会漏。随机侧局部 EPR 方法补到 3 篇，但没有系统穷尽统计物理期刊。U：中。命名检查较可靠（精确短语 2 次 + Fisher/IG 1 次 + HF）；“伞状纲领”是否存在只做了 2 次 extended 和若干 HF 检索；AWM 只有 5 天窗口，“无学术跟进”只代表 2026-11-03 当天的状态，HF 索引尚未收录 AWM。",
+  "summary": "第二轮（2026-11-03）共用 28 次 WebSearch（其中 6 次 extended）、约 10 次 HF 索引搜索，打开约 45 个页面或全文。指定核查的引用全部存在。\n\n**Cell 3（撞车等级 A/B 不变，must 要改）**\n- **UPFI：** 不可辨识只在全文第 2 节（Cor. 2.2，OU 加二次 fitness，强制 autonomous drift 也成立）。WFR 能量只是作者选的\"自然的正则之一\"，唯一性只在线性-二次情形证明。第一轮写的\"承认非线性情形未解决\"属过度转述。\n- **WFR 截断距离：** 第一轮标\"据记忆\"，现已原文核实（Chizat Cor. 4.1 的 πδ；LMS 式 1.19 的 π/2）。\n- **Flow-Lenia：** 两版全文没有任何 OT 措辞。有一次搜索的自动摘要说它\"受 OT 启发\"，经全文核对是假的。\n- **Lenia+OT 仍为零：** web、HF、ALIFE 2026 程序册全扫都没有。唯一的 CA + Monge–Kantorovich 命中是 CAMs（格子状态是测度），属远邻。\n- **新近邻：** BranchSBM（ICLR 2026），对应\"分裂\"类过程。\n- **must 的关键问题（我的推论，依据 UPFI 和 WFR 动态形式）：** 任何基于密度的 WFR 分解只看 ρ_t，所以刚性平移的 Lenia glider 和 Flow-Lenia glider 会得到同一条 δ-谱。\"Lenia = 纯改权\"是机制真值，从密度上不可辨识；能辨识的只有每个孤立分量的质量收支。近均匀线性化下，搬运占比 ≈ k²δ²/(1+k²δ²)，即 ∂tρ 的谱滤波，所以 δ-谱必须打败\"净质量 + ∂tρ 功率谱\"这个平凡基线。若要做机制归因，只能靠世界模型的离轨干预。\n\n**Cell 15（撞车等级 B → B+）**\n- **已核实：** Zhu、Wang、GENERIC-FNO（现为 v9）、Gruver、HaM-World（现为 NeurIPS 2026 poster）、DreamSAC（CVPR 2026 poster）、LaWM、Cui & Ma 均确认。\n- **审计要修的两处：**\n  1. Wang 已用\"Liouville anchor ∑λ = −N\"校验估计器，所以\"三估计器互校\"不是新颖点。\n  2. \"Hamiltonian 世界模型不碰相体积\"已过时：PH-Dreamer（2026-05）和 LeHami（LeCun 组，2026-10-11）都量了潜相体积，读法相反，都不声明体积形式。LeHami 实测无约束模型在保守摆上虚假收缩，并把耗散建模留作 future work（有被抢先的风险）。耗散 pH 预测器方面另有 H-JEPA（2026-09）。\n- **仍空：** 耗散世界上带解析真值、声明体积形式的局部 div_μ f 地图。\n- **gauge 洞的修法：** 轨道平均散度（= Lyapunov 谱之和）对重参数化不变；局部图必须声明 μ。Zhu 附录 B 正好给出现成例子：对不可逆漂移，Lebesgue 散度 = system EPR，对平稳密度的散度 = 0。\n\n**U**\n- **AWM：** v2 2026-10-30，主要数字全部核实。作者自己说明证明只在学到的模型前提下成立，两个封闭关卡的数值阈值与游戏不符；不可能性证明依赖\"颜色计数守恒\"定理。第一作者在浙大。5 天内没有学术跟进。\n- **WorldBench、GeoWorld：** 核实无误。\n- **命名：** \"information-geometric world model(s)\"和\"invariant-structured world model(s)\"仍为零精确命中。\n- **伞状纲领：** 2026-09 以来没有出现带可测几何不变量的纲领。近似物有：\n  - World Model Interpretability（2610.25296，Ground/Structure/Verify/Act，不涉及几何）；\n  - Zenodo 上一篇未经同行评议的 GDL-for-world-models 评论，又占用了一次\"geometric world models\"这个名字；\n  - LeCun/Balestriero 组的 JEPA 几何系列；\n  - Wang 的 certified world models 两篇（第一轮漏了 2606.24945）。\n- **第一轮漏检的部分伞：** Four Principles for Physically Interpretable World Models（2025）。"
+ },
+ {
+  "cells": [
+   0,
+   1,
+   4,
+   8
+  ],
+  "new_papers": [
+   {
+    "title": "Autoencoding Dynamics: Topological Limitations and Capabilities",
+    "url": "https://arxiv.org/abs/2511.04807",
+    "authors": "Matthew D. Kvalheim, Eduardo D. Sontag",
+    "venue": "arXiv (cs.LG, math.DS)",
+    "year": "2025",
+    "cells": [
+     0,
+     4
+    ],
+    "closeness": "B（理论根基，Batson 2021 的动力学推广）",
+    "what_they_did": "Prop.1：存在精确 autoencoder 当且仅当数据流形 M 可嵌入 R^ℓ；Thm 2：ℓ=m 且 M 闭时最坏误差有正下界；Thm 3 / Cor.1：ℓ=m 时可在满测度的可缩开集上精确往返，L^p 误差可任意小；Cor.2–3、Thm 4–5：潜动力学可在这些集合上与真实流共轭（有欧氏覆叠时全局成立）。唯一算例是 S¹ 上的 θ̇=sin2θ（ℓ=1），单摆只在引言里出现。",
+    "implication": "拓扑障碍只体现在 sup 范数，不体现在平均误差：格 4 用平均长程 RMSE 写的命题不受拓扑理论保护，必须报告最坏/尾部误差和穿越切口的轨迹。另外，单摆柱面 S¹×R 可嵌入 R²，所以二维欧氏潜空间对它不算错拓扑（格 0 和格 4 的试验设计都受影响）。",
+    "verified": true
+   },
+   {
+    "title": "Correcting a learned physical invariant improves world-model rollouts",
+    "url": "https://arxiv.org/abs/2608.23526",
+    "authors": "Richard Bao",
+    "venue": "arXiv (cs.AI)",
+    "year": "2026",
+    "cells": [
+     0
+    ],
+    "closeness": "B+（格 0「能量能否被解码」的直接前测）",
+    "what_they_did": "在只用单摆视频训练的冻结 DreamerV3 里做无标签搜索：几个独立训练的保守模型里找到同一个类能量的近守恒标量，匹配的阻尼模型里找不到；自主 rollout 中这个量会漂移，把潜状态投影回初始水平集后，三个保守模型的 rollout 误差都下降，匹配的随机约束通常让误差上升。",
+    "implication": "格 0 的能量判据可以直接借用「无标签不变量搜索 + 投影干预」作为第二级。这也说明格 0 的 novel=low 判断是对的。它用的是带像素 decoder 的 RSSM，所以 decoder 与 decoder-free 在同一世界上的对照仍是空的。",
+    "verified": true
+   },
+   {
+    "title": "The Objective Decides: When a Learned Dynamics Model Uses a Conserved Quantity",
+    "url": "https://arxiv.org/abs/2607.03728",
+    "authors": "Chih-Ting Liao, Xin Cao",
+    "venue": "arXiv (cs.CE)",
+    "year": "2026",
+    "cells": [
+     0
+    ],
+    "closeness": "B（方法学警示）",
+    "what_they_did": "在力学、电路、PDE 系统和一个 158M 参数的 PDE 基础模型上，能量等不变量线性可解码（R²≈1），但 donor-swap 干预几乎不改变下一步预测，即因果惰性；只有训练目标奖励该不变量时模型才用它；部署差能预测 OOD 精度（r=+0.97），可解码性不能。",
+    "implication": "格 0 的「能量可被平滑解码」不能当作「模型用到了能量」的证据，判据必须加一级因果干预。",
+    "verified": true
+   },
+   {
+    "title": "The Observer Effect in World Models: Invasive Adaptation Corrupts Latent Physics",
+    "url": "https://arxiv.org/abs/2602.12218",
+    "authors": "Christian Internò, Jumpei Yamaguchi, Loren Amdahl-Culleton, Markus Olhofer, David Klindt, Barbara Hammer",
+    "venue": "arXiv (cs.LG)",
+    "year": "2026",
+    "cells": [
+     0
+    ],
+    "closeness": "C+（探针协议）",
+    "what_they_did": "提出 PhyIP：只在冻结表示上做低容量线性读出。在流体和轨道力学上恢复出内能与平方反比律（OOD ρ>0.90），而微调或高容量探针会破坏这一结构（ρ≈0.05）。",
+    "implication": "格 0 的探针应冻结、低容量；高容量 MLP 探针给出的「可解码」不算数。",
+    "verified": true
+   },
+   {
+    "title": "Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs",
+    "url": "https://arxiv.org/abs/2609.21656",
+    "authors": "Léo Nicollier, Enric Meinhardt-Llopis, Marc Pic, Pablo Musé, Gabriele Facciolo",
+    "venue": "arXiv (cs.LG)",
+    "year": "2026",
+    "cells": [
+     0,
+     4
+    ],
+    "closeness": "B（格 4 的静态 JEPA 版本）",
+    "what_they_did": "把「高斯目标可线性恢复高斯潜变量」推广到黎曼流形：球面潜变量配球面目标可在正交变换意义下恢复。在高斯、球面、环面（含高维 Clifford 环面）上，几何匹配的目标在优化成功时线性恢复更好，失配目标会扭曲潜结构。",
+    "implication": "格 0：如果基线 WM 用 SIGReg（LeWM）这类高斯目标，正则器本身就是拓扑先验，H1 测量结果会依赖它，所以正则器类型要作为实验因子。格 4：「拓扑匹配更好」在 JEPA 静态恢复层面已有人做，格 4 的增量只剩动力学与长程预测。",
+    "verified": true
+   },
+   {
+    "title": "When Do Conservation Laws Survive Learned Representations? Certified Horizons for Latent World Models",
+    "url": "https://arxiv.org/abs/2606.24945",
+    "authors": "Hongbo Wang",
+    "venue": "arXiv (cs.LG)",
+    "year": "2026",
+    "cells": [
+     0,
+     1
+    ],
+    "closeness": "B",
+    "what_they_did": "给出「可认证视界」：在多少步 rollout 内，解码到物理坐标后的已知不变量（如能量）仍留在水平集上。硬辛结构在已知相坐标下视界最长，但经过学到的 chart 后不再成立；与物理能量 Lipschitz 对齐的软不变量在非线性学到表示和像素观测下仍成立；在 Kepler 问题上失效。",
+    "implication": "格 1 的「能量漂移低于 MLP」和格 0 的能量探针都应该在解码后的物理能量上评，而不是在潜空间的学到量上评；硬几何先验经过学到的 chart 后不保真，这是格 1 的一个风险。",
+    "verified": true
+   },
+   {
+    "title": "What Can Latent World Models Know? Physical Information in Multimodal Predictive Representations",
+    "url": "https://arxiv.org/abs/2607.27017",
+    "authors": "Kaizhen Tan, Sizhe Xu, Xin Xu, Siru Tao, Yixiao Li, Hanzhe Hong, Yang Feng, Heqing Du, Zhaonan Wang",
+    "venue": "arXiv (cs.LG)",
+    "year": "2026",
+    "cells": [
+     0
+    ],
+    "closeness": "C+",
+    "what_they_did": "在 PokeWorld（推物体，质量、拖曳、接触刚度逐 episode 变化）上：预测目标决定潜空间里有哪些物理量（接触刚度只在预测触觉时可解码）；长时程预测比单步预测更好地编码位置与速度；拖曳力线性读出很弱，但预测结果系统性地依赖它。",
+    "implication": "格 0 除了 4 尺寸 × 3 种子，还应把预测时程 k 作为因子。",
+    "verified": true
+   },
+   {
+    "title": "CHyLL: Learning Continuous Neural Representations of Hybrid Systems",
+    "url": "https://arxiv.org/abs/2512.10117",
+    "authors": "Sangli Teng, Hang Liu, Jingyu Song, Koushil Sreenath",
+    "venue": "arXiv (cs.LG)",
+    "year": "2025",
+    "cells": [
+     4,
+     0
+    ],
+    "closeness": "A−（格 4 闭环的混合系统版本）",
+    "what_they_did": "把 reset map 看成在 guard 面上粘合状态空间、得到商流形；用 gluing loss 从数据里的有限差分跳变找粘合对，联合学一个高维无奇点嵌入和其上的 neural ODE。用 ripser 对学到的潜点云算持续同调，Betti 数与预期一致（弹跳球 [1,0,0]，环面 [1,2,1]，Klein 瓶 [1,1,0]）；长程测试 MSE 远低于 Neural ODE、latent ODE、Koopman（环面 0.0165 对 0.083）；去掉粘合损失后变差（Table 2）。",
+    "implication": "「从数据得到拓扑 → 学拓扑正确的潜流 → 持续同调验证 → 长程更准」在混合系统上已经有人做了。格 4 的「先发现再学」新颖性只剩光滑系统（没有跳变可检测）和 Lenia 吸引子，而且必须引用并对照 CHyLL。",
+    "verified": true
+   },
+   {
+    "title": "Data-driven discovery of intrinsic dynamics",
+    "url": "https://arxiv.org/abs/2108.05928",
+    "authors": "Daniel Floryan, Michael D. Graham",
+    "venue": "Nature Machine Intelligence 4(12):1113–1120",
+    "year": "2022",
+    "cells": [
+     4
+    ],
+    "closeness": "B（绕开拓扑发现的替代路线）",
+    "what_they_did": "CANDyMan：用重叠的 chart/atlas（每片降到内禀维数）表示没有全局光滑坐标的流形，在各片上学动力学再缝合起来，从而达到内禀维数。摘要页没有列出具体例子；检索摘要说补充材料里有环面上的周期动力学例子，本轮未核。",
+    "implication": "格 4 必须把 atlas 法当作基线：它不需要预先知道拓扑就能避开全局 chart 的障碍。如果 atlas 法与「先发现拓扑」精度相同，格 4 的价值只剩「拓扑作为可读出的输出」。",
+    "verified": true
+   },
+   {
+    "title": "Doughnut or Mickey Mouse? Detecting Toroidal Structure in Data through Persistent Cup-Length",
+    "url": "https://arxiv.org/abs/2507.11151",
+    "authors": "Ekaterina S. Ivshina, Galit Anikeeva, Ling Zhou",
+    "venue": "arXiv (math.AT)",
+    "year": "2025",
+    "cells": [
+     4,
+     0
+    ],
+    "closeness": "C+（工具）",
+    "what_they_did": "首次实现 persistent cup-length（来自持续上同调，接入 Ripser），称能检出单靠持续同调测不到的环面结构，并用在网格细胞群体活动数据上。",
+    "implication": "格 4 的「Betti 数预测正确」不足以选定潜流形：T² 与 S¹∨S¹∨S² 的 Betti 数相同（标准事实，不是该文原话）。判定需要加上同调环结构（cup-length）或圆坐标构造。",
+    "verified": true
+   },
+   {
+    "title": "Tracking Finite-Time Lyapunov Exponents to Robustify Neural ODEs",
+    "url": "https://arxiv.org/abs/2602.09613",
+    "authors": "Tobias Wöhrer, Christian Kuehn",
+    "venue": "arXiv (math.DS)",
+    "year": "2026",
+    "cells": [
+     1
+    ],
+    "closeness": "C+",
+    "what_they_did": "把深网看成连续深度的 neural ODE，追踪输入扰动的 FTLE，用于解释和比较架构；在输入动力学早期压制远离 0 的指数，以提高对抗鲁棒性。LCS 只出现在关键词里。",
+    "implication": "FTLE 已经在学到的 neural ODE 上算过，但对象是分类器沿深度方向的动力学，不是世界的状态动力学，也不用来找障碍。格 1 改写版的空位仍在。",
+    "verified": true
+   },
+   {
+    "title": "Integration-free Learning of Flow Maps",
+    "url": "https://arxiv.org/abs/2211.03192",
+    "authors": "Saroj Sahoo, Matthew Berger",
+    "venue": "arXiv (cs.GR)",
+    "year": "2022",
+    "cells": [
+     1
+    ],
+    "closeness": "C",
+    "what_they_did": "用流映射导数的自洽条件训练神经 flow-map 代理，只需要瞬时速度场，不需要数值积分；用于 streakline 和 FTLE 可视化。",
+    "implication": "从神经代理算 FTLE 在流场可视化社区是成熟操作，但速度场是给定的，不是从观测学到的世界模型，也不涉及动作和障碍。",
+    "verified": true
+   },
+   {
+    "title": "Finite-time Lyaponov analysis of a trained reservoir computer",
+    "url": "https://arxiv.org/abs/2604.23654",
+    "authors": "Dishant Sisodia, Sarika Jalan",
+    "venue": "arXiv (nlin.CD)；页面关联 DOI 10.1140/epjb/s10051-026-01204-4（EPJ B）",
+    "year": "2026",
+    "cells": [
+     1
+    ],
+    "closeness": "C",
+    "what_they_did": "用 FTLE 分布研究在 logistic 映射上训练的高维储备池的转变机制（间歇、内部危机），称 FTLE 分布能复现真实系统各区域的行为。",
+    "implication": "「在学到的模型上算 FTLE 并与真值对照」在混沌学习侧已有先例，可作为格 1 改写版的方法参照；它同样不涉及障碍。",
+    "verified": true
+   },
+   {
+    "title": "Do Differentiable Simulators Give Better Policy Gradients?",
+    "url": "https://arxiv.org/abs/2202.00817",
+    "authors": "H.J. Terry Suh, Max Simchowitz, Kaiqing Zhang, Russ Tedrake",
+    "venue": "ICML 2022",
+    "year": "2022",
+    "cells": [
+     1
+    ],
+    "closeness": "C（风险类比）",
+    "what_they_did": "指出刚度和不连续会损害一阶（梯度）估计器，用偏差与方差分析原因，并提出 α 阶混合估计器。",
+    "implication": "墙和接触附近的 Jacobian（因而 Cauchy–Green 与 FTLE）在学到的平滑模型里可能被抹平或失真，所以格 1 改写版的 FTLE 脊必须对照模拟器真值校准。这篇的结论针对模拟器梯度，推到学到的 WM 是类比。",
+    "verified": true
+   },
+   {
+    "title": "Latent Geometry Beyond Search: Amortizing Planning in World Models",
+    "url": "https://arxiv.org/abs/2605.08732",
+    "authors": "Hoang Nguyen, Xiaohao Xu, Xiaonan Huang",
+    "venue": "arXiv (cs.RO)",
+    "year": "2026",
+    "cells": [
+     1
+    ],
+    "closeness": "C",
+    "what_they_did": "在预训练、带平滑与均匀正则的 LeWorldModel 潜空间上，用目标条件逆动力学模型替代 CEM：8 个设置中 7 个持平或更好，每次决策成本降 100–130 倍。",
+    "implication": "LeWM 类潜空间的局部几何已经很好用；格 1 若要证明曲率或度量是信号，需要在这类强基线上做。",
+    "verified": true
+   },
+   {
+    "title": "Latent Space Oddity: on the Curvature of Deep Generative Models",
+    "url": "https://arxiv.org/abs/1710.11379",
+    "authors": "Georgios Arvanitidis, Lars Kai Hansen, Søren Hauberg",
+    "venue": "ICLR 2018",
+    "year": "2017",
+    "cells": [
+     1
+    ],
+    "closeness": "C（工具，也是混杂来源）",
+    "what_they_did": "把生成器造成的潜空间畸变刻画为随机黎曼度量，并提出方差估计更好的生成器结构，从而改进潜空间距离和插值。",
+    "implication": "方差感知的 decoder 拉回度量在无数据区会膨胀（这一细节来自记忆，摘要页没有写明）。迷宫里墙内没有数据，墙会因此「发亮」，但那反映的是数据支撑而不是动力学，所以格 1 必须加数据密度零模型。",
+    "verified": true
+   },
+   {
+    "title": "Learning entropy production via neural networks (NEEP)",
+    "url": "https://arxiv.org/abs/2003.04166",
+    "authors": "Dong-Kyum Kim, Youngkyoung Bae, Sangyun Lee, Hawoong Jeong",
+    "venue": "Phys. Rev. Lett. 125, 140604",
+    "year": "2020",
+    "cells": [
+     8
+    ],
+    "closeness": "A−（格 8 主命题的统计物理版本）",
+    "what_they_did": "学一个反对称两点函数 ΔS_θ(s_t,s_{t+1}) = h_θ(s_t,s_{t+1}) − h_θ(s_{t+1},s_t)，目标为 E[ΔS − e^{−ΔS}]，并证明稳态下最优解就是逐跃迁的随机熵产生。bead-spring 模型上单轨迹 ΔS 与解析值的 R² 为 0.993（N=2）和 0.966（N=5）；也做了离散闪烁棘轮、高维数据，以及含不可观测态时的粗粒化 EP。",
+    "implication": "「学到的反对称场 = 时间箭头，并与熵产生定量对照」2020 年就有人做了，而且是逐跃迁（局部）的。格 8 必须说明拟度量（多步、三角不等式、可用于规划）比 NEEP 多给了什么，并用 NEEP 作为 EP 基线或真值估计器。",
+    "verified": true
+   },
+   {
+    "title": "Identifying nonequilibrium degrees of freedom in high-dimensional stochastic systems (LENS)",
+    "url": "https://arxiv.org/abs/2508.08247",
+    "authors": "Catherine Ji, Ravin Raj, Benjamin Eysenbach, Gautam Reddy",
+    "venue": "arXiv (cond-mat.stat-mech)；检索摘要称已发表于 Phys. Rev. Research 8, 023264 (2026)，APS 页面返回 403，未能打开",
+    "year": "2025",
+    "cells": [
+     8,
+     15
+    ],
+    "closeness": "A−",
+    "what_they_did": "训练区分前向与时间反转的分类器，其最优 logit 为 log[p(x→x′)/p(x′→x)]，取平均即熵产生率。logit 参数化为 S(x,x′) = φ(x′)ᵀAφ(x) + ½φ(x′)ᵀBφ(x′) − ½φ(x)ᵀBφ(x)（Eq.3：A 由 2×2 反对称块组成，B 对称），整体反对称。bead 链的全局 EPR 跨六个数量级误差约 10%，驱动周期势中的粒子约 3%；局部 EPR 图只在复 Ginzburg–Landau 上定性展示；训练代码改自 JaxGCRL（目标条件 RL 代码库）。",
+    "implication": "B 项是势差（Rahaman 的 η 那一型），A 项是环流（非势能的不可逆性）。这正是格 8 预注册里「势能型世界中 A 退化为 η、残差 = 非势能不可逆性」的分解。Eysenbach 同时在对比式 / 拟度量 RL 这条线上，两边的桥已经有人在搭。格 8 剩下的空间只有：局部图与真值的定量对照、多步 / 规划用拟度量、动作条件 WM。",
+    "verified": true
+   },
+   {
+    "title": "Learning Anisotropic Value Geometry with Finsler Reinforcement Learning (FiRL)",
+    "url": "https://proceedings.mlr.press/v306/hossain26a.html",
+    "authors": "Jumman Hossain, Nirmalya Roy",
+    "venue": "ICML 2026 (PMLR 306, pp. 43950–43983)",
+    "year": "2026",
+    "cells": [
+     8
+    ],
+    "closeness": "B+（RL 里的 Finsler 形式化已经出现）",
+    "what_they_did": "把运动代价写成 Finsler 范数 F(x,v)（上下坡不对称、侧滑），在 CVaR 目标下推导风险敏感 Bellman 方程并证明是 γ-压缩；诱导的不对称路径代价 d_F 满足三角不等式；在 12° 斜坡 Hopper 上冲击力 CVaR₀.₁ 降 35% 以上、能耗降 15%。摘要没有说 F 是学到的还是手工设定的。",
+    "implication": "格 8 的「Finsler 形式化没人做」不再成立。只能收窄为：从被动轨迹学 Randers 一形式 β，作为局部时间箭头，并与局部 EP 对照。",
+    "verified": true
+   },
+   {
+    "title": "Estimating entropy production with odd-parity state variables via machine learning",
+    "url": "https://link.aps.org/doi/10.1103/PhysRevResearch.4.023051",
+    "authors": "Dong-Kyum Kim, Sangyun Lee, Hawoong Jeong（仅来自检索摘要）",
+    "venue": "Phys. Rev. Research 4, 023051（仅来自检索摘要）",
+    "year": "2022",
+    "cells": [
+     8
+    ],
+    "closeness": "B",
+    "what_they_did": "据检索摘要：用多个神经网络、只凭轨迹数据和宇称信息，估计含奇宇称变量（如速度）的系统的 EP。APS 页面返回 403，本轮未核。",
+    "implication": "单摆的角速度是奇宇称变量。格 8 做时间反转时必须翻转 ω，否则平衡态也会显出伪不可逆。",
+    "verified": false
+   }
+  ],
+  "citation_checks": [
+   {
+    "citation": "Ivashkov 2026, Sensorimotor World Models (arXiv 2606.20104)：在 Reacher 上自发出现 flat 2-torus",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2606.20104v1",
+    "correct_details": "Petr Ivashkov, Randall Balestriero, Bernhard Schölkopf；2026-06-18 v1；无 venue；输入 224×224 RGB；训练损失 Eq.4 只有前向与逆动力学项，无重建；规划实验潜维 d=192",
+    "note": "torus 出自 Fig.6 图注与 Sec.5，依据是 PCA 投影和四个显著主成分（每个关节一对 cosθ, sinθ），没有任何拓扑量化。目标里没有任何项强制这个结构，所以是涌现的。Reacher 关节角线性探针 R²：SMWM 0.946，SIGReg 基线 0.999，基线编码角度反而更好。摘要里不提 torus。"
+   },
+   {
+    "citation": "DySIB 2026 (arXiv 2604.24662)：从单摆视频学到与相空间一致的二维表示",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2604.24662v2",
+    "correct_details": "标题 Information bottleneck for learning the phase space of dynamics from high-dimensional experimental data；K. Michael Martini, Eslam Abdelaleem, Paarth Gulati, Ilya Nemenman；v1 2026-04-27，v2 2026-06-10；physics.data-an；无 venue",
+    "note": "数据是真实单摆视频（Chen et al. 数据集，28×28 灰度，过去与未来各 2 帧窗口），用 InfoNCE 最大化过去与未来的互信息，不做重建。潜空间是 R²，所谓环形是与「θ 为极角、ω+c 为半径」的相空间极坐标图目测比对得出的，没有持续同调或 Betti 数。能量只在 Fig. S3 里着色定性展示。十个种子中取测试 MI 最高者报告，结果偏乐观。"
+   },
+   {
+    "citation": "Batson et al. 2021, Topological Obstructions to Autoencoding (arXiv 2102.08380)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2102.08380",
+    "correct_details": "Joshua Batson, C. Grace Haaf, Yonatan Kahn, Daniel A. Roberts；JHEP 04 (2021) 280；hep-ph（交叉 cs.LG, stat.ML）",
+    "note": "第一轮只列了 Batson 一人。摘要只说：对拓扑非平凡的数据，总有点会因全局原因被误判为异常，并展示训练中拓扑如何体现在潜空间里。「S¹ 压到一维必有切口、切口位置随初始化移动但不会消失」来自检索摘要（IAIFI 页面），本轮未读全文；「训练时间只能对数级缩小 gap」未核。"
+   },
+   {
+    "citation": "Friedl et al., A Riemannian Framework for Learning Reduced-order Lagrangian Dynamics, ICLR 2025 (arXiv 2410.18868)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2410.18868v3",
+    "correct_details": "Katharina Friedl, Noémie Jaquier, Jens Lundell, Tamim Asfour, Danica Kragic；arXiv 注明 Accepted for publication in ICLR'25",
+    "note": "细节全部属实：潜空间上学 SPD 质量矩阵（Sec.3 称之为构型空间的黎曼度量）；潜动力学是 Eq.10 的 Euler–Lagrange 方程，含学到的势和外力 τ̌；输入是广义坐标而非像素；系统为 2-DoF 摆、16-DoF 耦合摆、192-DoF 绳、600-DoF 布；App. B 讨论 Cholesky 参数化忽略 SPD 曲率导致 swelling。论文没有分析学到度量本身的曲率。"
+   },
+   {
+    "citation": "Friedl et al. 2026 续作 (arXiv 2602.08963)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2602.08963v1",
+    "correct_details": "Reduced-order Control and Geometric Structure of Learned Lagrangian Latent Dynamics；Katharina Friedl, Noémie Jaquier, Seungyeon Kim, Jens Lundell, Danica Kragic；2026-02-09；cs.RO；无 venue",
+    "note": "在 ref [15] 的 RO-LNN 上做控制。「续作」关系是从引用推断的，读到的正文片段没有点名那篇 ICLR 论文。论文把质量矩阵当黎曼度量，分析学到的投影与 M-正交投影之间的黎曼角；不分析学到度量的曲率；输入是广义坐标。"
+   },
+   {
+    "citation": "Temporal Straightening for Latent Planning (arXiv 2603.12231)；作者含 LeCun？",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2603.12231",
+    "correct_details": "Ying Wang, Oumayma Bounou, Gaoyue Zhou, Randall Balestriero, Tim G. J. Rudner, Yann LeCun, Mengye Ren；ICML 2026 camera ready（v3 2026-08-11）",
+    "note": "LeCun 是 7 位作者中的第 6 位，Mengye Ren 是末位作者，所以 HANDOFF 里「LeCun 组」的说法偏松。内容属实：用曲率正则把潜轨迹拉直，让欧氏距离更接近测地距离、改善规划目标的条件数。venue 应更新为 ICML 2026，这个基线的分量更重了。"
+   },
+   {
+    "citation": "Koide & van de Venn 2026 (arXiv 2609.08870)：恢复力可归为曲率或非度量性",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2609.08870",
+    "correct_details": "Stochastic Processes as Non-Metric Geodesics in Information Geometry；T. Koide, A. van de Venn；2026-09-08；cond-mat.stat-mech（math-ph 交叉）；无 venue",
+    "note": "摘要原话：依所选仿射联络表示，恢复力 can be attributed either to scalar curvature or purely to non-metricity；OU 弛豫的恢复力决定联络参数 α。"
+   },
+   {
+    "citation": "Arvanitidis et al., Pulling back information geometry, AISTATS 2022 (arXiv 2106.05367)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2106.05367",
+    "correct_details": "Georgios Arvanitidis, Miguel González-Duque, Alison Pouplin, Dimitris Kalatzis, Søren Hauberg；AISTATS 2022",
+    "note": "把 decoder 分布空间上的 Fisher–Rao 度量拉回潜空间，原文说适用于 a wide range of decoder distributions（不是「任意」）。据检索摘要，度量形式为 JᵀFJ。没有动力学。对固定 σ 的 Gaussian decoder，这就是 JᵀJ/σ²，也就是本轮「新顾虑」的出发点。"
+   },
+   {
+    "citation": "Beik-Mohammadi et al. 2021, Learning Riemannian Manifolds for Geodesic Motion Skills (arXiv 2106.04315)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2106.04315",
+    "correct_details": "Hadi Beik-Mohammadi, Søren Hauberg, Georgios Arvanitidis, Gerhard Neumann, Leonel Rozo；arXiv 2021（摘要页没有 venue）",
+    "note": "摘要说障碍物通过在线重新定义 ambient metric 来避开；摘要页没有写「度量反映数据不确定性」。"
+   },
+   {
+    "citation": "GD-VAE (Lopez & Atzberger, arXiv 2206.05183)：拓扑匹配的潜空间在表格里不总赢",
+    "status": "details_differ",
+    "url": "https://arxiv.org/html/2206.05183v4",
+    "correct_details": "Ryan Lopez, Paul J. Atzberger；v1 2022-06-10，v4 2025-03-26；comments 写 related to non-archival proceedings communication；没有正式 venue",
+    "note": "表 3（L1 相对误差，5 次试验）。柱面：t≤0.25s 时无投影 AE(3D) 最好（1.39e-2）；t≥0.5s 时带流形投影的确定性 AE(g-projection, 3D) 最好，t=1.0s 为 1.98e-2，无投影为 3.18e-1，约 16 倍。环面：t=1.0s 时 g-projection(5D) 为 1.03e-1，无投影为 8.04e-1，约 7.8 倍。GD-VAE 本身在两张表里都不是最优；环面上 VAE-5D 在 0.25–1.0s、VAE-10D 在全部时刻都略优于 GD-VAE（如 1.0s：1.42e-1 和 1.47e-1 对 1.55e-1，差距约一个标准误）。Klein 瓶没有误差表。动力学是人工指定的，这点属实（Burgers：z_{n+1}=0.75z_n 作为超参数；周期情形 f_ev(z)=z+Δt·e_n）；没有找到「用 PCA 预估旋转速度」。结论：「拓扑匹配不总赢」是对的，但第一轮说「稳定胜过无投影 baseline」不对，短时程它输。而且长时程的大胜发生在欧氏潜空间本来就能嵌入该流形的维数（柱面在 R³，环面在 R⁵），所以更像是「约束在流形上、防止漂移」的收益，不一定是拓扑本身（这是解读）。"
+   },
+   {
+    "citation": "van Hulst 2026, Constructing VAE Latent Spaces with Prescribed Topology (arXiv 2606.07058)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2606.07058",
+    "correct_details": "Jilles S. van Hulst, Jakub M. Tomczak, W.P.M.H. Heemels, Duarte J. Antunes；2026-06-05；主类 cs.LG（math.AT 交叉）",
+    "note": "第一轮说「math.AT 标签」，实际 math.AT 只是交叉。静态 VAE，没有动力学；KL 可分解；在合成流形和旋转 / 循环平移 MNIST 上，拓扑匹配先验在所有实际相关的正则强度下都优于高斯先验。"
+   },
+   {
+    "citation": "Esmaeili et al. 2023, Topological Obstructions and How to Avoid Them (arXiv 2312.07529)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2312.07529",
+    "correct_details": "Babak Esmaeili, Robin Walters, Heiko Zimmermann, Jan-Willem van de Meent；2023-12-12；arXiv 上没有 venue",
+    "note": "第一轮漏了 Zimmermann。内容属实：自交以及错误的 degree / winding number 会造成局部最优；多峰 normalizing flow「可能」绕过这些障碍，两个领域上训练更稳、更常收敛到同胚 encoder。"
+   },
+   {
+    "citation": "Stovold et al. 2026, Visualising the Attractor Landscape of Neural Cellular Automata (arXiv 2604.10639)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2604.10639v2",
+    "correct_details": "James Stovold, Mia-Katrin Kvalsund, Harald Michael Ludwig, Varun Sharma, Alexander Mordvintsev；v2 2026-06-10；Accepted to ALIFE 2026",
+    "note": "宏观层面连接两个吸引子的稳定环有持续同调支持（Sec.4.1, Fig.5–6）。纹理 NCA 的环面只是试探性推断：在 20×20 窗口子采样下看到两个持久环和一个空洞，原文说 likely a torus（Sec.4.2, Fig.9）。没有在拓扑上学世界模型。"
+   },
+   {
+    "citation": "Hudcová et al. 2026, Visualizing the Structure of Lenia Parameter Space (arXiv 2601.01932)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2601.01932",
+    "correct_details": "Barbora Hudcová, František Dušek, Marco Tuccio, Clément Hongler；2026-01-05；2 页；nlin.CG",
+    "note": "自动分成四个定性动力学类，检测移动 soliton，提供 lenia-explorer 网站；摘要不提 TDA。"
+   },
+   {
+    "citation": "TD-JEPA 2026 (arXiv 2607.25337)：不对称距离进入潜世界模型做规划",
+    "status": "confirmed",
+    "url": "https://arxiv.org/html/2607.25337v2",
+    "correct_details": "Temporal-Distance JEPA: Plan-Aware Representation Learning for Latent World Model Predictive Control；Jiaxin Bai, Jiaxuan Xiong（香港浸会大学）；v1 2026-07-28，v2 07-29；主类 cs.CL（交叉 cs.RO）",
+    "note": "头部是 MRN 形式（Eq.5：对称欧氏距离加上逐坐标 max-ReLU 的不对称残差），没有声称满足三角不等式，MRN 被归给 Wang et al. 2023。骨干是 LeWM（SIGReg），规划器是 CEM 和 iCEM。不做任何物理解释。"
+   },
+   {
+    "citation": "Kim 2026, A Path-Space Formulation of Prediction in World Models (arXiv 2606.28751)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2606.28751",
+    "correct_details": "Gunn Kim（单作者）；2026-06-27；cs.LG（交叉 cond-mat.stat-mech）；13 页",
+    "note": "内容属实。实验是小 attention 模型，据检索摘要是二维玩具系统；不涉及拟度量。"
+   },
+   {
+    "citation": "Myers et al. NeurIPS 2025, Offline GCRL with Quasimetric Representations (arXiv 2509.20478)",
+    "status": "confirmed",
+    "url": "https://neurips.cc/virtual/2025/poster/118249",
+    "correct_details": "Vivek Myers, Bill Chunyuan Zheng, Benjamin Eysenbach, Sergey Levine；NeurIPS 2025 poster；arXiv v2 2025-12-02",
+    "note": "第一轮作者列表漏了 Zheng。"
+   },
+   {
+    "citation": "Zweig et al. 2026, Learning Lineage-guided Geodesics with Finsler Geometry (arXiv 2603.16708)",
+    "status": "confirmed",
+    "url": "https://arxiv.org/abs/2603.16708",
+    "correct_details": "Aaron Zweig, Mingxuan Zhang, David A. Knowles, Elham Azizi；v1 2026-03-17，v2 2026-07-10；无 venue",
+    "note": "做的是群体分布插值，不涉及熵产生、时间箭头或世界模型。"
+   },
+   {
+    "citation": "Vesessook & Yang, ICLR 2026 tiny paper：V-JEPA2 的 TRA 随耗散强度平滑变化",
+    "status": "details_differ",
+    "url": "https://iclr.cc/virtual/2026/10018041",
+    "correct_details": "[TINY PAPER] Temporal Reversal Asymmetry: A Physics-Inspired Metric for Evaluating World Models；Kanpat Vesessook, Kevin Yang；ICLR 2026「The 2nd Workshop on World Models」poster",
+    "note": "「平滑变化」不准确。页面说 TRA 随耗散强度连续变化但不单调：在中等耗散处达到峰值，可逆过程和很快停下的运动都接近 0。VideoMAE V2 的 TRA 为负，MVD 和 Hiera 接近 0。共 380 个物理模拟。"
+   },
+   {
+    "citation": "Rahaman et al. 2019, Learning the Arrow of Time (arXiv 1907.01285)",
+    "status": "details_differ",
+    "url": "https://iclr.cc/virtual_2020/poster_rylJkpEtwS.html",
+    "correct_details": "已正式发表为 ICLR 2020 poster，标题 Learning the Arrow of Time for Problems in Reinforcement Learning；Nasim Rahaman, Steffen Wolf, Anirudh Goyal, Roman Remme, Yoshua Bengio。arXiv 1907.01285 注明较短版本发在 ICML 2019 workshop。",
+    "note": "PDF 核对：Sec.3.1 定义 η(s→s′) = h(s′) − h(s)，反对称且可加；η 相等不保证可逆，非遍历环境尤其如此；数据用均匀随机策略收集；假设 MDP 是耗散的；与 JKO 自由能（Lyapunov 泛函）对照。"
+   },
+   {
+    "citation": "Seif, Hafezi, Jarzynski 2019, Machine learning the thermodynamic arrow of time（第一轮记为「后发 Nature Physics 2021」）",
+    "status": "unverifiable",
+    "url": "https://arxiv.org/abs/1909.12380",
+    "correct_details": "Alireza Seif, Mohammad Hafezi, Christopher Jarzynski；arXiv 2019-09-26 v1",
+    "note": "arXiv 页没有 journal-ref，Nature Physics 2021 仍未确认。摘要也没有点名耗散功，只说算法发现了背后的热力学机制和相关可观测量。"
+   }
+  ],
+  "grade_updates": [
+   {
+    "cell": 0,
+    "old_grade": "n/a",
+    "new_grade": "n/a",
+    "reason": "地基格不评撞车。前提已被部分测过：Ivashkov 2026 的涌现环面、DySIB 2026 的 R² 环形表示、Bao 2026 在 DreamerV3 里找到的类能量不变量。但这三篇都没有持续同调定量、跨尺寸与跨种子统计，也没有在同一世界上对照 decoder 与 decoder-free，更没有 wrapped 角度粘合测试。novel 维持 low，格 0 照常首凿。"
+   },
+   {
+    "cell": 1,
+    "old_grade": "B+",
+    "new_grade": "B+（原测地线命题不变）；按新 must 改写为「预测 Fisher / Cauchy–Green 障碍图」则约 B−",
+    "reason": "测地线世界模型这条线没有新增撞车：2026 年的新检索只找到已知项（GeoWorld、Temporal Straightening、Ale 2025）和 Nguyen 2026 的 LeWM 规划工作。改写版方面：FTLE / Cauchy–Green 已在 neural ODE 分类器（Wöhrer & Kuehn 2026）、神经 flow-map 代理（Sahoo & Berger）、储备池（Sisodia & Jalan 2026）上算过，Wang 2026 从 WM Jacobian 取的是全局 Lyapunov 谱。但没有人从学到的动作条件世界模型算局部 Cauchy–Green / FTLE 场来定位墙、障碍或碰撞，也没有「predictive Fisher metric」世界模型：5 次检索（含 1 次 extended）加 2 次检索均零命中。"
+   },
+   {
+    "cell": 4,
+    "old_grade": "B+",
+    "new_grade": "A−",
+    "reason": "(1) GD-VAE 表 3 已在相同潜维数下给出「带流形投影的 AE 长时程误差比欧氏 AE 低 8–16 倍」（短时程反而输），格 4 的核心预测已部分被做过。(2) CHyLL（2025-12）在混合系统上完成了「从数据跳变得到粘合 → 学拓扑正确的嵌入与潜 neural ODE → ripser 验 Betti 数 → 长程 MSE 远低于欧氏 Neural ODE 和 Koopman」，就是「先发现再学」闭环的混合系统版。(3) Floryan & Graham（NMI 2022）的 atlas 法提供了不需要发现拓扑的替代路线。剩下的空位：光滑系统上用持续上同调选潜流形；「拓扑 vs 流形约束」的归因；Lenia 吸引子拓扑；把可训练性当实验变量。"
+   },
+   {
+    "cell": 8,
+    "old_grade": "A−",
+    "new_grade": "A",
+    "reason": "第一轮没有覆盖统计物理侧。NEEP（PRL 2020）学的就是反对称两点函数 h(s,s′)−h(s′,s)，最优解等于逐跃迁随机熵产生，与解析值 R²≈0.99。LENS（2025，Eysenbach 是作者之一，代码改自 JaxGCRL）用「势差项 B + 反对称环流项 A」参数化前向 / 反向分类器的 logit 来估计 EP 率，正好是格 8 预注册里「退化为 η + 非势能残差」的分解。FiRL（ICML 2026）已把 Finsler 代价 F(x,v) 和满足三角不等式的不对称路径代价放进 RL。「不对称场 = 时间箭头地图，并与熵产生定量对照」这一主张在对象、用途、主张三方面都已有直接先例，差的只是「拟度量 / 世界模型」这个名字。"
+   }
+  ],
+  "must_updates": [
+   {
+    "cell": 0,
+    "proposal": "判据定量化，再加五条。(1) 真值 H1 由数据的能量范围决定：同时造「只有摆动」的数据（相空间区域是圆盘，H1=0）和「含旋转」的数据（区域是环，H1=1）；持续同调结果要对照零分布，并报告跨种子的出现率。(2) 能量分三级判：低容量冻结线性探针（Internò 2026）→ 无标签不变量搜索（Bao 2026）→ donor-swap 因果干预（Liao & Cao 2026）。只有通过第三级才算「模型用到了能量」，并且在解码后的物理能量上评（Wang 2606.24945）。(3) 把目标函数当因子：重建 vs 无 decoder（JEPA / InfoNCE）× 正则器（SIGReg 高斯目标 vs 无）× 预测时程 k。(4) 加「原始 wrapped 角度 θ∈[−π,π) 输入」条件，测粘合；这一点目前没有先例。像素观测本身已是 S¹ 的连续像，测不出粘合；带 decoder 时重建 wrapped 角度会反过来逼出切口。(5) 写明：二维及以上的欧氏潜空间可以无切口地承载 S¹×R，所以单摆上出现 H1 并不说明需要几何约束。",
+    "reason": "依据：Liao & Cao 2026（可解码不等于被使用）；Internò 2026（高容量探针会污染测量）；Bao 2026（无标签不变量搜索可行）；Nicollier 2026（目标与正则的几何会扭曲潜结构）；Kvalheim & Sontag 2025（障碍只出现在 ℓ=m 的闭流形上，且只体现在最坏误差）。「能量范围决定真值 H1」是本轮推导：E<2mgl 的子水平集是可缩的圆盘，E_max>2mgl 时才绕柱面一圈。"
+   },
+   {
+    "cell": 1,
+    "proposal": "把「度量钉在 p(o|z) 的 Fisher 拉回上」改为「钉在预测分布 p(o_{t+k}|z,a) 的 Fisher 拉回上」，即 k 步 Cauchy–Green 张量 C_k = J_{F^k}ᵀ g_obs J_{F^k}。读出量改为 FTLE / LCS 场和 log det C_k（后者在连续时间下沿轨迹等于 2∫div f dt 加端点体积项，与格 15 同源，体积形式由 g_obs 给定），不再用 decoder 拉回的截面曲率。必带四个对照：(a) 固定 σ 的 decoder 拉回作阴性对照，应对墙平坦；(b) 数据密度 / 支撑图，排除「墙内无数据」的混杂；(c) 模拟器给出的真值 FTLE 场；(d) 不变性预测：C_k 是观测空间量的拉回，对潜空间重参数化不变，所以 Temporal Straightening（ICML 2026）训练前后的障碍图应该一致，这是一条可证伪的预测。与 TS 的规划对比保留，但主命题改成诊断量。另须注明：学到的平滑模型会抹平接触处的不连续（Suh et al. ICML 2022 的类比警示），FTLE 脊的位置要对照模拟器真值校准。考虑与格 15 / 12 合并为「Cauchy–Green 世界模型诊断」。",
+    "reason": "固定 σ 的 Gaussian decoder 的 Fisher 拉回就是 J_μᵀJ_μ/σ²（Arvanitidis 2022 的 JᵀFJ 形式的特例），只描述观测映射：智能体贴着墙移动和远离墙移动时像素变化相同，墙对这个度量不可见。若 σ(z) 学成离开数据就变大（Latent Space Oddity 一类），墙内没有数据会让墙「发亮」，但那反映的是数据支撑，不是动力学。照原 must 做，曲率要么对障碍盲，要么被支撑混杂，两种情况下 kill test 的结论都与动力学无关。Cauchy–Green 方案可辨识（它是观测度量的拉回，对潜重参数化不变），文献空位也已确认。"
+   },
+   {
+    "cell": 4,
+    "proposal": "(1) 单摆不能当拓扑错配的试验场：S¹×R ≅ R²∖{0}，R² 和 R³ 都不是错拓扑。改用 ℓ=m 的闭流形：只用角度的 S¹ 配 ℓ=1；T²（双摆两个角或 Reacher 两个关节角）配 ℓ=2，并用 ℓ=3 的欧氏潜空间作「可嵌入」对照。(2) 加归因对照：同维数、错拓扑的流形投影 vs 对拓扑的投影 vs 无投影，用来区分「拓扑」和「约束在某个流形上」。(3) 除平均长程误差外，报告最坏 / 尾部误差和穿越切口的轨迹数。(4) 基线加上随机欧氏模型（GD-VAE 里 VAE 噪声在环面上追平了拓扑模型）、atlas 法（Floryan & Graham 2022）和 CHyLL。(5) 拓扑判定用持续上同调圆坐标或 cup-length，不只看 Betti 数。(6) 「先发现再学」只在光滑系统和 Lenia 吸引子上主张新颖性；混合系统已被 CHyLL 占了。",
+    "reason": "GD-VAE 表 3 和 CHyLL 表 1 已覆盖原预测的主体。GD-VAE 的长程收益出现在欧氏潜空间可以嵌入该流形的维数，归因不清。Kvalheim & Sontag 说明平均误差不受拓扑保护。S¹×R 可以嵌入 R²，DySIB 就是用 R² 潜空间。Betti 数不能唯一确定流形（Ivshina 等 2025）。atlas 法是现成的、不需要发现拓扑的替代。"
+   },
+   {
+    "cell": 8,
+    "proposal": "主命题收窄为：「规划用拟度量（最短时间 / 最小控制代价，满足三角不等式）的不对称部分，是否、在什么条件下追踪熵产生」。用 NEEP / LENS 作 EP 估计基线和对照，它们已经学出等于 EP 的反对称两点函数，LENS 还拆出了势差项和环流项。要先写一条引理（本轮推导，待核）：若拟度量取 −log p_k(b|a) 型（对比式或 occupancy 式距离），且状态变量是偶宇称、系统处于稳态，那么 d(a,b) − d(b,a) = log[p_k(a|b)/p_k(b|a)]，由涨落定理就等于 k 步介质熵产生的相反数；用边缘归一化的对比 critic 时，它的反对称部分就是总熵产生。这种情况下结论只是推论，不是发现，新颖性只能来自不是对数似然比的最短时 / 最小代价拟度量。真值必须重新定义：带 FDT 噪声的阻尼单摆在稳态是平衡态，EP=0；角速度是奇宇称，时间反转时必须翻转 ω（见 Kim, Lee, Jeong PRR 2022 那条线，页面 403 未核）；确定性阻尼没有有限的随机 EP。可选的真值是瞬态弛豫（EP = −dF/dt / T）、恒力矩驱动的 NESS，或耗散率 γω²，要写明用哪个。相关性沿实际轨迹逐点计算，不对全局阻尼系数计算，因为 TRA 对耗散是非单调的。Finsler 部分改为：从被动轨迹学 Randers 一形式 β 作为局部时间箭头，与局部 EP 对照，并引用 FiRL（ICML 2026）。",
+    "reason": "NEEP 和 LENS 已经占住「反对称场 = 熵产生」并做了定量对照，LENS 的 B/A 分解就是格 8 的 η / 残差分解。FiRL 已经占住 RL 里的 Finsler 形式化。Vesessook & Yang 的 TRA 对耗散非单调。cells.yaml 里阻尼单摆的「真实熵产生率」目前没有良定义（稳态是平衡态、速度是奇宇称、确定性极限下发散），照原预测跑等于测一个不存在的真值。"
+   }
+  ],
+  "searches_executed": [
+   "persistent homology latent space world model emergent topology learned representation dynamics",
+   "pendulum autoencoder latent space circle topology S^1 learned representation discontinuity angle",
+   "JEPA latent prediction learned representation topology torus circle emergent periodic structure without decoder",
+   "self-supervised latent dynamics model wrapped angle input learns circle topology contrastive predictive no reconstruction pendulum",
+   "\"persistent homology\" reinforcement learning agent representation \"Betti\" latent space topology Dreamer OR \"world model\" analysis",
+   "\"Topological obstructions to autoencoding\" citing latent dynamics periodic system encoder learned cylinder torus 2025 2026",
+   "finite-time Lyapunov exponent computed from learned neural ODE surrogate model Lagrangian coherent structures",
+   "Cauchy-Green tensor learned dynamics model latent space obstacles barriers world model reinforcement learning",
+   "\"predictive\" Fisher information metric latent space dynamics pullback \"transition model\" OR \"world model\" Riemannian geometry",
+   "Lagrangian coherent structures FTLE ridges from deep learning surrogate flow map neural network transport barriers data-driven",
+   "Fisher information metric on state space induced by transition kernel p(s'|s) Markov dynamics representation learning reinforcement learning dynamics-aware metric",
+   "[extended] learned world model latent dynamics finite-time Lyapunov exponent OR Cauchy-Green OR \"coherent structures\" detect obstacles walls contact collisions sensitivity map",
+   "geodesic world model learned Riemannian metric latent space curvature obstacles planning 2026 arXiv",
+   "persistent homology infer state space topology from trajectories then choose latent manifold learn dynamics on it automatic topology selection neural ODE",
+   "Floryan Graham data-driven discovery of intrinsic dynamics charts atlas manifold unknown topology Nature Machine Intelligence",
+   "grid cells toroidal topology persistent homology neural population manifold then latent dynamics model fitted on torus",
+   "quasimetric asymmetric distance learned from trajectories entropy production irreversibility time-reversal asymmetry comparison",
+   "neural estimator for entropy production NEEP antisymmetric function of state pairs learning entropy production via neural networks",
+   "reversibility-aware reinforcement learning irreversibility estimation follow-up 2025 2026 learned irreversible transitions safe exploration",
+   "classifier trained to distinguish forward and time-reversed trajectories implicitly estimates local entropy production rate Physical Review Research",
+   "quasimetric world model latent dynamics model-based planning Dreamer OR TD-MPC asymmetric distance 2026",
+   "Finsler OR Randers metric learned from dynamics neural network asymmetric drift one-form time arrow trajectories 2025 2026",
+   "contrastive temporal representation learning arrow of time entropy production reinforcement learning goal-conditioned irreversibility representation",
+   "probing learned world model latent for energy conservation pendulum linear probe physical quantities decodable smoothness representation",
+   "world model irreversibility entropy production latent dynamics time-reversal asymmetry measured learned model 2026",
+   "multi-chart atlas latent dynamics model unknown topology learned charts transition maps neural ODE 2025 2026 world model",
+   "Eysenbach contrastive representation entropy production time-reversal temporal distance stochastic thermodynamics 2026",
+   "neural network dynamics model raw angle input wrap-around discontinuity at pi learns to identify -pi and pi periodic latent without sin cos encoding",
+   "recurrent network trained on path integration or prediction emergent ring attractor torus persistent homology depends on hyperparameters no free lunch grid cells"
+  ],
+  "coverage_confidence": "格 0：中高。2026 年的 WM 能量探针与 JEPA 几何线补齐了；但「WM 潜空间持续同调的定量测量」和「wrapped 角度在无 decoder 训练下是否被粘合」各搜 2–3 次均零命中，可能以别的措辞存在于神经科学或物理 ML 里（例如 ring attractor 文献，本轮最后一次检索没有找到 hyperparameter 依赖性的直接证据）。格 1：中。FTLE / LCS / Cauchy–Green 与世界模型的组合搜了 5 次（含 1 次 extended），predictive Fisher 搜了 2 次，只找到相邻用法；机器人接触敏感性文献只做了类比引用。格 4：中高。CHyLL、atlas 法、网格细胞环面线已补；Lenia 侧本轮没有再搜。格 8：拟度量主线高；EP 估计侧中高（找到 NEEP、LENS，奇宇称那篇 APS 页面 403 未核；没有逐篇查 TUR 类估计器）；Finsler 侧中（找到 FiRL，另有一篇 Technion 学位论文和 IABM 预印本只见于检索摘要）。WebSearch 共 29 次（28 standard + 1 extended），未被拒绝，没有用 HF 兜底；页面核对约 45 次。",
+  "summary": "共 29 次 WebSearch（无拒绝，未用 HF 兜底）和约 45 次页面核对。第一轮的 21 条引用全部找到。其中 3 条细节有误：GD-VAE 表格的读法、TRA 的单调性、Rahaman 已正式发表于 ICLR 2020；另有若干作者遗漏（Batson、Esmaeili、Myers）。Seif et al. 的 venue 仍无法核实。四个格子各有一条改变决策的发现。\n\n格 0：前提已被部分测过。\n- Ivashkov 2026 的环面只是 PCA 目测，而且 SIGReg 基线的角度探针 R² 0.999，反而高于 SMWM 的 0.946。\n- DySIB 2026 的 R² 环形同样是目测，并且是十个种子里挑最好的一个。\n- Bao 2026 在 DreamerV3 的单摆模型里找到了跨种子一致的类能量不变量。\n- 新警示：Liao & Cao 2026 表明能量线性可解码（R²≈1），但对下一步预测没有因果作用。\n- 两个问题零命中：WM 潜空间的持续同调定量测量；原始 wrapped 角度在无 decoder 训练下能否被粘成圆。像素观测本身已是 S¹ 的连续像，测不出粘合。\n- 两个设计陷阱（我的推导，不是文献）：S¹×R ≅ R²∖{0}，所以二维欧氏潜空间可以无切口地承载单摆；真值 H1 取决于能量范围，只摆动时是圆盘（H1=0），含旋转时才是环（H1=1）。\n\n格 1：新顾虑成立，而且问题更大。\n- 固定 σ 的 decoder 拉回对墙是平坦的；方差感知的版本会因为墙内没有数据而让墙「发亮」，这是数据支撑造成的混杂，不是动力学。\n- 动力学版本（预测分布的 Fisher 拉回，即 k 步 Cauchy–Green / FTLE）在学到的动作条件 WM 上没人做过。FTLE 只在 neural ODE 分类器、flow-map 代理和储备池上算过。\n- 原测地线命题仍为 B+，改写版约为 B−。\n- 引用核对：Friedl ICLR 2025、Friedl 2026、Arvanitidis AISTATS 2022、Koide 的原话都属实；Temporal Straightening 已是 ICML 2026，LeCun 是第 6 作者，末位作者是 Mengye Ren。\n\n格 4：B+ → A−。\n- GD-VAE 表 3：同维数下，带流形投影的 AE 在 t=1s 的误差比无投影的低约 16 倍（柱面）和 7.8 倍（环面），但短时程反而输；GD-VAE 本身从来不是最优。大胜出现在欧氏潜空间本来就能嵌入该流形的维数，所以更像流形约束的收益，不一定是拓扑本身。\n- CHyLL 已经做了混合系统版的「发现粘合 → 学流 → 持续同调验 Betti 数 → 长程胜出」。\n- Kvalheim & Sontag：拓扑障碍只体现在最坏误差，不体现在平均误差。\n\n格 8：A− → A。\n- NEEP（PRL 2020）和 LENS（2025，Eysenbach 是作者之一）已经学出等于熵产生的反对称两点函数，并与解析值定量对照；LENS 还拆出了势差项和环流项，正是格 8 预注册的分解。\n- FiRL（ICML 2026）已把 Finsler 代价放进 RL。\n- 剩下唯一的真问题：规划用的最短时间 / 最小代价拟度量，其不对称部分是否追踪熵产生。对比式 −log p 型距离的不对称部分由涨落定理直接等于熵产生（我的推导），只是推论。\n- 物理陷阱：带 FDT 噪声的阻尼单摆在稳态时熵产生为 0；角速度是奇宇称，时间反转必须翻转 ω；确定性阻尼没有有限的随机熵产生。真值需要重新定义。"
+ }
+]
