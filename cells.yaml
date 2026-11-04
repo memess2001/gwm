@@ -1,0 +1,415 @@
+# cells.yaml — 几何世界模型生成器的活状态
+# 版本 0.3 · 2026-11-04（第一轮文献审计五路全部并入）· 由 Claude Code 维护；每次 kill test 后更新 status / confidence / notes，并写明理由。
+#
+# 字段说明
+#   structure   几何结构（原语 A）        slot        放在世界模型的哪个部位（原语 B）
+#   source      几何从哪来                 readout     不变量用来干什么（diagnose / predict / plan / explain）
+#   learn/fix   学什么 / 固定什么
+#   prediction  一句可以错的话（预注册的骨架）
+#   kill_test   最便宜的处决办法（世界、对照、判据）
+#   cost_days   算力 + 人力的时间盒估计
+#   confidence  exists（成立）/ novel（新颖）/ yields（出结果）∈ {low, lowmid, mid, midhigh, high}；novel 已按审计更新
+#   status      unexplored | lit_killed | thought_killed | alive | dead | merged_into:<id>
+#   neighbors   结果会相互更新先验的格子
+#   exits       幸存后的外部 benchmark 候选
+#   collision   审计撞车等级 A（直接撞车）/ B（近邻）/ C（远邻），带 +/−；pending = 审计未完成
+#   nearest     最近邻工作（短；全文见 literature_audit.md）
+#   must        审计后"要活下来必须做到"的条件
+#
+# 评分（选下一个凿哪格）：score = P(alive) * V(alive) / cost_days + centrality(neighbors 数)
+# 审计后的大原则（五路报告共同指向）：物理/几何结构放进世界模型后，(1) 收益归因要专门消融（Gruver 2022：HNN 收益不来自辛结构），
+# (2) 不变量必须对潜空间重参数化稳健（GENERIC-FNO 的 gauge 警示），(3) 等变/结构只保证误差平坦不保证误差小（Wang 2026）。
+# 所以每格的交付形式统一为：可测不变量 + 解析真值 benchmark + 归因消融。
+
+schema_version: 0.3
+
+naming_note: >
+  "Geometric World Models" 已被 GeoWorld（Zhang, Li, Reid, Hartley, CVPR 2026, 双曲 JEPA）占用，
+  且 2025–26 的 "geometric world model" 多指 3D 一致的视频世界模型（Aether, Geometry Forcing 等）。
+  "information-geometric world models" 与 "invariant-structured world models" 目前零命中，可用。
+
+axes:
+  structures: [metric, connection, symplectic_contact, topology, singularity, klein_hierarchy, discrete_curvature, order_dually_flat, scale]
+  slots: [state_space, distribution_over_states, theory_space, action_space, observation_map, time_axis, scale_axis]
+  sources: [intrinsic, pullback_from_observation, pullback_from_cost, from_distinguishability]
+  readouts: [diagnose, predict, plan, explain]
+  operators: [dualize, pullback, couple, contrast, flow_along_parameter]
+
+worlds:
+  pendulum:        {truth: "S^1 x R; symplectic; energy conserved; div = 0", obs: [angle, pixels64]}
+  double_pendulum: {truth: "T^2 x R^2; chaotic; energy conserved", obs: [angles, pixels64], held_out: true}
+  toggle_grid:     {truth: "hidden door state; non-commuting actions; holonomy around switch loops", obs: [grid]}
+  wright_fisher:   {truth: "selection = e-geodesic, migration = m-geodesic; RPS variant is rotational", obs: [frequencies]}
+  gray_scott:      {truth: "pointwise rule with translating gliders; attractor topology; natural coarse-graining", obs: [field]}
+  lenia:           {truth: "same as gray_scott, richer creatures; standard Lenia = pure pointwise reweighting", obs: [field]}
+  flow_lenia:      {truth: "same growth field as Lenia but mass-conserving pure transport (Plantec et al. 2025) — ground-truth 'transport' extreme for cell 3", obs: [field]}
+  ising:           {truth: "known RG flow direction and fixed point — calibration world for cell 10", obs: [spins]}
+  kuramoto:        {truth: "torus; sync transition at known K_c", obs: [phases], held_out: true}
+  damped_pendulum: {truth: "div = -2*gamma (uniform); asymmetric cost", obs: [angle]}
+  friction_patch:  {truth: "divergence localized to patch", obs: [state]}
+  lorenz:          {truth: "constant div = -(sigma+1+b)", obs: [state]}
+  van_der_pol:     {truth: "state-dependent div = mu(1-x^2)", obs: [state]}
+  mechanism_pair:  {truth: "known causal direction; independent mechanisms", obs: [x, y]}
+  camera_ladder:   {truth: "same scene under Euclidean / affine / projective / homeomorphic observation maps", obs: [pixels64]}
+
+cells:
+
+  - id: 0
+    name: 公共前提：潜空间能否承载几何结构
+    structure: none
+    slot: state_space
+    source: intrinsic
+    readout: diagnose
+    learn: MLP 世界模型（对照组本身）
+    fix: 无
+    invariant: 潜空间的 H1 持续同调；能量是否可被平滑解码
+    prediction: 中等尺寸下 H1 出现但跨种子不稳定；能量可解码但不平滑。
+    kill_test: pendulum（角度 + 像素）；4 个尺寸 × 3 种子；持续同调 + 能量解码探针。若 H1 从不出现且能量不可平滑解码 → 格 1/4/9/15 先验下调，几何约束从可选变必需。
+    cost_days: 1
+    confidence: {exists: high, novel: low, yields: high}
+    status: unexplored
+    neighbors: [1, 4, 9, 15, 5]
+    exits: []
+    collision: n/a
+    nearest: "Batson 2021 Topological Obstructions to Autoencoding（S^1 压到一维必出 break point）；Ivashkov 2026 Sensorimotor WM 在 Reacher 上自发观察到 flat 2-torus（涌现对照）；DySIB 2026 从单摆视频学出与相空间一致的二维表示"
+    must: 判据定量化（H1 持续度阈值；能量解码平滑度指标）
+    notes: 不是一个想法，是所有想法的地基。首凿。
+
+  - id: 1
+    name: 曲率即规律（测地线世界模型）
+    structure: metric
+    slot: state_space
+    source: pullback_from_observation   # 审计后：度量必须钉在 p(o|z) 的 Fisher 拉回上，自由学 SPD 度量只作消融
+    readout: predict
+    learn: encoder/decoder 与动作偏离项；度量 = 观测模型的 Fisher 拉回（Arvanitidis 2022 工具）
+    fix: 自由演化 = 测地线方程；度量来源固定
+    invariant: 曲率场；"曲率图 = 障碍图"
+    prediction: 含障碍的世界里，Fisher 拉回度量的截面曲率热图与真实障碍布局对齐（IoU / 相关显著高于零分布）；无阻尼单摆上 100 步 rollout 的能量漂移低于同参数 MLP；有阻尼时纯版本失败（失败本身是诊断）。
+    kill_test: pendulum + PointMaze/带墙网格；对照 = 同参数 MLP 与 Temporal Straightening（JEPA + 拉直正则）；4 尺寸；曲率-障碍对齐 + 100 步 RMSE/能量漂移。曲率图与障碍无关、且任一尺寸不优于对照 → 死。
+    cost_days: 3
+    confidence: {exists: high, novel: lowmid, yields: mid}
+    status: unexplored
+    neighbors: [6, 15, 4, 9]
+    exits: [physics_discovery_datasets, worldbench_param_estimation]
+    collision: B+
+    nearest: "Friedl et al. ICLR 2025 + 2026 续作（潜空间学 SPD 度量 + Euler–Lagrange + 外力，机器几乎同构）；Beik-Mohammadi/Klein/Xu（障碍=度量、运动=测地线，机器人运动生成）；Wang et al. 2026 Temporal Straightening（JEPA 里反向压平曲率）；Koide & van de Venn 2026（同一恢复力可归为曲率或非度量性 → 仅凭轨迹曲率与力不可辨识）；GeoWorld CVPR 2026 占名"
+    must: 度量钉在 Fisher 拉回上以解决可辨识性；拿出"曲率图=障碍图"不变量；正面打败 Temporal Straightening；改名
+    notes: 技术撞车最重；只有满足 must 才值得投入。合并候选 1+6（带挠率）。
+
+  - id: 2
+    name: 下降即规律（自然梯度流世界模型）
+    structure: metric
+    slot: distribution_over_states
+    source: intrinsic
+    readout: diagnose
+    learn: 统计流形上的标量势 F；训练损失可取 de Alfaro 等的 natural deviation
+    fix: Fisher 度量；动力学 = −G⁻¹∇F（+ 动作作为外加驱动）
+    invariant: Fisher 度量下的 Hodge 分解：旋度 / 梯度比；natural deviation 的最优值 = "世界有多像一个 mirror-descent 学习者"
+    prediction: 纯选择 replicator 世界旋度 ≈ 0 且恢复适应度景观（到单调变换）；RPS replicator 旋度占主导且梯度流 WM 误差高于 MLP（正确报出"不是下降世界"）；带突变的 replicator 落在两者之间且单调。
+    kill_test: wright_fisher 三个变体（景观选择 / 带突变 / RPS）；拟合 F；Fisher 度量下 Hodge 分解（固定边界条件）；50 步误差。旋度比分不开三个世界 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: lowmid, yields: high}
+    status: unexplored
+    neighbors: [7, 5]
+    exits: [physics_discovery_datasets]
+    collision: B+
+    nearest: "de Alfaro, Raab, Liu 2023 Conjugate Natural Selection（replicator = Bayes = Fisher 自然梯度流，定义 natural deviation）；Friston 2019 FEP f=(Q−Γ)∇ℑ（把下降+打转当公理）；JKOnet 系列（Wasserstein 度量下的同一模板）；HHD-GP NeurIPS 2024、Velde、ddHodge Nat Commun 2025（Hodge 诊断成熟）；Fujiwara 1993"
+    must: 以可估计量立身（学到的 F + 旋度比 + natural deviation），写成"FEP 假设的分解，我们从数据估计并检验"；Hodge 分解要先固定度量与边界条件（可辨识性）
+    notes: 叙事撞车重、技术空位清楚："Fisher 版 JKOnet"没人做。合并候选 2+5。
+
+  - id: 3
+    name: 搬运还是改权（Wasserstein–Fisher–Rao 世界模型）
+    structure: metric
+    slot: distribution_over_states
+    source: intrinsic
+    readout: diagnose
+    learn: 速度场 v 与生长率 r：∂ₜp = −∇·(pv) + pr；比值做成 δ-谱 ratio(δ)（δ 从 0 = 纯 Fisher–Rao 扫到 ∞ = 纯 Wasserstein）
+    fix: WFR 最小作用量决定 v/r 的分配（UPFI 证明不加 WFR 能量正则时 (v, r) 不可辨识，所以比值是"给定 δ 后的最小作用量选择"，不是过程的内在量——这正是把它做成 δ-谱的理由）
+    invariant: 每个过程的搬运/改权比随 δ 的曲线；Flow-Lenia（纯搬运实现）与标准 Lenia（纯改权实现）是同一 growth 场的两个有真值的极端
+    prediction: 同一 growth 场下，WFR 分解对 Flow-Lenia 给搬运占比 ≈ 1，对标准 Lenia 的 glider 给中间值，对静止振子给 ≈ 0；δ-谱曲线形状区分平移 / 生长 / 死亡 / 分裂四类过程，跨种子 CV < 20%。
+    kill_test: 相邻帧之间算 WFR 测地线（Chizat 缩放算法或 WFR-FM）扫 δ；Lenia vs Flow-Lenia 同场对照；glider vs 振子。Flow-Lenia 不给 ≈1、或 δ-谱分不开四类过程 → 死。
+    cost_days: 2
+    confidence: {exists: high, novel: lowmid, yields: high}
+    status: unexplored
+    neighbors: [7, 10, 9]
+    exits: [single_cell_trajectory_inference]
+    collision: A/B
+    nearest: "方法层 A：TIGON（Sha, Nat. Mach. Intell. 2024）→ DeepRUOT（Zhang, ICLR 2025 oral）→ VGFM 2025 → UPFI（Zhang et al. NeurIPS 2025，证明 (v, r) 不可辨识，需 WFR 能量正则）→ WFR-FM（Peng, ICLR 2026，几何、损失、输出与本格完全一致）→ WFR-MFM 2026 → USB 2026；Neklyudov Wasserstein Lagrangian Flows / Action Matching；urOMT（对图像序列做 WFR 拟合但不报比值）。试验场层 B：Flow-Lenia（Plantec, Artificial Life 2025：同一 growth 场的纯搬运解读，不提 OT）；MaCE 2025；Kojima & Ikegami（asymptotic Lenia 写成反应扩散 + glider 方程）；Gallouët 2017（反应扩散可拆成 W 步 + FR 步的数学依据）。Lenia + OT 零命中。"
+    must: 不以"WFR 世界模型"为主张（方法已饱和，会被判增量）；主张只能是 (1) δ-谱指纹 (2) Lenia↔Flow-Lenia 有真值对照 (3) "完整密度曲线下的归因"而非快照推断
+    notes: 方法层撞车最重的一格；但试验场完全空。合并候选 3+7（三种直线）；3+9+10 有理论桥（Cotler–Rezchikov：RG = OT 梯度流；Berman–Klinger：RG 尺度 = Fisher 可分辨性）。
+
+  - id: 4
+    name: 形状即规律（拓扑优先的世界模型）
+    structure: topology
+    slot: state_space
+    source: intrinsic
+    readout: predict
+    learn: 先用持续同调从轨迹发现流形 M（Betti 数、连通分支），自动选潜流形，再学 M 上的流
+    fix: 潜空间的拓扑
+    invariant: Betti 数、连通分支；"拓扑错 → 撕裂指标（encoder Lipschitz 爆点、rollout 不连续计数）→ 误差"的因果链
+    prediction: 严格固定参数量与潜维数时，拓扑匹配（S¹×R）的 WM 长程误差低于欧氏潜空间；强制错误拓扑比欧氏更差；拓扑由持续同调自动判定（Betti 数预测正确）。
+    kill_test: pendulum 像素：潜空间 S¹×R vs R² vs R³（容量严格对齐）；4 尺寸；加错配测试；用 van Hulst 2026 的乘积拓扑先验或 flow 式 encoder 处理优化障碍。所有尺寸欧氏 ≥ 匹配 → 死。
+    cost_days: 2
+    confidence: {exists: high, novel: lowmid, yields: mid}
+    status: unexplored
+    neighbors: [1, 10, 11]
+    exits: [known_topology_datasets_SO3_joint_spaces]
+    collision: B+
+    nearest: "GD-VAE（Lopez & Atzberger 2022/2025：预设 torus/Klein bottle 潜空间 + 动力学 + 拓扑错则撕裂；但拓扑是给定的，动力学半手工，表格里拓扑匹配不总赢）；Esmaeili 2023（几何潜空间的优化障碍：自交、错误 winding number）；Batson 2021；Stovold 2026 NCA 吸引子景观；Hudcová 2026 Lenia 参数空间分类（不用 TDA）"
+    must: 做成"先发现再学"的闭环；容量严格固定（否则命题被 GD-VAE 式反例打掉）；把可训练性做成实验变量
+    notes: Lenia 吸引子拓扑（不是形态拓扑）完全空。
+
+  - id: 5
+    name: 可分辨性即规律（模型流形世界模型）
+    structure: metric
+    slot: theory_space
+    source: from_distinguishability
+    readout: explain
+    learn: 训练好的 WM 在 (state, action)→next-state 预测空间上的 FIM 谱；沿软方向压边界（MBAM）得有效理论
+    fix: 数据分布
+    invariant: 硬 / 软方向；硬方向是否架构无关；硬方向随预测时域的变化（TWIG 式）
+    prediction: 两种架构学同一世界，预测空间里前 k 个硬方向的主角 < 30°（显著高于随机子空间），软方向不对齐；硬方向数 ≈ 世界真实规律数；且该对齐在"同一动力学、不同观测编码"下保持（排除"硬方向 = 数据协方差"）。
+    kill_test: pendulum + toggle_grid；MLP vs 小 transformer/RSSM × 3 种子；1k 样本上用 Jacobian 算预测空间 FIM；主角 vs 随机子空间零分布；两组对照：Karakida 式随机初始化 baseline、Yang 式数据谱打乱 / 换观测编码。对齐不高于零分布，或换编码后对齐消失 → 死。
+    cost_days: 3
+    confidence: {exists: high, novel: mid, yields: low}
+    status: unexplored
+    neighbors: [2, 10, 0, 11]
+    exits: []
+    collision: B
+    nearest: "Mao et al. PNAS 2024（多架构训练轨迹落在同一低维预测流形）；Yang, Mao, Chaudhari ICML 2022（FIM 谱镜像数据谱）；Karakida 2019（随机初始化已 sloppy）；Anderson & Transtrum 2023 TWIG（FIM 时窗谱读分岔结构，同时是格 11 的桥）；Transtrum 2016 / 2024 MBAM 扩展（没人用到学到的 NN 动力学上）；Chis 2014（sloppy ≠ 不可辨识）"
+    must: 在预测空间而非参数空间比较（参数空间路线已被判定不可行）；实验必须能区分"规律"与"数据协方差"；MBAM 取边界极限而非 top-k 截断
+    notes: 最大风险是替代解释，不是撞车。合并候选 2+5、5+11（TWIG）。
+
+  - id: 6
+    name: 联络即规律（联络 / 和乐世界模型）
+    structure: connection
+    slot: action_space
+    source: intrinsic
+    readout: diagnose
+    learn: 每个动作一个平行移动映射 T_a(z)（仿射或小 flow）；沿环路复合；交换子范数 / 小环路和乐谱
+    fix: 不要求度量；不要求动作可逆或成群（对照 WLA / Delliaux 的阿贝尔假设）
+    invariant: 和乐 T_loop − I；非零 ⇒ 隐状态；曲率 = 隐状态的连续探测器
+    prediction: toggle_grid 里经过开关的环路和乐显著非零、不经过的 ≈ 0（AUC > 0.9）；全可观测网格里所有环路 ≈ 0（AUC ≈ 0.5）；系统调隐状态位数时和乐谱单调响应；仅用被动日志时探测失效、加主动闭环探索后恢复（HCDP 的不可辨识性预言）。
+    kill_test: 两个网格世界（有 / 无隐藏开关）+ HCDP 的 LoopGuess 类离散任务；训练平移 WM；随机环路算和乐；AUC；被动 vs 主动数据各跑一遍；对照 = 群结构 WM（Delliaux 2025）必然把和乐压成零。主动数据下仍分不开 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: midhigh, yields: mid}
+    status: unexplored
+    neighbors: [1, 12, 8]
+    exits: [popgym, arc_agi_3_stretch]
+    collision: B
+    nearest: "Zhang et al. 2026-07 HCDP（离散置换群 holonomy ⇔ 需有序记忆的隐状态；被动数据不可辨识，需可重置的主动诊断）；Blattner 2025 Tangential Action Spaces（Ehresmann 联络曲率 = 路径依赖记忆，解析理论）；WLA 2025 / Delliaux 2025 / SMWM（明确假设可交换，非交换列为未做）；Dehdarirad 2026（Lie Group VAE 里交换子作可测量）；Wang & Wang NeurIPS-W 2025 小环路 holonomy 估计器；US Patent 12651010（prior art）"
+    must: 把 HCDP 当离散极限的理论锚点引用，口号不再首创但方法空；主动闭环探索写进命题；可直接复用 Dehdarirad 的交换子协议与 Wang&Wang 的估计器
+    notes: 五格里最空；不需要预测精度更高也能成立；中心性高，首批候选。
+
+  - id: 7
+    name: 两种直线 → α-计（对偶平坦世界模型）
+    structure: order_dually_flat
+    slot: distribution_over_states
+    source: intrinsic
+    readout: diagnose
+    learn: 观测序列 encode 进指数族参数化的对偶平坦潜流形；每段轨迹估计"最直的 α-联络"（连续 α，不是硬分 e/m）；在对应平坦坐标里学线性转移
+    fix: Amari 对偶平坦结构；记号固定（α=±1 哪个是 e/m 在文献里相反，写论文时显式声明）
+    invariant: α(t)：e-直线段 = 世界在做选择 / 贝叶斯更新，m-直线段 = 世界在混合 / 扩散
+    prediction: 迁移 / 选择交替的群体世界里，α 估计恢复相位标签准确率 > 90%，混合段落在中间；对的坐标里线性动力学优于错的坐标，小数据下优于 MLP；Gaussian 情形与 Koide & van de Venn 2026 的闭式 α 一致。
+    kill_test: wright_fisher 合成相位（纯选择段、纯迁移段、混合段）；"e-平坦残差 vs m-平坦残差"随时间的曲线 + α 估计；再推广到 Gaussian 对照闭式。判别 ≈ 随机或无坐标优势 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: midhigh, yields: high}
+    status: unexplored
+    neighbors: [2, 3]
+    exits: [physics_discovery_datasets]
+    collision: B-
+    nearest: "Fujiwara 1993（对偶平坦下 Fisher 梯度流沿对偶测地线收敛、在对偶坐标里线性——'线性'不是新意）；Omiya & Komaki 2025（e/m 测地下降优化）；Koide & van de Venn 2026（Gaussian 上 α-测地线 ↔ SDE，闭式反推 α）；Toussaint 2004（crossover = m-步）；Brigo & Pistone 2016（投影到 e/m 族）"
+    must: 贡献定位为"从数据判别并学坐标"，引 Fujiwara 作线性背书；区分三种直线（m 混合 / e 倍乘 / Wasserstein 搬运）并与 WFR-FM 对照；作为格 2 的诊断前端
+    notes: 最空、最便宜；审计建议第一批做。审计覆盖信心低（搜索预算耗尽），补查 Nakamura 可积梯度系统、Amari 时间序列对偶平坦、Hofrichter–Jost–Tran 专著。
+
+  - id: 8
+    name: 距离即代价且不对称（拟度量 / Finsler 世界模型）
+    structure: metric   # 拟度量 / Finsler（Randers 型）
+    slot: state_space
+    source: pullback_from_cost
+    readout: diagnose
+    learn: 不对称拟度量 d(s,s′)（必须用 IQE / MRN / PQE 结构化头，PQE 证明无约束 MLP 学不到）；Finsler 化：d = ∫F(x,v)，学 Randers 型不对称项 β（一形式）
+    fix: 三角不等式
+    invariant: 不对称场 A(a,b) = d(a,b) − d(b,a) = 时间箭头地图；β 场 = 局部时间箭头
+    prediction: 阻尼单摆上 A 与真实熵产生率（或 Kim 2026 的 Onsager–Machlup 不可逆分量）Spearman > 0.7；无阻尼时 ≈ 0；势能型世界里 A 退化为 Rahaman 2019 的势差 η，残差 = 非势能不可逆性。
+    kill_test: damped vs undamped pendulum + 势能型玩具；从轨迹学拟度量；相关性；与 η 的退化检验。无相关 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: low, yields: high}
+    status: unexplored
+    neighbors: [15, 6]
+    exits: []
+    collision: A-
+    nearest: "Wang & Isola QRL / IQE / PQE；Myers et al. NeurIPS 2025、Zheng 2025、ProQ 2025（quasimetric RL 活跃）；TD-JEPA 2026（不对称距离已进潜世界模型做规划）；Kim 2026 Path-Space Formulation（世界模型里测熵产生 / 不可逆分量）；Rahaman 2019 Learning the Arrow of Time（势差 η）；Zweig 2026 Finsler 轨迹推断；Vesessook & Yang ICLR 2026 tiny（时间反转不对称探针）"
+    must: 主命题只能是"不对称场 = 时间箭头地图 + 与熵产生率定量对照 + Finsler 形式化"，否则会被判为增量——不满足就不做
+    notes: 撞车最重之一。合并候选 8+15（不对称距离与耗散）。
+
+  - id: 9
+    name: 时间即弧长（信息时间世界模型）
+    structure: metric
+    slot: time_axis
+    source: intrinsic
+    readout: predict
+    learn: 用世界模型自身潜后验 q(z_t) 的 Fisher–Rao 度量算 Γ(t)（RSSM 对角高斯有闭式，时钟是模型内生的，不需要真 PDF），累积为信息时间 τ；在 τ 里学动力学
+    fix: 轨迹在统计流形上匀速（注意：匀速是重参数化的结果，不是动力学性质，不要误当 geodesic）
+    invariant: 事件在 τ 中的间距；三元对照下 Fisher 弧长相对欧氏弧长的额外增益
+    prediction: Kuramoto 同步起始、Gray–Scott 斑图起始、Lenia 死亡事件，在 τ 里跨种子的间距变异系数比墙钟时间 t 小一半以上，且比欧氏弧长时间（TOTR 式）仍有显著改善；在 τ 里训练的 WM 在相变处 k 步误差更低。
+    kill_test: 三元对照必做：墙钟时间 / 欧氏弧长时间 / Fisher–Rao 弧长时间，同一事件序列上比事件间距 CV 与 k 步误差。Fisher 不优于欧氏弧长 → 死（说明只是 stiffness 消除的副产品）。
+    cost_days: 2
+    confidence: {exists: high, novel: midhigh, yields: mid}
+    status: unexplored
+    neighbors: [1, 11, 3, 10]
+    exits: [physics_discovery_datasets]
+    collision: B
+    nearest: "物理侧：Kim & Hollerbach PRE 2017（information length L = ∫dt/τ 的定义）；Tenkès, Hollerbach, Kim 2017（以 L 为单位看 logistic 与 Gompertz 更相似——本格命题的雏形）；Kim & Hollerbach 2017 相变 / Guel-Cortez & Kim 2021 突变预测；Sumaya-Martinez 2026 Fisher-Informational Time（概念上 A 级重合：时钟时间 = 累积 Fisher 距离，但纯物理无数据，必须引）；根源 Wootters 1981、Crooks 2007、Ito 2018、Nicholson et al. Nat. Phys. 2020。ML 侧：Mao et al. PNAS 2024（训练轨迹按 Fisher–Rao geodesic 进度重索引）；Zakharov 2020（surprise 门控的主观时间尺度世界模型，是本格的阈值离散版）；TOTR（Standridge 2026，欧氏弧长时间重参数化让 neural ODE 的 loss 降 1–2 个数量级——必须当对照）。"
+    must: 三元对照（墙钟 / 欧氏弧长 / Fisher 弧长）证明是"Fisher"而不是"弧长"在起作用；时钟用模型内生的潜后验 Fisher 度量；引 Sumaya-Martinez 2026 与 Tenkès 2017
+    notes: 三格里最空；风险不是撞车而是可行性（高维 Γ 估计）与平凡性（可能只是 stiffness 消除）。
+
+  - id: 10
+    name: 尺度即时间（重整化群世界模型）
+    structure: scale
+    slot: scale_axis
+    source: intrinsic
+    readout: explain
+    learn: 二维流：(尺度 k, 时间 t) 平面上的模型 F_k；RSMI 式保互信息粗粒化算子 P_k，用可交换性损失 P_k∘f^T ≈ F_k∘P_k 训练
+    fix: 空间局域的粗粒化结构；方向先在已知系统（Ising）上校准（Iso et al. 2018：RBM 学到的"流"与真实 RG 流方向相反）
+    invariant: F_k 随 k 的漂移轨迹与不动点；每层的信息损失谱（Raju–Machta–Sethna 式 Fisher 度量收缩）；Lenggenhager 式"相互作用范围不扩大"检验
+    prediction: Lenia / Gray–Scott 存在一个尺度，粗动力学描述长度明显下降而粗观测量误差增幅 < 10%；斑图区 F_k 收敛到不动点，混沌区发散；glider 自由度在宏观层保留。
+    kill_test: lenia / gray_scott 3–4 级粗粒化；复杂度 vs 误差曲线 + 不动点检验；对照 = NIS+（EI 判据，含 Game of Life）与动力学独立判据，三种判据 head-to-head。无尺度出现"简化且误差不炸"、或 RSMI 判据不优于 EI → 死。
+    cost_days: 3
+    confidence: {exists: midhigh, novel: mid, yields: low}
+    status: unexplored
+    neighbors: [3, 4, 5, 9]
+    exits: []
+    collision: B
+    nearest: "(a) neural RG 线全是平衡态：Koch-Janusz & Ringel Nat. Phys. 2018；Lenggenhager PRX 2020；Gökmen RSMI-NE PRE/PRL 2021（作者明说远离平衡需要时间 buffer，留作未来工作——文献自认的空洞）；Li & Wang 2018；Hou & You 2023；Mehta & Schwab 2014。(b) '尺度即时间'在生成模型里已饱和：Cotler & Rezchikov PRD 2023（RG = OT 梯度流）+ Renormalizing Diffusion 2023；Berman & Klinger 2023/24（RG 尺度 = Fisher 可分辨性）；Marchand WC-RG PRX 2023；VAR 2024（next-scale prediction）；Di Sante PRL 2022（Neural ODE 学 fRG 沿尺度的流——字面上最接近'学到的动力学描述 RG 流'）。(c) 学粗粒化 + 宏观动力学：Israeli & Goldenfeld PRL 2004 / PRE 2006（ECA 的规则→更简规则的 RG 式流，穷举非学习——对'规律随尺度流动'最近）；NIS+（Yang, Zhang, NSR 2024，EI 判据，含 Game of Life，直接竞争基线）；Barnett & Seth 2023 动力学独立；Vlachas LED；Rupe & Crutchfield 局部因果态。"
+    must: 与 VAR / diffusion 的"尺度 = 生成时间"划清——本格的轴上流动的是规律不是像素；方向先在 Ising 上校准；投稿前必须补做 2025–2026 检索（本格审计零次搜索，覆盖信心最低）
+    notes: 只在有空间结构的世界里靠谱。"RSMI 判据 + 时间演化 + 规则沿尺度的流与不动点"这个交集是空的。
+
+  - id: 11
+    name: 奇点即规律（突变 / 分岔地图世界模型）
+    structure: singularity
+    slot: state_space   # × 控制参数
+    source: intrinsic
+    readout: plan
+    learn: 带控制参数输入的 WM；对学到的模型做平衡点延拓；或 TWIG 式 FIM 时窗谱直接读分岔结构（无需 normal form）
+    fix: Thom 突变分类作为拓扑约束（cusp 的 3 支稳态与滞后环）
+    invariant: 奇点地图：哪里会跳、怎么跳；分岔集跨架构一致
+    prediction: 只用亚临界数据训练，延拓预测 Kuramoto K_c 误差 < 10%；cusp 玩具世界恢复 cusp 几何；轨迹型 Transformer WM 做不到（Zhai–Grebogi–Lai 2026 的负面结果作对照）；规划器能在控制参数空间规划一条不穿过 fold 的路径。
+    kill_test: kuramoto + cusp 玩具；亚临界训练；预测 K_c；对照 = Transformer 轨迹模型 + 外推 baseline。误差 > 25% 或不优于外推 → 死。
+    cost_days: 2
+    confidence: {exists: mid, novel: midhigh, yields: mid}
+    status: unexplored
+    neighbors: [9, 4, 5]
+    exits: []
+    collision: B
+    nearest: "Bury et al. PNAS 2021 / Nat Commun 2023（深度学习 EWS + 分岔类型分类）；Kalia et al. 2021 normal form autoencoder（normal form 需预先指定）；van Tegelen 2025（neural ODE 跨分岔外推）；Köglmayr–Räth 2024（最接近'分岔结构当规划器'）；Moriel et al. ICLR 2024（拓扑不变量学 regime 边界）；Anderson & Transtrum 2023 TWIG；Zhai, Grebogi, Lai 2026（Transformer 预测不了分岔崩溃，负面）；Daw & He 2020（唯一的 Thom cusp + NN）"
+    must: 前置问题无人解决——高维观测下如何发现低维控制参数；交付"奇点地图作为世界模型输出并用于规划"
+    notes: 学分岔是热门子领域，但"奇点地图当世界模型/规划器"和 Thom 高余维分类在 ML 里几乎空白。与 Watanabe SLT 无关（那是学习者的奇点）。
+
+  - id: 12
+    name: 离散曲率找瓶颈（Ollivier–Ricci 世界模型）
+    structure: discrete_curvature
+    slot: state_space   # 转移图；有向图上的 ORC 需用 Wiesler 2026 的推广
+    source: intrinsic
+    readout: plan
+    learn: 由学到的世界模型预测的多步转移分布算地标间边的 ORC（L3P 式图结构 WM 为宿主），而非从经验计数估计
+    fix: 图结构
+    invariant: 负曲率边 = 瓶颈；瓶颈集合跨探索策略 / 架构的 Jaccard 一致性
+    prediction: 迷宫网格里 WM 预测的曲率最负的边与门口重合（precision@k > 0.8），且与 min-cut / Laplacian 谱 / VPS 找到的瓶颈集合一致；用瓶颈态当子目标的分层规划优于计数 baseline 与 Saheb Pasand 式曲率探索奖励。
+    kill_test: 迷宫家族；precision@k；与三种非曲率瓶颈定义对照；Micaletto–Nigrelli 的 BF→ORC 界做在线估计。≈ 随机或不优于非曲率定义 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: low, yields: high}
+    status: unexplored
+    neighbors: [6, 8]
+    exits: []
+    collision: A-
+    nearest: "Saheb Pasand, Castro, Bashivan RLC 2025 RLBrew workshop（RL 转移图上算 ORC，负曲率=桥，当探索奖励；tabular，增益小）；Topping et al. ICLR 2022；Fei et al. ICML 2026 VPS（批评转移图路线在高维不可扩展）；Liang et al. ICML 2026（Laplacian 谱瓶颈子目标）；Zhang et al. ICML 2021 L3P（图结构 WM 宿主）；Micaletto & Nigrelli NeurIPS-W 2026（可扩展 ORC 界）"
+    must: 只剩"WM 预测曲率（非经验计数）+ 子目标/分层规划 + 与非曲率瓶颈定义对照"三件事；并正面回应 Fei 2026 的可扩展性批评
+    notes: 撞车最重；Castro 组可能很快推出正式版。优先级下调。
+
+  - id: 13
+    name: 因果正交（信息几何因果世界模型）
+    structure: metric   # 信息几何正交
+    slot: observation_map   # 机制
+    source: intrinsic
+    readout: explain
+    learn: 对学到的转移 f，计算每对潜变量的 IGCI 式正交性残差（诊断量，不当训练信号）；用正交性决定机制切分
+    fix: 原因分布 ⊥ 机制
+    invariant: 每条边的正交性得分；正向 / 反向训练的世界模型的正交性差（Janzing–Chaves–Schölkopf 的时间箭头预言）
+    prediction: 非线性机制 x→y 世界里 IGCI 判向正确率 > 80%（线性情形与 SIC 一致作 sanity check）；正向学的 WM 比反向学的更满足正交；按正交性切分的模块化 WM 在单机制变化时迁移优于 COMET 式 winner-takes-all。
+    kill_test: mechanism_pair 合成家族 + CausalDynamics benchmark（真值因果图）；判向准确率 + 正反向正交性差 + 迁移。判向 ≈ 50% 或无迁移增益 → 死。
+    cost_days: 2
+    confidence: {exists: mid, novel: mid, yields: low}
+    status: unexplored
+    neighbors: [14, 7]
+    exits: [causal_dynamics_benchmark]
+    collision: B
+    nearest: "Besserve et al. CLeaR 2022 SIC（原因⊥机制用于线性时间序列）；Janzing, Chaves, Schölkopf NJP 2016（初始条件⊥动力学律 → 时间箭头）；COMET 2024 / VCD TMLR 2023 / SPARTAN 2024（独立机制→模块化世界模型，但独立性是程序性的）；Kori & Russo 2026（观测下潜因果图只到 Markov 等价类——定向留白）；IG-NGC ICML-W 2025（命名撞：information-geometric causality + time series）"
+    must: 正面处理 IGCI 对噪声与参考测度的敏感性；命名避开 "information-geometric causality"
+    notes: ""
+
+  - id: 14
+    name: Klein 层级（Erlangen 纲领世界模型）
+    structure: klein_hierarchy
+    slot: observation_map
+    source: intrinsic
+    readout: explain
+    learn: 把 G_Euclid ⊂ G_affine ⊂ G_projective ⊂ Homeo 当嵌套假设做模型选择（Otto et al. 的 promote 正则或边际似然）；射影群在齐次坐标上线性，可接 LaLiGAN / LatentLieODE
+    fix: 群层级
+    invariant: 层级残差谱（交比 / 平行性 / 距离 / Betti 残差），不是一个群
+    prediction: camera_ladder 世界里判定的层级与真值一致（判定正确率单独评估）；等变 WM 对未见相机位姿误差比 MLP 低一半（但按 Wang 2026，等变只保证误差平坦，两项指标分开报）；学到的层级能预测 Sergeant-Perthuis 式探索行为（欧氏→不动、射影→靠近）。
+    kill_test: 渲染同一场景四种观测映射；层级判定 + OOD 测试 + 行为预测。判定失败或无 OOD 增益 → 死。
+    cost_days: 2
+    confidence: {exists: high, novel: mid, yields: mid}
+    status: unexplored
+    neighbors: [4, 13]
+    exits: [pdi_bench_projective_residual]
+    collision: B
+    nearest: "LatentLieODE NeurIPS 2026（联合学 Lie 对称与潜 ODE）；LieGAN ICML 2023 → LaLiGAN ICML 2024 → AtlasD ICML 2025 → LieFlow 2025；Otto, Zolman, Kutz, Brunton JMLR 2025（enforce/discover/promote 统一框架）；Barthélémy 2026（从交互发现动作群直积分解 + 可辨识性）；Sergeant-Perthuis 2023（欧氏 vs 射影世界模型改变探索行为，群人选）；Yang et al. eLife 2025（Klein 层级决定感知学习迁移方向）；Wang 2026（等变只保证平坦不保证小）"
+    must: 输出层级残差谱而非群；带层级真值的阶梯 benchmark；判定正确率与预测误差分开评
+    notes: ""
+
+  - id: 15
+    name: Liouville 收缩率当耗散（辛 / 耗散世界模型）
+    structure: symplectic_contact
+    slot: state_space
+    source: intrinsic
+    readout: diagnose
+    learn: 潜向量场（neural ODE）；带明确体积形式 μ（解码器拉回的数据体积或平稳密度）的散度 div_μ f；三种估计器互校（autodiff 迹、Hutchinson 迹、Lyapunov 谱之和）
+    fix: Liouville 定理作为零假设；体积形式固定
+    invariant: 相体积收缩率 = 耗散地图；对潜重参数化的不变性
+    prediction: div_μ f 在无阻尼单摆 ≈ 0、阻尼单摆 ≈ −2γ 且均匀、Lorenz = −(σ+1+b)、Van der Pol = μ(1−x²)、摩擦块世界里集中在摩擦块（IoU > 0.5）；对潜微分同胚稳健；与 Zhu 2025 的 EPR 地图在随机系统上可对照但不重合（说清两种"耗散"）。
+    kill_test: 四个解析散度世界 + friction_patch；从学到的 ODE 算散度；Gruver 式消融（二阶结构 vs 辛结构 vs 散度正则）。定位失败或对重参数化不稳健 → 死。
+    cost_days: 1
+    confidence: {exists: high, novel: lowmid, yields: high}
+    status: unexplored
+    neighbors: [1, 8]
+    exits: [physics_discovery_datasets]
+    collision: B
+    nearest: "Zhu, Soh, Pavliotis, Li 2025 Identifiable learning of dissipative dynamics（从学到的 Langevin 模型画局部熵产生地图）；Wang 2026 Certified World Models（从 WM Jacobian 恢复 Lyapunov 谱，谱之和即平均散度但未单独拿出）；D-HNN、HHD-GP NeurIPS 2024、GENERIC-FNO 2026（分解 gauge 不唯一）；2026 年 Hamiltonian 世界模型四篇（HaM-World、DreamSAC、LaWM、Cui & Ma）均不碰相体积；Gruver et al. ICLR 2022（HNN 收益来自二阶结构，负面）"
+    must: 先堵理论洞——散度在潜重参数化下不是不变量，除非指定体积形式；归因消融控制二阶结构
+    notes: 新颖度低，但是动物园诊断的好组件，也是"解析散度真值 benchmark"的直接来源。合并候选 8+15。
+
+merge_candidates:
+  - [1, 6]       # 带挠率的黎曼几何
+  - [3, 7]       # unbalanced 框架下的三种直线（m 混合 / e 倍乘 / W 搬运）
+  - [8, 15]      # 不对称距离与耗散（A 场 vs div 场 vs EPR）
+  - [2, 5]       # 统计流形上的梯度流与模型流形
+  - [5, 11]      # TWIG：FIM 时窗谱读分岔结构
+  - [3, 9, 10]   # 理论桥：Cotler–Rezchikov（RG = OT 梯度流）+ Berman–Klinger（RG 尺度 = Fisher 可分辨性）——若写统一框架的 position paper，这两组是现成的桥
+
+audit_round_1:
+  date: 2026-11-01
+  coverage: "五路并行，全部返回；WebSearch 会话预算（200 次/轮，共享）在中途耗尽：格 10 零次搜索（靠已知 arXiv 编号逐篇核对）、格 7 两次、格 9 十一次，格 12 及若干补查项覆盖信心偏低，见 literature_audit.md 各节末尾的'未执行搜索词'"
+  collision_summary: {"A/B": [3], "A-": [8, 12], "B+": [1, 2, 4], "B": [5, 6, 9, 10, 11, 13, 14, 15], "B-": [7]}
+  umbrella: "无伞状'几何/信息几何世界模型'纲领；'Geometric World Models' 名已被占；'information-geometric world models' 零命中"
+  benchmark_gap: "无同时标注 Klein 层级 / 解析散度 / 因果结构的合成世界集 → 动物园本身是第一产出"
+  suggested_first_batch: [0, 7, 6, 15, 2]
+  second_batch: [9, 3]    # 9：最空但必须带三元对照；3：试验场空、方法饱和，只做 δ-谱 + Lenia↔Flow-Lenia
+  deprioritized: [12, 8]
+  conditional: {1: "仅当 must 全满足", 5: "仅当能区分规律与数据协方差", 10: "仅当补做 2025–2026 检索后交集仍空"}
+  cross_cell_lesson: "格 3 与格 9 共同指向一个模式：几何对象在别的社区（单细胞、统计物理）已经成熟，世界模型 / 人工生命侧完全空。差异化不是发明新几何，而是换问题设定（快照推断 → 完整轨迹归因；诊断量 → 时间坐标）并带有真值的对照。"
+
+next_generation_todo: >
+  让算子（dualize / pullback / couple / contrast / flow_along_parameter）对现有 15 格各作用一遍，
+  每个新候选先过一句思想实验（交叉一致性），再入表。预计可到 30–40 行。
