@@ -32,3 +32,17 @@ be445c2eec335cda5334a37eef2141bf1335492d16f0bde3eec6e04ffad0ad70  cells/0/c0_agg
 2a29a0cfae9d96e264f3519d6201d668ed672ef9d790bb89065bf884e849fb17  analysis/gates.py
 eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/controls.py
 ```
+- 2026-11-12 JST · 格 0 · prereg v2.1（cdebf56）：第二轮审稿不确认（`cells/0/review_v2_1.md`），未运行，由 v2.2 取代。
+- 2026-11-12 JST · 格 0 · prereg v2.2 · commit 08702ee。sha256：
+
+```
+18dce12e6490a60f1394dac07856ebf85b096d4c1f2963eeffc939e293c4686c  cells/0/prereg.md
+3836f67e14071db17fd0d0a1c03e0bf4df95192e76176d5283e469d97a5d179f  analysis/seam.py
+22d4a6edd789521c0a448331b6eabb37a0131b73023dd1dd59d67859188ef433  cells/0/c0lib.py
+edd3fc75cb76144962c4337f3b1c2a93fe6229dba6dfb4a3effa110308b831da  cells/0/c0_score.py
+c45f95c7b686cb045967fbb97979779070bc02fc0ecf41f6c2d05e496df14eaa  cells/0/c0_aggregate.py
+3645d838cbdd86341f6a7278495dc5e64573357996d529905c1bcd81cd8238cc  analysis/topology.py
+3da571aa1c9428747f5ae42dd396b862468ce044d90ce9fac4920dc4f6ccc675  analysis/smoothness.py
+2a29a0cfae9d96e264f3519d6201d668ed672ef9d790bb89065bf884e849fb17  analysis/gates.py
+eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/controls.py
+```
