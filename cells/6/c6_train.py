@@ -33,8 +33,13 @@ def p_home() -> float:
 
 
 def run_dir(cond, size, seed, n_train, pilot) -> Path:
-    tag = f"{cond}_{size}_s{seed}" + ("" if n_train == c.N_TRAIN_MAIN else f"_n{n_train}") + ("_pilot" if pilot else "")
+    tag = f"{cond}_{size}_s{seed}" + ("" if n_train == c.N_TRAIN_MAIN else f"_n{n_train}")
     return ROOT / "runs" / "c6" / tag
+
+
+def pilot_dir(cond, size, seed, steps) -> Path:
+    """v1.2: one directory per pilot step count (the 10k and the 20k pilot must not overwrite each other)."""
+    return ROOT / "runs" / "c6" / f"{cond}_{size}_s{seed}_pilot{steps}"
 
 
 def main(argv=None) -> int:
@@ -62,7 +67,7 @@ def main(argv=None) -> int:
         st, acts = c.sample_policy(w, cond["policy"], seed, n, p_home=ph)
         splits[split] = c.to_traj(w, st, acts, seed, cond["policy"], {"p_home": ph})
     spec = w.spec("grid")
-    out = run_dir(a.cond, a.size, a.seed, a.n_train, a.pilot)
+    out = pilot_dir(a.cond, a.size, a.seed, a.steps) if a.pilot else run_dir(a.cond, a.size, a.seed, a.n_train, False)
     cfg = TrainConfig(world="toggle_grid", obs="grid", world_kwargs=dict(cond["world"]), horizon=c.HORIZON,
                       n_train=a.n_train, n_val=c.N_VAL, anchors="episode", variant="recon", size=a.size,
                       latent_dim=8, history=1, lambda_lat=0.0, seed=a.seed, steps=a.steps, threads=a.threads,

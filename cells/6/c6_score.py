@@ -70,7 +70,7 @@ def compare(pred, w, ZA, ZB, true_states_A=None, true_states_B=None, probes=PROB
     the probes from branch A and, if given, branch B; v1.1 review D)."""
     N = ZA.shape[0]
     hmax, hmean = np.empty(N), np.empty(N)
-    ok = tot = ok_s = tot_s = 0
+    cnt = {b: [0, 0, 0, 0] for b in ("A", "B")}            # per branch: ok, tot, ok_sensitive, tot_sensitive
     tp = ho.TruePredictor(w)
     for i in range(0, N, chunk):
         idx = np.arange(i, min(N, i + chunk))
@@ -78,7 +78,7 @@ def compare(pred, w, ZA, ZB, true_states_A=None, true_states_B=None, probes=PROB
         pb = ho.probe_positions(pred, pred.take(ZB, idx), probes)
         diff = (pa != pb).any(-1).mean(-1)
         hmax[idx], hmean[idx] = diff.max(1), diff.mean(1)
-        for truth, pp in ((true_states_A, pa), (true_states_B, pb)):
+        for b, truth, pp in (("A", true_states_A, pa), ("B", true_states_B, pb)):
             if truth is None:
                 continue
             sT = np.asarray(truth[idx])
@@ -88,15 +88,23 @@ def compare(pred, w, ZA, ZB, true_states_A=None, true_states_B=None, probes=PROB
             pf = ho.probe_positions(tp, flip, probes)[..., :2]
             hit = (pp[..., :2] == pt).all(-1)
             sens = (pt != pf).any(-1)                      # frames whose true position depends on the door bit
-            ok += int(hit.sum())
-            tot += hit.size
-            ok_s += int(hit[sens].sum())
-            tot_s += int(sens.sum())
+            c_ = cnt[b]
+            c_[0] += int(hit.sum())
+            c_[1] += hit.size
+            c_[2] += int(hit[sens].sum())
+            c_[3] += int(sens.sum())
     out = {"max": hmax, "mean": hmean}
-    if true_states_A is not None:
-        out["model_check_all"] = ok / max(tot, 1)
-        out["model_check_bit_sensitive"] = ok_s / max(tot_s, 1)
-        out["model_check_bit_sensitive_frames"] = tot_s
+    br = [b for b, t in (("A", true_states_A), ("B", true_states_B)) if t is not None]
+    if br:
+        # v1.2 (second review): accuracies per branch, then the minimum over branches (never pooled: the
+        # reference branch is almost always right and would dilute the loop branch's errors)
+        for b in br:
+            c_ = cnt[b]
+            out[f"model_check_all_{b}"] = c_[0] / max(c_[1], 1)
+            out[f"model_check_bit_sensitive_{b}"] = c_[2] / max(c_[3], 1)
+        out["model_check_all"] = min(out[f"model_check_all_{b}"] for b in br)
+        out["model_check_bit_sensitive"] = min(out[f"model_check_bit_sensitive_{b}"] for b in br)
+        out["model_check_bit_sensitive_frames"] = sum(cnt[b][3] for b in br)
         out["model_check"] = min(out["model_check_all"], out["model_check_bit_sensitive"])
     return out
 
@@ -132,7 +140,8 @@ def readouts(pred, w, sets, latent_scale=None) -> tuple[dict, dict]:
                loop_cls=np.array([lp["cls"] for _, lp in rows]), loop_len=np.array([lp["length"] for _, lp in rows]),
                loop_n=np.array([lp["n"] for _, lp in rows]), loop_true=np.array([lp["true_holonomy"] for _, lp in rows]),
                loop_obs_closed=np.array([lp["obs_closed"] for _, lp in rows]))
-    for k in ("model_check", "model_check_all", "model_check_bit_sensitive", "model_check_bit_sensitive_frames"):
+    for k in ("model_check", "model_check_all", "model_check_bit_sensitive", "model_check_bit_sensitive_frames",
+              "model_check_all_A", "model_check_all_B", "model_check_bit_sensitive_A", "model_check_bit_sensitive_B"):
         summ[k] = r[k]
     if latent_scale is not None:
         za, zb = (np.asarray(x.cpu()) if hasattr(x, "cpu") else np.asarray(x, float) for x in (ZA, ZB))
@@ -330,7 +339,7 @@ def protocol_check(runs_dir: Path, R: dict) -> dict:
     """Pilot step rule (prereg section 3, review J): 10k if the 10k pilot passed its gate, else 20k if the 20k
     pilot passed, else stop; every scored run must use that step count."""
     pil = {}
-    for d in runs_dir.glob("*_pilot"):
+    for d in runs_dir.glob("*_pilot*"):
         if (d / "c6_run.json").exists() and (d / "gate.json").exists():
             m = json.loads((d / "c6_run.json").read_text())
             pil[int(m["steps"])] = bool(json.loads((d / "gate.json").read_text())["pass"])
@@ -386,7 +395,8 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
                 m = arr["loop_cls"] == cls
                 e = exceedance(arr["loop_h"][m], arr["loop_z"][m], tau)
                 res[f"within_{cls}"] = {"exceed": e, "frac_ge_tau": float((arr["loop_h"][m] >= tau).mean())}
-                ok = ok and e[1] <= THRESH["exceed_ub"]
+                if cls == "null":            # v1.2: even2 shares tau's own distribution -> reported, not judged
+                    ok = ok and e[1] <= THRESH["exceed_ub"]
             for ctl in ("C-open", "C-vis"):
                 cr = R[(ctl, size, sd, c.N_TRAIN_MAIN)]
                 ca = np.load(Path(cr["dir"]) / "scores.npz")

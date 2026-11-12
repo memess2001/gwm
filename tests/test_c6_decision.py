@@ -160,3 +160,26 @@ def test_pilot_refused(tmp_path):
     (d / "c6_run.json").write_text(json.dumps({"cond": "H-act", "size": "S", "seed": 99, "pilot": True}))
     with pytest.raises(SystemExit):
         cs.score_run(d)
+
+
+def test_model_check_is_min_over_branches():
+    """v1.2 (second review): the model check takes the minimum over the loop and reference branches, never the
+    pooled frames (the reference branch is almost always right and would dilute the loop branch's errors)."""
+    import c6lib as c
+    from analysis import holonomy as ho
+    w = c.make_world("H-act")
+    rng = np.random.default_rng(0)
+    z = c.sample_zs(w, 7, 3)
+    loops = [lp for zz in z for lp in c.loops_for_z(w, zz, rng) if lp["cls"] == "odd"]
+    sz = [zz["sz"] for zz in z for lp in c.loops_for_z(w, zz, np.random.default_rng(0)) if lp["cls"] == "odd"]
+    sz = np.stack(sz[:len(loops)])
+    pred = ho.MemorylessPredictor(w)
+    ZA = np.stack([pred.run(pred.start(s[None]), lp["gamma"][None])[0] for s, lp in zip(sz, loops)])
+    ZB = np.stack([pred.run(pred.start(s[None]), lp["ref"][None])[0] for s, lp in zip(sz, loops)])
+    tA = np.stack([w.trajectory(s, lp["gamma"])[-1] for s, lp in zip(sz, loops)])
+    tB = np.stack([w.trajectory(s, lp["ref"])[-1] for s, lp in zip(sz, loops)])
+    r = cs.compare(pred, w, ZA, ZB, tA, tB)
+    assert r["model_check_bit_sensitive_B"] == 1.0 and r["model_check_bit_sensitive_A"] < 0.5
+    assert r["model_check_bit_sensitive"] == r["model_check_bit_sensitive_A"]
+    assert r["model_check"] == min(r["model_check_all_A"], r["model_check_all_B"],
+                                   r["model_check_bit_sensitive_A"], r["model_check_bit_sensitive_B"])
