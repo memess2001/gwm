@@ -1,5 +1,5 @@
 # cells.yaml — 几何世界模型生成器的活状态
-# 版本 0.5 · 2026-11-04（合并两份 v0.4：Claude Code 的 v0.4 = 第二轮文献审计 + 思想实验 + 对抗审稿 + 预注册审稿；handoff 作者的 v0.4 = "度量"拆成四个子刻度 + 第二轮生成 16 格；并入 Z 2026-11-04 的决定与 rules R1–R5 提议）
+# 版本 0.5 · 2026-11-04（2026-11-12 JST 加 Claude Code 复核：rules.code_review，0–15 格 same_source 已复核）（合并两份 v0.4：Claude Code 的 v0.4 = 第二轮文献审计 + 思想实验 + 对抗审稿 + 预注册审稿；handoff 作者的 v0.4 = "度量"拆成四个子刻度 + 第二轮生成 16 格；并入 Z 2026-11-04 的决定与 rules R1–R5 提议）
 # 日期说明：v0.4 条目里的 "2026-11-03" 是 UTC 日期（JST 11-04 00:08 = UTC 11-03 15:08），v0.3 标的 11-04 是 JST，两边都没写错。提议以后一律用 JST（Z 在东京）。
 # 由 Claude Code 维护；每次 kill test 后更新 status / confidence / notes，并写明理由。v0.4 的改动在 notes 里以 "v0.4（2026-11-03）" 开头；v0.5 的改动以 "v0.5（2026-11-04 …）" 开头，标"提议"的条目等 Claude Code 复核后再改 status。
 #
@@ -70,7 +70,7 @@ cells:
     slot: state_space
     source: intrinsic
     readout: diagnose
-    same_source: "冻结的低容量线性探针（cos θ、sin θ、能量 E 的 R²）。持续同调要给出探针给不出的东西（切口 / 粘合 / 绕数），否则只是探针的换算"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "接缝比（切口两侧 ω 匹配的局部距离比）加 θ 的 kNN 可解码性。持续同调（H1、绕柱面）要说出接缝比说不出的东西，否则只是局部距离的换算。本格属 R3 第二层（描述模型），这个对照回答的是拓扑读数相对局部读数多给了什么"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: MLP 世界模型（对照组本身）
     fix: 无
     invariant: 潜空间的 H1 持续同调，且显著类必须绕柱面一圈（winding = ±1，由圆坐标或环绕数判定；只摆动的能量环也给 b1 = 1，但它在柱面里可缩）；能量是否可被平滑解码
@@ -112,7 +112,7 @@ cells:
     slot: state_space
     source: pullback_from_observation   # v0.4：改为预测分布的 Fisher 拉回（k 步 Cauchy–Green），见 notes
     readout: predict
-    same_source: "位移亏损图 + 数据密度图（Liouville：压缩 ⟹ 堆积）。v0.4 对抗审稿已证同源"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "位移亏损图 + 数据密度图（Liouville：压缩 ⟹ 堆积）。v0.4 对抗审稿已证同源"   # Code 复核（2026-11-12 JST）：接受
     learn: encoder / decoder 与动作偏离项；度量 = 预测分布 p(o_{t+k}|z,a) 的 Fisher 拉回 C_k = Σ_{j≤k} J_{F^j}ᵀ g_obs J_{F^j}（v0.3 为观测模型 p(o|z) 的 Fisher 拉回，已被思想实验否定）
     fix: 自由演化 = 测地线方程；度量来源固定
     invariant: v0.4：FTLE / LCS 场与 log det C_k，即"Cauchy–Green 图 = 障碍图"。log det C_k 沿轨迹等于 2∫div f dt 加端点体积项，与格 15 同源。C_k 是观测度量的拉回，对潜空间重参数化不变
@@ -153,7 +153,7 @@ cells:
     slot: distribution_over_states
     source: intrinsic
     readout: diagnose
-    same_source: "同一批频率数据上的欧氏 Helmholtz–Hodge 分解 / 势函数回归残差（不用 Shahshahani 度量）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "同一批频率数据上的欧氏 Helmholtz–Hodge 分解 / 势函数回归残差（不用 Shahshahani 度量）；欧氏分解要在频率坐标和 log-ratio（clr）坐标各做一遍，否则坐标选择本身就是一个隐藏的度量选择；线性适应度时加 MPL 闭式解"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 统计流形上的标量势 F（必须限为标量势：若适应度可以任意依赖频率，任何内部动力学都是 replicator，natural deviation 恒可为 0）；训练损失可取 Raab, de Alfaro, Liu 的 natural deviation
     fix: Fisher 度量；动力学 = −G⁻¹∇F（+ 动作作为外加驱动）
     invariant: Fisher 度量下 Hodge 分解的残差。标量势约束下 natural deviation 的最优值 = L²(μ, Fisher) 中投影到梯度场后的残差，所以"旋度比"与"natural deviation"是同一个量；需预注册状态测度 μ 与分解口径（Hodge / Wang HJ / natural deviation）
@@ -185,7 +185,7 @@ cells:
     slot: distribution_over_states
     source: intrinsic
     readout: diagnose
-    same_source: "∂tρ 的空间谱：WFR 份额 = k²δ²/(1+k²δ²)，只由 ρ_t 决定。v0.4 已证同源"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "∂tρ 的空间谱：WFR 份额 = k²δ²/(1+k²δ²)，只由 ρ_t 决定。v0.4 已证同源"   # Code 复核（2026-11-12 JST）：接受
     learn: 速度场 v 与生长率 r：∂ₜp = −∇·(pv) + pr；比值做成 δ-谱 ratio(δ)（δ 从 0 = 纯 Fisher–Rao 扫到 ∞ = 纯 Wasserstein）
     fix: WFR 最小作用量决定 v/r 的分配（UPFI 证明不加 WFR 能量正则时 (v, r) 不可辨识，所以比值是"给定 δ 后的最小作用量选择"，不是过程的内在量——这正是把它做成 δ-谱的理由）
     invariant: 每个过程的搬运/改权比随 δ 的曲线；Flow-Lenia（纯搬运实现）与标准 Lenia（纯改权实现）是同一 growth 场的两个有真值的极端
@@ -224,7 +224,7 @@ cells:
     slot: state_space
     source: intrinsic
     readout: predict
-    same_source: "同尺寸、无拓扑约束的 MLP WM（消融），以及数据本身的持续同调"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "同尺寸、无拓扑约束的 MLP WM（消融），以及数据本身的持续同调；再加同维欧氏潜空间、同等光滑 / 流形约束但不定拓扑的模型（atlas、CHyLL 式），把拓扑和流形约束分开"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 先用持续同调从轨迹发现流形 M（Betti 数、连通分支），自动选潜流形，再学 M 上的流
     fix: 潜空间的拓扑
     invariant: Betti 数、连通分支；"拓扑错 → 撕裂指标（encoder Lipschitz 爆点、rollout 不连续计数）→ 误差"的因果链
@@ -261,7 +261,7 @@ cells:
     slot: theory_space
     source: from_distinguishability
     readout: explain
-    same_source: "数据协方差的 PCA 谱（第一轮审计的 conditional 已要求与之区分）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "未加噪声权重的灵敏度谱 JᵀJ（Fisher = JᵀΣ⁻¹J，用的是同一个 Jacobian）；数据协方差的 PCA 谱作第二对照（第一轮审计的 conditional 已要求与之区分）"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 训练好的 WM 在 (state, action)→next-state 预测空间上的 FIM 谱；沿软方向压边界（MBAM）得有效理论
     fix: 数据分布
     invariant: 硬 / 软方向；硬方向是否架构无关；硬方向随预测时域的变化（TWIG 式）
@@ -283,7 +283,7 @@ cells:
     slot: action_space
     source: intrinsic
     readout: diagnose
-    same_source: "HCDP 式指纹：非环路历史对之间的预测未来比较（v1 预注册的 P6.6）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "HCDP 式指纹：非环路历史对之间的预测未来比较（v1 预注册的 P6.6）"   # Code 复核（2026-11-12 JST）：接受
     learn: 每个动作一个平行移动映射 T_a(z)（仿射或小 flow）；沿环路复合；交换子范数 / 小环路和乐谱
     fix: 不要求度量；不要求动作可逆或成群（对照 WLA / Delliaux 的阿贝尔假设）
     invariant: 观测闭合环路上的观测层和乐（从 F_γ(z) 与 z 出发执行同一组固定探针，比较解码出的预测观测；对潜空间重参数化不变）；小方格和乐 = 曲率图；和乐谱的类数。‖T_loop − I‖ 不是规范不变量，只作副读数
@@ -326,7 +326,7 @@ cells:
     slot: distribution_over_states
     source: intrinsic
     readout: diagnose
-    same_source: "对数线性插值 vs 线性插值的拟合残差（二分 e/m 检验本身就是这个统计量）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "对数线性插值 vs 线性插值的拟合残差（二分 e/m 检验本身就是这个统计量）"   # Code 复核（2026-11-12 JST）：接受
     learn: 观测序列 encode 进指数族参数化的对偶平坦潜流形；每段轨迹估计"最直的 α-联络"（连续 α，不是硬分 e/m）；在对应平坦坐标里学线性转移
     fix: Amari 对偶平坦结构；记号固定（α=±1 哪个是 e/m 在文献里相反，写论文时显式声明）
     invariant: α(t)：e-直线段 = 世界在做选择 / 贝叶斯更新，m-直线段 = 世界在混合 / 扩散
@@ -358,7 +358,7 @@ cells:
     slot: state_space
     source: pullback_from_cost
     readout: diagnose
-    same_source: "熵产生率（NEEP / LENS，涨落定理）。已证同源"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "熵产生率（NEEP / LENS，涨落定理）。已证同源"   # Code 复核（2026-11-12 JST）：接受
     learn: 不对称拟度量 d(s,s′)（必须用 IQE / MRN / PQE 结构化头，PQE 证明无约束 MLP 学不到）；Finsler 化：d = ∫F(x,v)，学 Randers 型不对称项 β（一形式）
     fix: 三角不等式
     invariant: 不对称场 A(a,b) = d(a,b) − d(b,a) = 时间箭头地图；β 场 = 局部时间箭头
@@ -392,7 +392,7 @@ cells:
     slot: time_axis
     source: intrinsic
     readout: predict
-    same_source: "冻结 σ 的白化欧氏弧长；再加墙钟"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "冻结 σ 的白化欧氏弧长；惊奇时钟（同一后验上的 KL 阈值计数，Zakharov 2020）；墙钟"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 用世界模型自身潜后验 q(z_t) 的 Fisher–Rao 度量算 Γ(t)（RSSM 对角高斯有闭式，时钟是模型内生的，不需要真 PDF），累积为信息时间 τ；在 τ 里学动力学
     fix: 轨迹在统计流形上匀速（注意：匀速是重参数化的结果，不是动力学性质，不要误当 geodesic）
     invariant: 事件在 τ 中的间距；三元对照下 Fisher 弧长相对欧氏弧长的额外增益
@@ -441,7 +441,7 @@ cells:
     slot: scale_axis
     source: intrinsic
     readout: explain
-    same_source: "块平均粗粒化 + 关联长度 / 跨尺度互信息衰减"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "Tao–Tao–You–Zhang（Physica D 472:134505, 2025）的跨尺度共享核模型；块平均粗粒化 + 关联长度 / 跨尺度互信息衰减"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 二维流：(尺度 k, 时间 t) 平面上的模型 F_k；RSMI 式保互信息粗粒化算子 P_k，用可交换性损失 P_k∘f^T ≈ F_k∘P_k 训练
     fix: 空间局域的粗粒化结构；方向先在已知系统（Ising）上校准（Iso et al. 2018：RBM 学到的"流"与真实 RG 流方向相反）
     invariant: F_k 随 k 的漂移轨迹与不动点；每层的信息损失谱（Raju–Machta–Sethna 式 Fisher 度量收缩）；Lenggenhager 式"相互作用范围不扩大"检验
@@ -477,6 +477,7 @@ cells:
       更正：NIS+ 作者 6 人，出处 NSR 12(1) nwae279；它引用了 Eberhardt & Lee 2022，并处理过重整化与时间演化的可交换性，所以可交换性损失本身不是新点。GoL 实验只有一级粗粒。Bayesian Renormalization 的作者应补上 Stapleton。
       v0.5（2026-11-04，handoff 作者核对）：Tao–Tao–You–Zhang 的 arXiv 2310.08282（v3，2024-03）内容属实：做了全部 256 条 ECA 规则，找回 Israeli–Goldenfeld 的 21 条自相似规则，跨尺度共享网络参数，并联系到 RG 不动点。
       但 arXiv 页面没有 journal-ref，"Physica D 2025"这一出处未能核实；引用时先写 arXiv 号，找到 DOI 再补。
+      Code 复核（2026-11-12 JST）：出处已核实。Crossref 给出 Physica D 472, 134505（2025-02），DOI 10.1016/j.physd.2024.134505。
 
   - id: 11
     name: 奇点即规律（突变 / 分岔地图世界模型）
@@ -484,7 +485,7 @@ cells:
     slot: state_space   # × 控制参数
     source: intrinsic
     readout: plan
-    same_source: "临界慢化预警量（方差、滞后 1 自相关）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "临界慢化预警量（方差、滞后 1 自相关）"   # Code 复核（2026-11-12 JST）：接受
     learn: 带控制参数输入的 WM；对学到的模型做平衡点延拓；或 TWIG 式 FIM 时窗谱直接读分岔结构（无需 normal form）
     fix: Thom 突变分类作为拓扑约束（cusp 的 3 支稳态与滞后环）
     invariant: 奇点地图：哪里会跳、怎么跳；分岔集跨架构一致
@@ -506,7 +507,7 @@ cells:
     slot: state_space   # 转移图；有向图上的 ORC 需用 Wiesler 2026 的推广
     source: intrinsic
     readout: plan
-    same_source: "谱聚类 / Fiedler 向量 / 图电导"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "谱聚类 / Fiedler 向量 / 图电导；Liang et al. ICML 2026 的谱瓶颈子目标"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 由学到的世界模型预测的多步转移分布算地标间边的 ORC（L3P 式图结构 WM 为宿主），而非从经验计数估计
     fix: 图结构
     invariant: 负曲率边 = 瓶颈；瓶颈集合跨探索策略 / 架构的 Jaccard 一致性
@@ -536,7 +537,7 @@ cells:
     slot: observation_map   # 机制
     source: intrinsic
     readout: explain
-    same_source: "加性噪声模型的残差独立性检验（ANM / RESIT）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "加性噪声模型的残差独立性检验（ANM / RESIT）"   # Code 复核（2026-11-12 JST）：接受
     learn: 对学到的转移 f，计算每对潜变量的 IGCI 式正交性残差（诊断量，不当训练信号）；用正交性决定机制切分
     fix: 原因分布 ⊥ 机制
     invariant: 每条边的正交性得分；正向 / 反向训练的世界模型的正交性差（Janzing–Chaves–Schölkopf 的时间箭头预言）
@@ -558,7 +559,7 @@ cells:
     slot: observation_map
     source: intrinsic
     readout: explain
-    same_source: "按变换族做数据增强后的预测误差差值（同一个检验，去掉群论语言）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "按变换族做数据增强后的预测误差差值（同一个检验，去掉群论语言）"   # Code 复核（2026-11-12 JST）：接受
     learn: 把 G_Euclid ⊂ G_affine ⊂ G_projective ⊂ Homeo 当嵌套假设做模型选择（Otto et al. 的 promote 正则或边际似然）；射影群在齐次坐标上线性，可接 LaLiGAN / LatentLieODE
     fix: 群层级
     invariant: 层级残差谱（交比 / 平行性 / 距离 / Betti 残差），不是一个群
@@ -580,7 +581,7 @@ cells:
     slot: state_space
     source: intrinsic
     readout: diagnose
-    same_source: "数据密度 / 平稳密度图与位移亏损（与格 1 同源）；轨道平均部分就是 Lyapunov 谱之和（Wang / LeHami 已用）"   # v0.5 提议（rules.R2），待 Code 复核
+    same_source: "沿轨迹的对数密度变化率 d log ρ/dt（系综 KDE；Liouville：等于 −div），同样做窗口反演对称化之后再比。观测坐标里的密度带着同一个相机 Jacobian，不对称化的密度图是稻草人。轨道平均部分就是 Lyapunov 谱之和（Wang 2026 / LeHami 已用）；位移亏损（与格 1 同源）"   # Code 复核（2026-11-12 JST）：已修改，v0.5 原提议见 rules.code_review.same_source
     learn: 潜向量场（neural ODE）；带明确体积形式 μ（解码器拉回的数据体积或平稳密度）的散度 div_μ f；三种估计器互校（autodiff 迹、Hutchinson 迹、Lyapunov 谱之和）
     fix: Liouville 定理作为零假设；体积形式固定
     invariant: 相体积收缩率 = 耗散地图；对潜重参数化的不变性
@@ -618,6 +619,7 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议（回答 Q4）：
       (1) 本格主线改为"标定 benchmark + 窗口反演对称化读数"，并把这个手法抽象成生成器的第 7 个算子 symmetrize（见 axes.operator_notes）。
       (2) LeHami：handoff 作者只核到论文存在（作者含 Yalovetzky、Balestriero、LeCun，2026 年 10 月；TuringPost 2026-10-24 有解读）。解读里没有提 log|det J|、Liouville、保守摆上的虚假收缩、耗散留作 future work；这几条细节引用前请对照全文再核一次。
+      Code 复核（2026-11-12 JST）：已对照全文核实，见 rules.code_review.citations（arXiv 2610.15267v1：§3.2 / 图 4 右的累积 log|det J|；附录 C.4 把耗散留作 future work）。
 
   # ---- 第二轮生成（handoff 作者 v0.4，2026-11-04）：16 格，v0.5 加 same_source / self_review ----
 
@@ -1098,6 +1100,59 @@ rules:
   R5_calibrate_observation_first: >
     先标定观测伪迹，再读几何：在保守世界、等变渲染、冻结 σ 的白化基线上，读数必须约为 0 或给出标定值，之后只报告相对标定值的超额。
     观测几何会冒充动力学几何（格 1 的解码器拉回、格 15 的射影相机）。
+
+  code_review:
+    date: 2026-11-12 JST
+    by: Claude Code（仓库里做第一周工作的那个）
+    summary: >
+      R4 照原样接受；R1、R2、R3、R5 和 symmetrize 都接受方向，各提一处修正（见下）。都不是阻塞意见，所以 PR #1 照合并，
+      这里的修正和原提议一样仍是"提议"，等 handoff 作者或 Z 有异议再改。0–15 格的 same_source：8 格接受，5 格改写，3 格补充；改写前的原提议保留在下面。
+    R1: >
+      两处修正。(1) 精确状态上的检验能杀、不能救：格 3 的 WFR 读数、格 7 的连续 α-计都是在精确状态上被杀的，
+      "只能用来校准仪器"会把这类合法的杀排除掉。改为：精确状态上的结果不能让一格活，但可以让它死。
+      (2) (a)(b) 是资格条件，不是主张。凡是主张"几何多给了东西"，主判据必须含 (c)；只有关于模型本身的格（R3 第二层，例如格 0）可以只用 (a)(b)。
+      否则一个同源笨量同样能恢复真值时，(a) 也会被记成胜利。
+    R2: >
+      三处修正。(1) 对照取同一信息源里最强的廉价非几何量，不是最笨的：最笨的容易变成稻草人（格 6 用 HCDP 指纹正是取最强的）。
+      (2) "同源"要可操作：对照只能用几何读数用到的同一批样本、同一组模型查询，不能多拿信息，也不能少拿。
+      (3) "写不出就不入表"改为"写不出就停在思想实验阶段，不进算力杀"：存档是 MAP-Elites，删掉会丢覆盖；status 保持 unexplored 并注明缺 same_source。
+    R3: >
+      第一层（预测分布的泛函）在定义上就成立，接受。修正一处："同一个分布原则上不经几何也能直接估"只在数据支撑上成立。
+      在数据没覆盖的动作序列和状态上（反事实 rollout、格 6 的随机探针），预测分布是模型的外推，没有模型就估不出来；
+      几何在那里能通过归纳偏置起作用，这正是约束格的地盘。对 diagnose 格的后果：读数若用到离开支撑的查询，读到的是模型的外推，
+      要在模拟器真值上核对这些查询（R4 审稿可以做）。"更好的统计量"要预注册具体指标（固定 N 下的数据效率、方差），格 6 v1 的 250 / 500 / 2000 episode 就是例子。
+    R4: >
+      接受。补两条执行细节：审稿 agent 不读 runs/ 下任何训练产物；预注册里的 pilot 只记计时和 gate 指标，计分脚本在 pilot 模式下拒绝计算主读数（写进代码，不靠自觉）。
+    R5: >
+      接受，补一处："报告超额"假设伪迹和信号可加。格 15 的审稿发现学到的解码器会把相机项放大 10–20%，并不可加。
+      所以要在至少两个伪迹强度上标定，检查可加性；伪迹在已知对称下为奇时，优先用 symmetrize 抵消而不是相减。
+    symmetrize: >
+      接受。补一处：它只消掉在该对称下为奇的分量，为偶的伪迹（例如学到的解码器自己的误差项，宇称未知）仍要靠 R5 标定。两者互补，不能互相替代。
+    same_source:
+      v05_proposals_replaced:
+        0: "冻结的低容量线性探针（cos θ、sin θ、能量 E 的 R²）。持续同调要给出探针给不出的东西（切口 / 粘合 / 绕数），否则只是探针的换算"
+        5: "数据协方差的 PCA 谱（第一轮审计的 conditional 已要求与之区分）"
+        9: "冻结 σ 的白化欧氏弧长；再加墙钟"
+        10: "块平均粗粒化 + 关联长度 / 跨尺度互信息衰减"
+        15: "数据密度 / 平稳密度图与位移亏损（与格 1 同源）；轨道平均部分就是 Lyapunov 谱之和（Wang / LeHami 已用）"
+      reasons:
+        0: 线性探针太弱：能量的线性 R² 在真值图上只有 0.15，cos θ、sin θ 的线性探针对任何非线性嵌入的圆都会失败。拓扑读数的同源局部量是接缝比，它已是预注册里的共同主读数，所以 PH × SR 一致性表就是本格的 R2 对照
+        2: 补"坐标"：欧氏 HHD 在频率坐标和 clr 坐标下结果不同，只做一种等于偷偷选了一个度量
+        4: 补 v0.4 must 里的"拓扑 vs 流形约束"归因对照
+        5: Fisher = JᵀΣ⁻¹J，与它同源的是同一个 Jacobian 去掉噪声权重；数据 PCA 是另一个对象，留作第二对照
+        9: 第二轮文献已把对照扩成四元（加惊奇时钟），它和 Fisher 时钟用同一个后验
+        10: Tao et al. 是最近邻，出处已核实（见 cells[10].notes 的 v0.5 复核），应作直接基线
+        12: 补 Liang 2026（v0.4 must 已要求打平）
+        15: 观测坐标里的密度满足 d log ρ_obs/dt = −div_obs f，带着同一个相机 Jacobian；不对称化的密度图会被同一个伪迹骗，用它当对照是稻草人
+    cells_2_and_7: 同意算一格（Wright–Fisher 上的度量归因，格 7 的工具作副读数）。格 7 的 status 改不改，等 Z 确认格 1、3、7、8 的状态变更时一起定，这里不动
+    round_2_self_review: >
+      没有逐格复核，只核了三格死因：16（就是格 1 的 Cauchy–Green 对象）、28（边缘分布在平稳态下 p_t = p_{t+1}，统计量恒为 0；路径版 KL 就是 NEEP，即格 8）、
+      30（dip test）都成立。其余等 rules 定稿后做文献杀时一起审。
+    citations: >
+      两条都核实了。LeHami = arXiv 2610.15267v1（2026-10-11）；全文 §3.2 / 图 4 右用 (1/n)Σ log|det J(z_i)| 跟踪 rollout 的相体积，
+      LeWM 基线在保守与受驱的视觉单摆上持续收缩，LeHami 恒为 0；附录 C.4 原文 "Because both systems studied in this work preserve volume,
+      we leave dissipative modeling to future work"，局限一节提 port-Hamiltonian 扩展。第二轮文献的原始记录（results/lit_round2_raw.json）里这条标的是"HTML 全文已核"，不是检索摘要。
+      Tao–Tao–You–Zhang：Crossref 给出 Physica D: Nonlinear Phenomena 472, 134505（2025-02），DOI 10.1016/j.physd.2024.134505。
 
 decisions:
   - date: 2026-11-04
