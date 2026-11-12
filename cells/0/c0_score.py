@@ -44,8 +44,8 @@ KAPPA_PH_MAX = SM.KAPPA_PH_MAX
 def analysis_traj(world: str, index: int, obs: str):
     w = zoo.make("pendulum")
     kw = c.WORLD if world == "main" else c.NEG_WORLD
-    return w.sample(seed=zoo.split_seed("analysis", index), horizon=c.HORIZON, n_traj=c.N_ANALYSIS,
-                    obs_mode=obs, **kw), w
+    n = c.N_ANALYSIS if world == "main" else c.N_ANALYSIS_NEG
+    return w.sample(seed=zoo.split_seed("analysis", index), horizon=c.HORIZON, n_traj=n, obs_mode=obs, **kw), w
 
 
 def h1_state(Z, theta, seed) -> dict:
@@ -112,10 +112,17 @@ def measure(Z, S, Sprev, obs: str, seed: int = 0, decoded_angle=None) -> dict:
     sr = SM.seam_ratio_v2(Z, th, om, thp, groups=np.repeat(np.arange(len(Z) // c.HORIZON), c.HORIZON),
                           n_boot=200, seed=seed)
     fl = SM.seam_flags_v2(sr)
+    srf = SM.seam_ratio_v2(Z, th, om, thp, groups=np.repeat(np.arange(len(Z) // c.HORIZON), c.HORIZON),
+                           n_boot=0, seed=seed, diagnostics=False, omega_abs_min=1.6)
     out["seam"] = dict(ratio=sr["ratio"], ci95=list(sr["ci95"]), status=sr["status"], verdict3=fl["verdict3"],
                        kappa=sr["kappa_first_pass"], fold_index=fl["fold_index"], folded=fl["folded_at_cut"],
-                       misalignment_suspect=fl["misalignment_suspect"], n_straddle_dropped=sr["n_straddle_dropped"])
-    out["consistency"] = SM.seam_ph_consistency(h["state"], fl["verdict3"], sr["kappa_first_pass"], fl["folded_at_cut"])
+                       omega_dominated=fl["omega_dominated"], in_range3=fl["in_range3"],
+                       misalignment_suspect=fl["misalignment_suspect"], n_straddle_dropped=sr["n_straddle_dropped"],
+                       placebo_max=sr.get("placebo_max"), ratio_fast=srf["ratio"])
+    # v2.1: a seam reading outside the instrument's range (fold, or omega dominance for a non-torn verdict; v1's
+    # "kappa > 10 invalidates glued") makes the run inconclusive, like a fold
+    invalid = bool(fl["folded_at_cut"] or not fl["in_range3"])
+    out["consistency"] = SM.seam_ph_consistency(h["state"], fl["verdict3"], sr["kappa_first_pass"], invalid)
     out["h1_none_high_kappa"] = bool(h["state"] == "none" and sr["kappa_first_pass"] > KAPPA_PH_MAX)   # item 6
     for n in (8000, 2000):                                       # Z's choice: n = 8000 primary, 2000 sensitivity
         g = G.theta_decodability(Z, th, n=n, seed=seed)
@@ -133,11 +140,10 @@ def measure(Z, S, Sprev, obs: str, seed: int = 0, decoded_angle=None) -> dict:
         pc = G.pointwise_angle_check(decoded_angle, th, tol=np.pi / 2)
         out["pointwise"] = dict(frac_ok=pc["frac_ok"], holds=pc["all_ok"], n_bad=pc["n_bad"], max_err=pc["max_err"])
     # collapse diagnostics on the analysis latents (jepa exclusion gate)
+    import torch
+    from baselines.mlp_wm import effective_rank                  # v2.1 (review B3): the baseline's RankMe, as in v1
     std = Z.std(0)
-    ev = np.linalg.eigvalsh(np.cov(Z.T))
-    ev = np.clip(ev, 0, None)
-    p = ev / ev.sum() if ev.sum() > 0 else ev
-    erank = float(np.exp(-(p[p > 0] * np.log(p[p > 0])).sum())) if ev.sum() > 0 else 0.0
+    erank = effective_rank(torch.as_tensor(Z))
     out["collapse"] = dict(min_std=float(std.min()), effective_rank=erank,
                            collapsed=bool(std.min() <= STD_MIN or erank < ERANK_MIN))
     return out
@@ -200,6 +206,25 @@ def cross_cut_excess(model, normalizer, traj, S, Sprev, variant) -> dict:
     return dict(excess_ratio=float(np.average(ratios, weights=w)) if ratios else None, n_straddle=int(strad.sum()))
 
 
+def energy_drift(model, normalizer, traj, obs, variant, Z, S, k: int = 32, n_traj: int = 100) -> dict:
+    """Second-level energy readout (declared output for cell 15): open-loop rollout of k = 32 latent steps from the
+    first window of n_traj analysis trajectories; energy read by the frozen first-level kNN probe (fit on the
+    analysis latents, k = 10). Reports the median |E(z_k) - E(z_0)| and the true-energy spread for scale."""
+    import torch
+    from sklearn.neighbors import KNeighborsRegressor
+    from baselines.data import frames_to_tensor
+    E = S[:, 1] ** 2 / 2 - np.cos(S[:, 0])
+    probe = KNeighborsRegressor(n_neighbors=10).fit(Z, E)
+    with torch.no_grad():
+        x = frames_to_tensor(traj.obs[:n_traj, :c.HISTORY], "cpu", normalizer)
+        z0 = model.encode(x)
+        zs = model.rollout(z0, steps=k)                            # [n, k+1, d]
+    zs = zs.cpu().numpy().astype(np.float64)
+    e0 = probe.predict(zs[:, 0])
+    ek = probe.predict(zs[:, -1])
+    return dict(k=k, median_abs_drift=float(np.median(np.abs(ek - e0))), true_energy_sd=float(E.std()))
+
+
 def convergence(metrics: dict, variant: str) -> dict:
     """Prereg v2 item 11: converged iff the validation loss component (recon: 'recon'; jepa: 'inv') changes by
     < 10 % over the last 25 % of training (pred_err[8] is only recorded at the end, so the val loss is used)."""
@@ -240,6 +265,12 @@ def score_run(run: Path, gate_index: int) -> dict:
     metrics = json.loads((run / "metrics.json").read_text())
     obs, variant, loss = cfg["obs"], cfg["variant"], cfg["loss"]
     world = "neg" if cfg["world_kwargs"].get("E_hi") is not None else "main"
+    fm = metrics.get("final")
+    if metrics.get("diverged") or not fm:                       # v2.1: a diverged run did not learn -> excluded
+        m = dict(exclusion=dict(learned=False, collapsed=False, excluded=True, reason="diverged or no final metrics"),
+                 meta=dict(run=run.name, analysis_index=gate_index))
+        (run / "measures.json").write_text(json.dumps(m, indent=1, default=float))
+        return m
     model, normalizer, _ = load(run)
     traj, _ = analysis_traj(world, gate_index, obs)
     Z, _ = latents(model, normalizer, traj)
@@ -251,6 +282,8 @@ def score_run(run: Path, gate_index: int) -> dict:
     m["convergence"] = convergence(metrics, variant)
     if obs == "angle_raw":
         m["cross_cut"] = cross_cut_excess(model, normalizer, traj, S, Sprev, variant)
+    if world == "main":
+        m["energy_drift"] = energy_drift(model, normalizer, traj, obs, variant, Z, S)
     m["meta"] = dict(run=run.name, analysis_index=gate_index, device=json.loads((run / "config.json").read_text())
                      ["env"]["device"], steps=metrics.get("steps_done"))
     (run / "measures.json").write_text(json.dumps(m, indent=1, default=float))

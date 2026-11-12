@@ -412,8 +412,10 @@ def seam_ratio_v2(Z, theta, omega, theta_prev, *, omega_tol_base: float = 0.08, 
                        diagnostics=False, seed=kw.get("seed", 0),
                        omega_abs_min=kw.get("omega_abs_min", 0.0))
     kap = first.get("omega_aspect", np.nan)
-    kap = 1.0 if (kap is None or not np.isfinite(kap)) else float(kap)
-    tol = omega_tol_base / max(1.0, kap)
+    kap = np.nan if kap is None else float(kap)
+    # v2.1 (review): an unknown kappa (nan: too few pairs; inf: theta not resolved) is reported as such, never as 1;
+    # the tolerance then falls back to the base value and the consistency table treats kappa as unknown.
+    tol = omega_tol_base / max(1.0, kap) if np.isfinite(kap) else omega_tol_base
     out = seam_ratio(Z[keep], np.asarray(theta)[keep], np.asarray(omega)[keep], groups=g, omega_tol=tol, **kw)
     out.update(kappa_first_pass=kap, n_straddle_dropped=int((~keep).sum()), omega_tol_used=tol, version=2)
     return out

@@ -13,8 +13,9 @@ import c0lib as c                                       # noqa: E402
 def _m(h1="ring", consistency="glued", theta_ok=True, excluded=False, kappa=1.0, seam=1.0, pointwise=True,
        decodable=True, smooth=True):
     return {"h1": {"state": h1}, "consistency": consistency, "theta_gate_n8000": {"passed": theta_ok},
+            "theta_gate_n2000": {"passed": theta_ok},
             "exclusion": {"excluded": excluded}, "h1_none_high_kappa": h1 == "none" and kappa > 5,
-            "seam": {"ratio": seam}, "pointwise": {"holds": pointwise},
+            "seam": {"ratio": seam, "kappa": kappa}, "pointwise": {"holds": pointwise},
             "energy": {"decodable": decodable, "smooth": smooth}}
 
 
@@ -43,14 +44,18 @@ def test_pilot_pattern(tmp_path, monkeypatch):
     r = ag.aggregate()
     assert r["P03"] == "T" and r["P04"] == {"sg": "F", "sym": "T"}
     assert r["verdicts"]["decision"]["state"] == "DECIDED"
-    assert "对称" in r["verdicts"]["decision"]["updates"]["cell0.notes.mechanism"]
+    assert r["verdicts"]["decision"]["updates"]["cell0.notes.mechanism"] == {"sg": "继承切口（撕开率 >= 2/3）",
+                                                                              "sym": "粘合"}
 
 
 def test_everything_inherits(tmp_path, monkeypatch):
     _world(tmp_path, monkeypatch, {})                          # every angle_raw arm torn
     r = ag.aggregate()
     assert r["P03"] == "F" and r["P04"] == {"sg": "F", "sym": "F"}
-    assert r["verdicts"]["decision"]["updates"]["cell0.status"] == "dead"
+    u = r["verdicts"]["decision"]["updates"]
+    assert "cell0.status" not in u and u["cell0.confidence.exists"].startswith("high -> mid")
+    assert u["cell0.notes.mechanism"] == {"sg": "继承切口（撕开率 >= 2/3）", "sym": "继承切口（撕开率 >= 2/3）"}
+    assert u["cell4.confidence.yields"].startswith("up")
 
 
 def test_instrument_failure_stops(tmp_path, monkeypatch):
@@ -67,7 +72,7 @@ def test_exclusions_make_arm_not_evaluable(tmp_path, monkeypatch):
             m["exclusion"]["excluded"] = True
             f.write_text(json.dumps(m))
     r = ag.aggregate()
-    assert r["angle_raw_arms"]["raw-jepa-sym"]["n_not_excluded"] == 3 and r["P04"]["sym"] == "I"
+    assert r["angle_raw_arms"]["raw-jepa-sym"]["n_decided"] == 3 and r["P04"]["sym"] == "I"
 
 
 def test_theta_gate_failure_counts_as_not_glued(tmp_path, monkeypatch):
@@ -94,3 +99,44 @@ def test_pixel_p05_deferred_in_phase_1(tmp_path, monkeypatch):
     r = ag.aggregate()
     assert r["P05"]["pixels64-sg"]["status"] == "missing"
     assert r["verdicts"]["decision"]["updates"]["P05"].startswith("deferred")
+
+
+def test_all_inconclusive_is_I_not_F(tmp_path, monkeypatch):            # v2.1 review B1
+    _world(tmp_path, monkeypatch, {a: "inconclusive" for a in ("raw-recon-mse", "raw-recon-circ", "raw-jepa-sg",
+                                                                "raw-jepa-sym")})
+    r = ag.aggregate()
+    assert r["P03"] == "I" and r["P04"] == {"sg": "I", "sym": "I"}
+    assert r["verdicts"]["decision"]["state"] == "PARTIAL" and "cell0.status" not in r["verdicts"]["decision"]["updates"]
+
+
+def test_theta_gate_failure_with_high_kappa_is_inconclusive(tmp_path, monkeypatch):
+    _world(tmp_path, monkeypatch, {"raw-recon-circ": "glued"})
+    for r in c.run_table():
+        if r["arm"] == "raw-jepa-sym" and r["phase"] == 1 and r["world"] == "main" and r["K"] == 8:
+            f = tmp_path / r["name"] / "measures.json"
+            m = json.loads(f.read_text())
+            m["theta_gate_n8000"]["passed"] = False
+            m["seam"]["kappa"] = 8.0
+            f.write_text(json.dumps(m))
+    assert ag.aggregate()["angle_raw_arms"]["raw-jepa-sym"]["n_decided"] == 0
+
+
+def test_missing_negative_control_gives_no_verdict(tmp_path, monkeypatch):   # v2.1 review B2
+    _world(tmp_path, monkeypatch, {"raw-recon-circ": "glued"})
+    import shutil
+    for d in tmp_path.glob("*_neg"):
+        shutil.rmtree(d)
+    assert ag.aggregate()["verdicts"]["decision"]["state"] == "INSTRUMENT_INSUFFICIENT"
+
+
+def test_p05_ignores_excluded_runs(tmp_path, monkeypatch):               # v2.1 review B5
+    _world(tmp_path, monkeypatch, {"raw-recon-circ": "glued"})
+    rs = [r for r in c.run_table() if r["arm"] == "cs-jepa-sg" and r["size"] in ("M", "L") and r["world"] == "main"
+          and r["K"] == 8]
+    for r in rs[:2]:
+        f = tmp_path / r["name"] / "measures.json"
+        m = json.loads(f.read_text())
+        m["exclusion"]["excluded"] = True
+        f.write_text(json.dumps(m))
+    v = ag.aggregate()["P05"]["angle_cs-sg"]
+    assert v["status"] == "I" and v["decided"] == 4

@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
 WORLD = dict(omega_max=2.5)                        # pendulum defaults: omega0 = 1, gamma = 0, dt = 0.1, init "box"
 NEG_WORLD = dict(omega_max=2.5, E_lo=-1.0, E_hi=0.5)   # libration only (true b1 = 0); E_hi = 0.5 (calibration)
 HORIZON, N_TRAIN, N_VAL, N_ANALYSIS = 64, 2000, 200, 500
+N_ANALYSIS_NEG = 2000                              # negative-control analysis set (v1 P0.2; review B4)
 STEPS = 20000
 HISTORY, LATENT, K_MAIN = 2, 8, 8
 SEEDS = (0, 1, 2)
@@ -63,6 +64,11 @@ def run_table() -> list[dict]:
     for arm in ("raw-recon-mse", "raw-recon-circ"):
         for sd in SEEDS:
             add(arm, "M", sd, lam=0.0, role="lambda_lat0")
+    # device control (prereg v2 item 11): the same configuration once on the second device; descriptive only,
+    # never in the scoring set (the scored run is the one on the queue's main device)
+    obs, var, loss = ARMS["cs-recon"]
+    rows.append(dict(name="cs-recon_M_s0_dev2", arm="cs-recon", obs=obs, variant=var, loss=loss, size="M", seed=0,
+                     world="main", K=K_MAIN, lambda_lat=0.1, phase=1, role="device_control"))
     return rows
 
 
