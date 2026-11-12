@@ -8,9 +8,9 @@
 
 ## 预注册冻结记录
 
-| 日期（JST） | 格 | 版本 | commit | 文件 sha256 |
-|---|---|---|---|---|
-| 2026-11-12 | 6 | prereg v1 | 8578e4b | `cells/6/prereg.md` 0f3e8925…4f4429；`analysis/holonomy.py` 690b707d…5f75106；`cells/6/c6lib.py` 2728acff…e3cfc5；`cells/6/c6_train.py` fec7f1f4…a1943；`cells/6/c6_score.py` 79b95bfd…55e7e；`cells/6/manipulation_check.json` f82c6b27…e29 |
+（用列表而不是表格：`baselines/ledger.py` 约定本文件只有一张表，即上面的实验流水账。）
+
+- 2026-11-12 JST · 格 6 · prereg v1 · commit 8578e4b。审稿不确认（`cells/6/review_v1.md`），未运行任何东西，由 v1.1 取代。
 
 完整的 sha256（格 6 v1，commit 8578e4b）：
 

@@ -33,7 +33,7 @@ N_BOOT = 2000
 # ============================================================================ query sets (ground truth only)
 def sets_for(cond: str) -> dict:
     """Evaluation and calibration query sets for the world of ``cond`` (cached; deterministic in the seeds)."""
-    key = json.dumps(c.CONDITIONS[cond]["world"], sort_keys=True)
+    key = json.dumps({"world": c.CONDITIONS[cond]["world"], "version": c.SET_VERSION}, sort_keys=True)
     import hashlib
     h = hashlib.sha256(key.encode()).hexdigest()[:12]
     path = RUNS / "_sets" / f"{h}.pkl"
@@ -65,9 +65,9 @@ def branch(pred, Zz, zidx, seqs):
     return pred.run(pred.take(Zz, np.asarray(zidx)), A, L)
 
 
-def compare(pred, w, ZA, ZB, true_states_A=None, probes=PROBES, chunk=256):
+def compare(pred, w, ZA, ZB, true_states_A=None, true_states_B=None, probes=PROBES, chunk=256):
     """H_obs (max and mean over probes) for each pair; optional model check (predicted vs true positions along
-    the probes from branch A)."""
+    the probes from branch A and, if given, branch B; v1.1 review D)."""
     N = ZA.shape[0]
     hmax, hmean = np.empty(N), np.empty(N)
     ok = tot = ok_s = tot_s = 0
@@ -78,13 +78,15 @@ def compare(pred, w, ZA, ZB, true_states_A=None, probes=PROBES, chunk=256):
         pb = ho.probe_positions(pred, pred.take(ZB, idx), probes)
         diff = (pa != pb).any(-1).mean(-1)
         hmax[idx], hmean[idx] = diff.max(1), diff.mean(1)
-        if true_states_A is not None:
-            sA = np.asarray(true_states_A[idx])
-            pt = ho.probe_positions(tp, sA, probes)[..., :2]
-            flip = sA.copy()
+        for truth, pp in ((true_states_A, pa), (true_states_B, pb)):
+            if truth is None:
+                continue
+            sT = np.asarray(truth[idx])
+            pt = ho.probe_positions(tp, sT, probes)[..., :2]
+            flip = sT.copy()
             flip[:, 2] ^= 1
             pf = ho.probe_positions(tp, flip, probes)[..., :2]
-            hit = (pa[..., :2] == pt).all(-1)
+            hit = (pp[..., :2] == pt).all(-1)
             sens = (pt != pf).any(-1)                      # frames whose true position depends on the door bit
             ok += int(hit.sum())
             tot += hit.size
@@ -124,7 +126,8 @@ def readouts(pred, w, sets, latent_scale=None) -> tuple[dict, dict]:
     ZA = branch(pred, Zz, zi, [lp["gamma"] for _, lp in rows])
     ZB = branch(pred, Zz, zi, [lp["ref"] for _, lp in rows])
     trueA = np.stack([w.trajectory(ev[i]["sz"], lp["gamma"])[-1] for i, lp in rows])
-    r = compare(pred, w, ZA, ZB, trueA)
+    trueB = np.stack([w.trajectory(ev[i]["sz"], lp["ref"])[-1] for i, lp in rows])
+    r = compare(pred, w, ZA, ZB, trueA, trueB)
     arr.update(loop_h=r["max"], loop_hmean=r["mean"], loop_z=zi,
                loop_cls=np.array([lp["cls"] for _, lp in rows]), loop_len=np.array([lp["length"] for _, lp in rows]),
                loop_n=np.array([lp["n"] for _, lp in rows]), loop_true=np.array([lp["true_holonomy"] for _, lp in rows]),
@@ -169,12 +172,15 @@ def readouts(pred, w, sets, latent_scale=None) -> tuple[dict, dict]:
         arr[f"{key}_score"] = sc
         arr[f"{key}_n"] = np.array([(kk == k).sum() for k in range(npl)])
     # ---------------- baseline: detection pairs (P6.6, detection)
-    drow = [(i, p) for i, z in enumerate(ev) for p in z["det_pairs"]]
-    di = np.array([i for i, _ in drow])
-    rd = compare(pred, w, branch(pred, Zz, di, [p["h1"] for _, p in drow]), branch(pred, Zz, di, [p["h2"] for _, p in drow]))
-    arr.update(det_h=rd["max"], det_z=di, det_cls=np.array([p["cls"] for _, p in drow]),
-               det_len=np.array([p["length"] for _, p in drow]), det_true=np.array([p["true_differs"] for _, p in drow]),
-               det_obs_closed=np.array([p["obs_closed"] for _, p in drow]))
+    for key, pre in (("det_pairs", "det"), ("det_pairs_mixed", "detmix")):
+        drow = [(i, p) for i, z in enumerate(ev) for p in z[key]]
+        di = np.array([i for i, _ in drow])
+        rd = compare(pred, w, branch(pred, Zz, di, [p["h1"] for _, p in drow]),
+                     branch(pred, Zz, di, [p["h2"] for _, p in drow]))
+        arr.update({f"{pre}_h": rd["max"], f"{pre}_z": di, f"{pre}_cls": np.array([p["cls"] for _, p in drow]),
+                    f"{pre}_len": np.array([p["length"] for _, p in drow]),
+                    f"{pre}_true": np.array([p["true_differs"] for _, p in drow]),
+                    f"{pre}_obs_closed": np.array([p["obs_closed"] for _, p in drow])})
     # ---------------- baseline: generic pairs + attribution (P6.6, localisation)
     grow = [(i, p) for i, z in enumerate(ev) for p in z["gen_pairs"]]
     gi = np.array([i for i, _ in grow])
@@ -230,20 +236,24 @@ def run_summary(cond: str, arr: dict, summ: dict, w) -> dict:
     sw0, sw1 = ho.switch_plaquette_mask(w, corners0), ho.switch_plaquette_mask(w, corners1)
     da0 = ho.door_adjacent_plaquette_mask(w, corners0)
     sc0 = np.nan_to_num(arr["plaq_R0_score"], nan=-1.0)
-    s["prec4_R0"] = ho.precision_at_k(sc0, sw0, 4, seed=2)
+    s["prec4_R0"] = ho.precision_at_k_expected(sc0, sw0, 4)
     rk = ho.ranks_desc(sc0, seed=2)
     s["ranks_switch_R0"] = rk[sw0].tolist()
     s["ranks_door_adjacent_R0"] = rk[da0].tolist()
-    s["door_adjacent_in_top4"] = bool((rk[da0] <= 4).any())
+    s["door_adjacent_in_top4"] = bool(ho.strictly_top_k(sc0, 4)[da0].any())
     sc1 = np.nan_to_num(arr["plaq_R1_score"], nan=-1.0)
-    s["prec4_R1"] = ho.precision_at_k(sc1, sw1, 4, seed=2) if sw1.any() else None
+    s["prec4_R1"] = ho.precision_at_k_expected(sc1, sw1, 4) if sw1.any() else None
     s["plaq_R1_coverage"] = arr["plaq_R1_n"].tolist()
     dm = arr["det_cls"]
     dl = np.where(dm == "odd", 1, 0)
     du = (dm == "odd") | (dm == "even2")
     s["base_auc_strat"] = ho.stratified_auc(arr["det_h"][du], dl[du], arr["det_len"][du])
+    mm = arr["detmix_cls"]
+    mu = (mm == "odd") | (mm == "even2")
+    s["base_auc_strat_mixed"] = ho.stratified_auc(arr["detmix_h"][mu], np.where(mm == "odd", 1, 0)[mu],
+                                                  arr["detmix_len"][mu])
     gsc = attribution_scores(w, arr["gen_h"], arr["gen_parity"], corners0)
-    s["base_prec4_R0"] = ho.precision_at_k(gsc, sw0, 4, seed=2)
+    s["base_prec4_R0"] = ho.precision_at_k_expected(gsc, sw0, 4)
     s["base_ranks_switch_R0"] = ho.ranks_desc(gsc, seed=2)[sw0].tolist()
     return s
 
@@ -309,68 +319,108 @@ def _seed_ok(xs, k=2):
     return sum(bool(x) for x in xs) >= k
 
 
+def required_runs():
+    """The 42 runs the decision table needs (cells/6/prereg.md section 9)."""
+    out = [(cond, size, sd, c.N_TRAIN_MAIN) for size in ("S", "M") for cond in c.CONDITIONS for sd in (0, 1, 2)]
+    out += [("H-act", size, sd, n) for size in ("S", "M") for n in c.DATA_EFF_N for sd in (0, 1, 2)]
+    return out
+
+
+def protocol_check(runs_dir: Path, R: dict) -> dict:
+    """Pilot step rule (prereg section 3, review J): 10k if the 10k pilot passed its gate, else 20k if the 20k
+    pilot passed, else stop; every scored run must use that step count."""
+    pil = {}
+    for d in runs_dir.glob("*_pilot"):
+        if (d / "c6_run.json").exists() and (d / "gate.json").exists():
+            m = json.loads((d / "c6_run.json").read_text())
+            pil[int(m["steps"])] = bool(json.loads((d / "gate.json").read_text())["pass"])
+    if pil.get(10000):
+        steps = 10000
+    elif 10000 in pil and pil.get(20000):
+        steps = 20000
+    else:
+        steps = None
+    used = sorted({int(v["meta"]["steps"]) for v in R.values()})
+    return {"pilots": pil, "steps_by_rule": steps, "steps_used": used,
+            "ok": steps is not None and used == [steps]}
+
+
 def aggregate(runs_dir: Path = RUNS) -> dict:
     R = {}
     for d in sorted(runs_dir.glob("*")):
         if not (d / "c6_run.json").exists():
             continue
         meta = json.loads((d / "c6_run.json").read_text())
-        if meta.get("pilot"):
+        if meta.get("pilot") or not (d / "gate.json").exists() or not (d / "scores.json").exists():
             continue
         g = json.loads((d / "gate.json").read_text())
-        s = json.loads((d / "scores.json").read_text()) if (d / "scores.json").exists() else None
-        R[(meta["cond"], meta["size"], meta["seed"], meta["n_train"])] = {"gate": g, "s": s, "dir": str(d)}
-    out = {"per_size": {}, "runs": {f"{k[0]}_{k[1]}_s{k[2]}_n{k[3]}": {"gate_pass": v["gate"]["pass"],
-                                                                       **({} if v["s"] is None else v["s"])}
-                                    for k, v in R.items()}}
+        s = json.loads((d / "scores.json").read_text())
+        R[(meta["cond"], meta["size"], meta["seed"], meta["n_train"])] = {"gate": g, "s": s, "dir": str(d), "meta": meta}
+    out = {"runs": {f"{k[0]}_{k[1]}_s{k[2]}_n{k[3]}": {
+        "gate_pass": v["gate"]["pass"], "door_acc": v["gate"].get("door_acc"),
+        "position_acc": v["gate"].get("position_acc"), **v["s"]} for k, v in R.items()}}
+    missing = [f"{k[0]}_{k[1]}_s{k[2]}_n{k[3]}" for k in required_runs() if k not in R]
+    out["missing_runs"] = missing
+    out["protocol"] = protocol_check(runs_dir, R)
+    if missing or not out["protocol"]["ok"]:                     # review B, J: never judge on an incomplete set
+        out.update(readout_verdict="INCOMPLETE", geometric_claim_survives=None, status="unchanged (incomplete)",
+                   per_size={}, P66={}, P65={})
+        return out
+    mc_ok = lambda r: r["s"]["model_check"] >= THRESH["model_check"]           # noqa: E731
+    out["per_size"] = {}
     size_state = {}
     for size in ("S", "M"):
-        prim = [R.get(("H-act", size, sd, c.N_TRAIN_MAIN)) for sd in (0, 1, 2)]
-        if any(p is None or p["s"] is None for p in prim):
-            size_state[size] = "MISSING"
-            continue
+        prim = [R[("H-act", size, sd, c.N_TRAIN_MAIN)] for sd in (0, 1, 2)]
         gp = [p["gate"]["pass"] for p in prim]
-        evaluable = _seed_ok(gp)
-        rec = {"gate_pass": gp, "evaluable": evaluable}
+        rec = {"gate_pass": gp, "evaluable": _seed_ok(gp)}
         p61 = [g and p["s"]["auc_strat"] >= THRESH["auc"] for g, p in zip(gp, prim)]
         p62 = [g and p["s"]["prec4_R0"] >= THRESH["prec"] for g, p in zip(gp, prim)]
-        p63, exc = [], []
+        p63, p63_checked, exc = [], [], []
         for sd, (g, p) in enumerate(zip(gp, prim)):
             tau = p["s"]["tau"]
             arr = np.load(Path(p["dir"]) / "scores.npz")
-            m = (arr["loop_cls"] == "even2") | (arr["loop_cls"] == "null")
-            e_in = exceedance(arr["loop_h"][m], arr["loop_z"][m], tau)
-            res = {"within": e_in}
-            ok = g and e_in[1] <= THRESH["exceed_ub"]
+            res = {"tau": tau, "tau_ceiling": bool(tau >= 1.0)}
+            ok = g and not res["tau_ceiling"]                                  # review E
+            checked = mc_ok(p)
+            for cls in ("even2", "null"):                                    # review M: separately
+                m = arr["loop_cls"] == cls
+                e = exceedance(arr["loop_h"][m], arr["loop_z"][m], tau)
+                res[f"within_{cls}"] = {"exceed": e, "frac_ge_tau": float((arr["loop_h"][m] >= tau).mean())}
+                ok = ok and e[1] <= THRESH["exceed_ub"]
             for ctl in ("C-open", "C-vis"):
-                cr = R.get((ctl, size, sd, c.N_TRAIN_MAIN))
-                if cr is None or cr["s"] is None:
-                    res[ctl] = None
-                    ok = False
-                    continue
+                cr = R[(ctl, size, sd, c.N_TRAIN_MAIN)]
                 ca = np.load(Path(cr["dir"]) / "scores.npz")
                 mm = ca["loop_obs_closed"].astype(bool)
                 e = exceedance(ca["loop_h"][mm], ca["loop_z"][mm], tau)
-                res[ctl] = {"exceed": e, "gate_pass": cr["gate"]["pass"]}
-                ok = ok and cr["gate"]["pass"] and e[1] <= THRESH["exceed_ub"]
+                c_ok = cr["gate"]["pass"] and e[1] <= THRESH["exceed_ub"]
+                res[ctl] = {"exceed": e, "frac_ge_tau": float((ca["loop_h"][mm] >= tau).mean()),
+                            "gate_pass": cr["gate"]["pass"], "model_check": cr["s"]["model_check"]}
+                if not c_ok:                                                  # review C: a control that did not
+                    checked = checked and cr["gate"]["pass"] and mc_ok(cr)    # learn makes the failure unchecked
+                ok = ok and c_ok
             p63.append(bool(ok))
+            p63_checked.append(bool(checked))
             exc.append(res)
-        mc = [p["s"]["model_check"] >= THRESH["model_check"] for p in prim]
-        rec.update(P61=p61, P62=p62, P63=p63, exceedance=exc, model_check=mc,
-                   P61_size=_seed_ok(p61), P62_size=_seed_ok(p62), P63_size=_seed_ok(p63), model_check_size=_seed_ok(mc))
-        if not evaluable:
+        mc = [mc_ok(p) for p in prim]
+        rec.update(P61=p61, P62=p62, P63=p63, exceedance=exc, model_check=mc, P63_failure_checked=p63_checked,
+                   P61_size=_seed_ok(p61), P62_size=_seed_ok(p62), P63_size=_seed_ok(p63))
+        # review N: a criterion fails "checked" only if >= 2 seeds fail it with their model checks passing
+        chk = {"P61": [(not a) and g and m for a, g, m in zip(p61, gp, mc)],
+               "P62": [(not a) and g and m for a, g, m in zip(p62, gp, mc)],
+               "P63": [(not a) and g and m and pc for a, g, m, pc in zip(p63, gp, mc, p63_checked)]}
+        rec["checked_failures"] = chk
+        if not rec["evaluable"]:
             st = "NE"
         elif rec["P61_size"] and rec["P62_size"] and rec["P63_size"]:
             st = "PASS"
         else:
-            st = "FAIL_CHECKED" if rec["model_check_size"] else "FAIL_UNCHECKED"
+            st = "FAIL_CHECKED" if any(_seed_ok(v) for v in chk.values()) else "FAIL_UNCHECKED"
         rec["state"] = st
+        rec["not_specific"] = bool(rec["P61_size"] and rec["P62_size"] and not rec["P63_size"])   # review I
         size_state[size] = st
         out["per_size"][size] = rec
-    a, b = size_state.get("S"), size_state.get("M")
-    if "MISSING" in (a, b):
-        verdict = "INCOMPLETE"
-    elif a == b == "PASS":
+    a, b = size_state["S"], size_state["M"]
+    if a == b == "PASS":
         verdict = "READOUT_WORKS"
     elif "PASS" in (a, b):
         verdict = "INCONCLUSIVE"
@@ -379,12 +429,10 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
     else:
         verdict = "INCONCLUSIVE"
     out["readout_verdict"] = verdict
-    # ---------------- P6.6 (only meaningful if the readout works; always computed for the record)
+    # ---------------- P6.6
     p66 = {}
     for size in ("S", "M"):
-        prim = [R.get(("H-act", size, sd, c.N_TRAIN_MAIN)) for sd in (0, 1, 2)]
-        if any(p is None or p["s"] is None for p in prim):
-            continue
+        prim = [R[("H-act", size, sd, c.N_TRAIN_MAIN)] for sd in (0, 1, 2)]
         ok = [p for p in prim if p["gate"]["pass"]]
         if len(ok) < 2:
             p66[size] = None
@@ -396,16 +444,16 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
                                ("holo_loc", "prec4_R0", THRESH["prec"]), ("base_loc", "base_prec4_R0", THRESH["prec"])):
             need[name] = None
             for n in (250, 500, 2000):
-                rs = [R.get(("H-act", size, sd, n)) for sd in (0, 1, 2)]
-                if any(r is None or r["s"] is None for r in rs):
-                    continue
-                if _seed_ok([r["s"][key] >= thr for r in rs]):        # no gate here: both readouts read the same models
+                rs = [R[("H-act", size, sd, n)] for sd in (0, 1, 2)]
+                if _seed_ok([r["s"][key] >= thr for r in rs]):          # no gate here: both readouts read the same models
                     need[name] = n
                     break
 
         def wins(h, bse):
             return h is not None and (bse is None or h <= bse / 2)
         p66[size] = {"d_auc": dauc, "d_prec": dprec, "n_required": need,
+                     "d_auc_vs_mixed_baseline": float(np.median([p["s"]["auc_strat"] - p["s"]["base_auc_strat_mixed"]
+                                                                 for p in ok])),
                      "win_auc": dauc >= MARGIN["auc"], "win_prec": dprec >= MARGIN["prec"],
                      "win_data_det": wins(need["holo_det"], need["base_det"]),
                      "win_data_loc": wins(need["holo_loc"], need["base_loc"])}
@@ -416,21 +464,19 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
         geo = any(p66["S"][m] and p66["M"][m] for m in metrics)
     out["geometric_claim_survives"] = geo
     out["status"] = {"READOUT_WORKS": ("alive" if geo else "merged_into:HCDP (Zhang et al. 2026-07)"),
-                     "READOUT_DEAD": "dead", "INCONCLUSIVE": "unchanged (inconclusive)",
-                     "INCOMPLETE": "unchanged (runs missing)"}[verdict]
+                     "READOUT_DEAD": "dead", "INCONCLUSIVE": "unchanged (inconclusive)"}[verdict]
     # ---------------- P6.5 (secondary)
     p65 = {}
     for size in ("S", "M"):
         def med(cond, key="auc_strat"):
-            rs = [R.get((cond, size, sd, c.N_TRAIN_MAIN)) for sd in (0, 1, 2)]
-            v = [r["s"][key] for r in rs if r is not None and r["s"] is not None]
-            return float(np.median(v)) if v else None
+            return float(np.median([R[(cond, size, sd, c.N_TRAIN_MAIN)]["s"][key] for sd in (0, 1, 2)]))
         act, pc, pn = med("H-act"), med("H-pc"), med("H-pn")
-        if None in (act, pc, pn):
-            continue
         p65[size] = {"auc_act": act, "auc_pc": pc, "auc_pn": pn, "holds": abs(act - pc) <= 0.05 and pn <= 0.6,
                      "falsified": act - pc > 0.10, "pn_red_flag": pn > 0.6}
     out["P65"] = p65
+    # ---------------- secondary: AUC against gate accuracy (all scored runs)
+    out["auc_vs_gate"] = [{"run": k, "auc_strat": v["auc_strat"], "door_acc": v.get("door_acc"),
+                           "position_acc": v.get("position_acc")} for k, v in out["runs"].items()]
     return out
 
 

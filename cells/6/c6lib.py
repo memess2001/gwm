@@ -238,10 +238,17 @@ def gate_pass(res: dict, door_gate: bool = True) -> bool:
 N_EVAL_Z, N_CAL_Z = 100, 50
 PREFIX_MAX = 15                                   # prefix + |gamma| (<= 28) + |probe| (20) <= 63
 MAX_LOOP = 28
+SET_VERSION = "v1.1"                              # part of the query-set cache key (c6_score.sets_for)
 N_LOOPS = {"odd": 16, "even2": 16, "null": 8}     # per z
-ODD_N = (1, 3)
+ODD_N = (1, 3)                                    # odd loops: exactly 8 with 1 entry and 8 with 3 (v1.1, review F)
 N_GENERIC_PAIRS = 16                              # = number of R0 plaquettes (equal query budget)
-PAIR_CLASSES = {"odd": [(1, 0), (0, 1), (1, 2), (2, 1)], "even2": [(1, 1), (2, 0), (0, 2), (2, 2)], "null": [(0, 0)]}
+# Baseline detection pairs (P6.6). Primary classes are ISOMORPHIC to the loop classes (v1.1, review A): one branch
+# has the loop's entry count, the other none, so the only difference between the two readouts is whether the end
+# point is z itself. Odd: (1,0), (0,1), (3,0), (0,3) with 1 and 3 entries 8 / 8; even: (2,0), (0,2); null: (0,0).
+PAIR_CLASSES = {"odd": [(1, 0), (0, 1), (3, 0), (0, 3)], "even2": [(2, 0), (0, 2)], "null": [(0, 0)]}
+# v1 classes (both branches may enter the switch), kept as a secondary readout.
+PAIR_CLASSES_MIXED = {"odd": [(1, 0), (0, 1), (1, 2), (2, 1)], "even2": [(1, 1), (2, 0), (0, 2), (2, 2)],
+                      "null": [(0, 0)]}
 
 
 def sample_zs(w, seed: int, n: int):
@@ -268,7 +275,7 @@ def loops_for_z(w, z: dict, rng) -> list:
     for cls, m in N_LOOPS.items():
         k = 0
         while k < m:
-            n = {"odd": int(rng.choice(ODD_N)), "even2": 2, "null": 0}[cls]
+            n = {"odd": ODD_N[k % 2], "even2": 2, "null": 0}[cls]          # odd: 1, 3, 1, 3, ... (8 / 8)
             p = ho.constructive_path(w, z["sz"], n, rng, max_len=MAX_LOOP)
             if p is None:
                 continue
@@ -291,9 +298,10 @@ def plaquettes_for_z(w, z: dict, rng, room: int) -> list:
     return out
 
 
-def detection_pairs_for_z(w, z: dict, rng) -> list:
+def detection_pairs_for_z(w, z: dict, rng, classes=PAIR_CLASSES) -> list:
     """Baseline detection pairs: two constructive paths from z with (n1, n2) entries ending on the same cell
-    (a random room-0 cell, not the switch, not z's own cell), equal length via wall-bump padding."""
+    (a random room-0 cell, not the switch, not z's own cell), equal length via wall-bump padding. Within a class
+    the (n1, n2) patterns are cycled in order, so with PAIR_CLASSES the odd class has 1 and 3 entries 8 / 8."""
     vis = bool(w.cfg["door_visible"])
     room0 = [(int(x), int(y)) for y, x in np.argwhere(w.room == 0) if w.switch_id[y, x] < 0
              and (int(x), int(y)) != (int(z["sz"][0]), int(z["sz"][1]))]
@@ -301,7 +309,7 @@ def detection_pairs_for_z(w, z: dict, rng) -> list:
     for cls in ("odd", "even2", "null"):
         k = 0
         while k < N_LOOPS[cls]:
-            n1, n2 = PAIR_CLASSES[cls][int(rng.integers(len(PAIR_CLASSES[cls])))]
+            n1, n2 = classes[cls][k % len(classes[cls])]
             c = room0[int(rng.integers(len(room0)))]
             p1 = ho.constructive_path(w, z["sz"], n1, rng, end_cell=c, max_len=MAX_LOOP, tries=30)
             p2 = ho.constructive_path(w, z["sz"], n2, rng, end_cell=c, max_len=MAX_LOOP, tries=30)
@@ -342,7 +350,8 @@ def analysis_set(w, seed: int, n_z: int, full: bool = True) -> dict:
         if full:
             z["plaq_R0"] = plaquettes_for_z(w, z, rng, 0)
             z["plaq_R1"] = plaquettes_for_z(w, z, rng, 1)
-            z["det_pairs"] = detection_pairs_for_z(w, z, rng)
+            z["det_pairs"] = detection_pairs_for_z(w, z, rng, PAIR_CLASSES)
+            z["det_pairs_mixed"] = detection_pairs_for_z(w, z, rng, PAIR_CLASSES_MIXED)
             z["gen_pairs"] = generic_pairs_for_z(w, z, rng)
     return {"seed": seed, "zs": zs}
 

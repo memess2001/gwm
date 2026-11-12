@@ -1,4 +1,4 @@
-"""The cell-6 decision table (cells/6/c6_score.aggregate) on fabricated run directories (no models)."""
+"""The cell-6 decision table (cells/6/c6_score.aggregate, v1.1) on fabricated run directories (no models)."""
 import json
 import sys
 from pathlib import Path
@@ -9,11 +9,13 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "cells" / "6"))
 import c6_score as cs                                   # noqa: E402
 
+STEPS = 10000
+
 
 def _arrays(h_even=0.0, h_null=0.0, h_odd=1.0, n_z=20, obs_closed_odd=True):
     cls, h, z, oc = [], [], [], []
     for i in range(n_z):
-        for k, (cc, hv) in enumerate((("odd", h_odd), ("even2", h_even), ("null", h_null))):
+        for cc, hv in (("odd", h_odd), ("even2", h_even), ("null", h_null)):
             for _ in range(4):
                 cls.append(cc)
                 h.append(hv)
@@ -23,47 +25,52 @@ def _arrays(h_even=0.0, h_null=0.0, h_odd=1.0, n_z=20, obs_closed_odd=True):
             "loop_obs_closed": np.array(oc)}
 
 
-def _write(root, cond, size, seed, n=2000, gate=True, s=None, arrays=None):
-    d = root / f"{cond}_{size}_s{seed}_n{n}"
+def _write(root, cond, size, seed, n=2000, gate=True, s=None, arrays=None, steps=STEPS, pilot=False):
+    d = root / (f"{cond}_{size}_s{seed}_n{n}" + ("_pilot" if pilot else ""))
     d.mkdir(parents=True)
-    (d / "c6_run.json").write_text(json.dumps({"cond": cond, "size": size, "seed": seed, "n_train": n, "pilot": False}))
-    (d / "gate.json").write_text(json.dumps({"pass": gate}))
+    (d / "c6_run.json").write_text(json.dumps({"cond": cond, "size": size, "seed": seed, "n_train": n,
+                                               "pilot": pilot, "steps": steps}))
+    (d / "gate.json").write_text(json.dumps({"pass": gate, "door_acc": {"0": 1.0}, "position_acc": 1.0}))
+    if pilot:
+        return
     base = {"auc_strat": 1.0, "prec4_R0": 1.0, "tau": 0.0, "model_check": 1.0,
-            "base_auc_strat": 1.0, "base_prec4_R0": 1.0}
+            "base_auc_strat": 1.0, "base_prec4_R0": 1.0, "base_auc_strat_mixed": 1.0}
     base.update(s or {})
     (d / "scores.json").write_text(json.dumps(base))
     np.savez(d / "scores.npz", **(arrays or _arrays()))
 
 
-def _world(root, primary=None, controls=None, eff=None, gates=None):
+def _world(root, primary=None, controls=None, ctl_s=None, ctl_gate=True, eff=None, gates=None, skip=(),
+           pilot_pass=True):
+    _write(root, "H-act", "S", 99, steps=STEPS, pilot=True, gate=pilot_pass)
+    eff = eff or {n: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25}
+                  for n in (250, 500)}
     for size in ("S", "M"):
         for sd in (0, 1, 2):
             g = True if gates is None else gates[size][sd]
             _write(root, "H-act", size, sd, gate=g, s=(primary or {}))
             for ctl in ("C-open", "C-vis"):
-                _write(root, ctl, size, sd, s={}, arrays=(controls or _arrays(h_odd=0.0)))
+                if (ctl, size, sd) in skip:
+                    continue
+                _write(root, ctl, size, sd, gate=ctl_gate, s=(ctl_s or {}), arrays=(controls or _arrays(h_odd=0.0)))
             for cond in ("H-pc", "H-pn"):
                 _write(root, cond, size, sd, s={"auc_strat": 1.0 if cond == "H-pc" else 0.5})
-            for n, s in (eff or {}).items():
+            for n, s in eff.items():
                 _write(root, "H-act", size, sd, n=n, s=s)
 
 
 def test_readout_works_but_ties_baseline_merges(tmp_path):
-    _world(tmp_path, eff={250: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25},
-                          500: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25}})
+    _world(tmp_path)
     r = cs.aggregate(tmp_path)
-    assert r["readout_verdict"] == "READOUT_WORKS"
-    assert r["geometric_claim_survives"] is False
+    assert r["missing_runs"] == [] and r["protocol"]["ok"]
+    assert r["readout_verdict"] == "READOUT_WORKS" and r["geometric_claim_survives"] is False
     assert r["status"].startswith("merged_into:HCDP")
 
 
 def test_margin_win_on_auc_gives_alive(tmp_path):
-    _world(tmp_path, primary={"base_auc_strat": 0.92},
-           eff={250: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25},
-                500: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25}})
+    _world(tmp_path, primary={"base_auc_strat": 0.92})
     r = cs.aggregate(tmp_path)
-    assert r["readout_verdict"] == "READOUT_WORKS" and r["geometric_claim_survives"] is True
-    assert r["status"] == "alive"
+    assert r["readout_verdict"] == "READOUT_WORKS" and r["status"] == "alive"
 
 
 def test_data_efficiency_win(tmp_path):
@@ -73,29 +80,54 @@ def test_data_efficiency_win(tmp_path):
     assert r["P66"]["S"]["win_data_det"] and r["status"] == "alive"
 
 
-def test_nonspecific_readout_is_dead(tmp_path):
+def test_nonspecific_readout_is_dead_when_controls_learned(tmp_path):
     _world(tmp_path, controls=_arrays(h_even=1.0, h_null=1.0, h_odd=1.0))
     r = cs.aggregate(tmp_path)
     assert r["readout_verdict"] == "READOUT_DEAD" and r["status"] == "dead"
-    assert r["per_size"]["S"]["P61_size"] and not r["per_size"]["S"]["P63_size"]
+    assert r["per_size"]["S"]["not_specific"]
+
+
+def test_control_that_did_not_learn_is_unchecked(tmp_path):            # review C
+    _world(tmp_path, controls=_arrays(h_even=1.0, h_null=1.0, h_odd=1.0), ctl_s={"model_check": 0.3})
+    assert cs.aggregate(tmp_path)["readout_verdict"] == "INCONCLUSIVE"
+
+
+def test_control_gate_failure_is_unchecked(tmp_path):                  # review C
+    _world(tmp_path, ctl_gate=False)
+    assert cs.aggregate(tmp_path)["readout_verdict"] == "INCONCLUSIVE"
+
+
+def test_tau_ceiling_fails_p63(tmp_path):                              # review E
+    _world(tmp_path, primary={"tau": 1.0})
+    r = cs.aggregate(tmp_path)
+    assert not r["per_size"]["S"]["P63_size"] and r["per_size"]["S"]["exceedance"][0]["tau_ceiling"]
 
 
 def test_failure_with_failed_model_check_is_inconclusive(tmp_path):
     _world(tmp_path, primary={"auc_strat": 0.6, "model_check": 0.5})
-    r = cs.aggregate(tmp_path)
-    assert r["readout_verdict"] == "INCONCLUSIVE"
+    assert cs.aggregate(tmp_path)["readout_verdict"] == "INCONCLUSIVE"
 
 
 def test_gate_failures_make_size_not_evaluable(tmp_path):
-    gates = {"S": [True, False, False], "M": [True, False, False]}
-    _world(tmp_path, gates=gates)
+    _world(tmp_path, gates={"S": [True, False, False], "M": [True, False, False]})
     r = cs.aggregate(tmp_path)
     assert r["per_size"]["S"]["state"] == "NE" and r["readout_verdict"] == "INCONCLUSIVE"
 
 
+def test_one_checked_failure_plus_gate_failure_is_unchecked(tmp_path):  # review N
+    _world(tmp_path, gates={"S": [True, True, False], "M": [True, True, False]})
+    for size in ("S", "M"):
+        d = tmp_path / f"H-act_{size}_s0_n2000"
+        s = json.loads((d / "scores.json").read_text())
+        s["auc_strat"] = 0.6
+        (d / "scores.json").write_text(json.dumps(s))
+    r = cs.aggregate(tmp_path)
+    assert r["per_size"]["S"]["state"] == "FAIL_UNCHECKED" and r["readout_verdict"] == "INCONCLUSIVE"
+
+
 def test_size_disagreement_is_inconclusive(tmp_path):
     _world(tmp_path)
-    for sd in (0, 1, 2):                          # M fails P6.1 with a good model check
+    for sd in (0, 1, 2):
         d = tmp_path / f"H-act_M_s{sd}_n2000"
         s = json.loads((d / "scores.json").read_text())
         s["auc_strat"] = 0.6
@@ -105,9 +137,21 @@ def test_size_disagreement_is_inconclusive(tmp_path):
     assert r["readout_verdict"] == "INCONCLUSIVE"
 
 
-def test_missing_runs_incomplete(tmp_path):
-    _write(tmp_path, "H-act", "S", 0)
+def test_missing_control_run_is_incomplete(tmp_path):                  # review B
+    _world(tmp_path, skip={("C-vis", "S", 0), ("C-vis", "S", 1), ("C-vis", "S", 2)})
+    r = cs.aggregate(tmp_path)
+    assert r["readout_verdict"] == "INCOMPLETE" and len(r["missing_runs"]) == 3
+
+
+def test_missing_data_efficiency_run_is_incomplete(tmp_path):          # review B
+    _world(tmp_path, eff={250: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25}})
     assert cs.aggregate(tmp_path)["readout_verdict"] == "INCOMPLETE"
+
+
+def test_step_rule_is_enforced(tmp_path):                               # review J
+    _world(tmp_path, pilot_pass=False)                                  # 10k pilot failed, no 20k pilot
+    r = cs.aggregate(tmp_path)
+    assert r["readout_verdict"] == "INCOMPLETE" and not r["protocol"]["ok"]
 
 
 def test_pilot_refused(tmp_path):

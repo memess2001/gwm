@@ -528,3 +528,20 @@ def ranks_desc(scores: np.ndarray, seed: int = 0) -> np.ndarray:
     r = np.empty(len(scores), np.int64)
     r[order] = np.arange(1, len(scores) + 1)
     return r
+
+
+def precision_at_k_expected(scores: np.ndarray, truth: np.ndarray, k: int = 4) -> float:
+    """Expected precision@k under uniformly random tie-breaking (v1.1, review H): items strictly above the k-th
+    score count fully; the tied block at the boundary contributes its fraction of true items."""
+    s, t = np.asarray(scores, float), np.asarray(truth, bool)
+    kth = np.sort(s)[::-1][k - 1]
+    above = s > kth
+    tied = s == kth
+    need = k - int(above.sum())
+    return float((t[above].sum() + need * t[tied].mean()) / k)
+
+
+def strictly_top_k(scores: np.ndarray, k: int = 4) -> np.ndarray:
+    """Items whose score is strictly greater than the (k+1)-th highest score (unambiguously in the top k)."""
+    s = np.asarray(scores, float)
+    return s > np.sort(s)[::-1][k]

@@ -216,3 +216,39 @@ def test_gate_eval_on_oracles():
     assert r["door_acc"][1] == 0.0 and not c.gate_pass(r)
     r = c.gate_eval(ho.AnyEntryPredictor(w), g)
     assert r["door_acc"][2] == 0.0 and not c.gate_pass(r)       # parity, not 'ever entered'
+
+
+def test_precision_expected_under_ties():
+    s = np.zeros(16)
+    t = np.zeros(16, bool)
+    t[:4] = True
+    assert ho.precision_at_k_expected(s, t, 4) == pytest.approx(0.25)          # all tied: chance level
+    s2 = s.copy()
+    s2[:4] = 1.0
+    assert ho.precision_at_k_expected(s2, t, 4) == 1.0
+    assert not ho.strictly_top_k(s, 4).any() and ho.strictly_top_k(s2, 4)[:4].all()
+
+
+def test_detection_pair_classes_isomorphic_to_loops():
+    """v1.1 (review A): primary baseline pairs have one switch-free branch and the loop's entry counts, 8 / 8."""
+    w = c.make_world("H-act")
+    rng = np.random.default_rng(3)
+    z = c.sample_zs(w, 5, 1)[0]
+    pairs = c.detection_pairs_for_z(w, z, rng)
+    for p in pairs:
+        n1, n2 = p["n"]
+        assert min(n1, n2) == 0
+        assert ho.simulate(w, z["sz"], p["h1"])[1] == n1 and ho.simulate(w, z["sz"], p["h2"])[1] == n2
+        assert len(p["h1"]) == len(p["h2"])
+        assert (w.trajectory(z["sz"], p["h1"])[-1, :2] == w.trajectory(z["sz"], p["h2"])[-1, :2]).all()
+    odd = [max(p["n"]) for p in pairs if p["cls"] == "odd"]
+    assert sorted(set(odd)) == [1, 3] and odd.count(1) == odd.count(3) == 8
+    assert {max(p["n"]) for p in pairs if p["cls"] == "even2"} == {2}
+
+
+def test_odd_loops_split_8_8():
+    w = c.make_world("H-act")
+    z = c.sample_zs(w, 6, 1)[0]
+    loops = c.loops_for_z(w, z, np.random.default_rng(4))
+    ns = [lp["n"] for lp in loops if lp["cls"] == "odd"]
+    assert ns.count(1) == 8 and ns.count(3) == 8
