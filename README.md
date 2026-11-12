@@ -8,12 +8,12 @@
 
 | 路径 | 内容 |
 |---|---|
-| `HANDOFF.md` | 计划全文：生成器、15 格、动物园、主循环、出口 |
-| `cells.yaml` | 生成器的活状态，**v0.4**（2026-11-03）。每格的 status / confidence / collision / nearest / must / notes；v0.4 的改动都以"v0.4（2026-11-03）"开头写明理由 |
+| `HANDOFF.md` | 计划全文（v0.5）：生成器、31 格、动物园、主循环与过滤规则 R1–R5、出口、决定记录（§10） |
+| `cells.yaml` | 生成器的活状态，**v0.5**（2026-11-04 JST，合并两份 v0.4 + 第二轮 16 格 + `rules` + `decisions`）。每格的 status / confidence / collision / nearest / must / same_source / notes；v0.4、v0.5 的改动分别以"v0.4（2026-11-03）""v0.5（2026-11-04 …）"开头写明理由 |
 | `literature_audit.md` | 第一轮文献审计（2026-11-01），保持原样 |
 | `literature_audit_round2.md` | 第二轮补查与引用核对（2026-11-03）；原始结构化输出在 `results/lit_round2_raw.json` |
 | `cells/thought_experiments_2026-11-03.md` | 思想实验杀 / 修正：格 0、1、6、7、9、15，以及跨格模式 |
-| `cells/<id>/prereg.md` | 预注册。**草案，未经 Z 批准，不运行** |
+| `cells/<id>/prereg.md` | 预注册。**草案，未经 Z 批准，不运行**；格 0、格 6 适用预先授权协议（`cells.yaml` 的 `decisions`） |
 | `cells/<id>/exploratory/` | 已披露的探索性数值检查（不是 kill test） |
 | `cells/0/calibration.md` | 格 0 测量仪器（持续同调、能量平滑度）在真值嵌入上的校准报告 |
 | `zoo/` | 世界动物园：每个世界都有 `sample()` 与 `ground_truth()`，答案是定理 |
@@ -21,7 +21,7 @@
 | `analysis/` | 预注册测量用的仪器 |
 | `results/ledger.md` | 实验流水账：只记预注册里列出的量 |
 | `results/bench_cpu.md` | baseline 在 4 核 CPU 上的吞吐实测（安静机器），以及格 0、格 6 的预算表 |
-| `reports/` | 给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`） |
+| `reports/` | 给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
 
 ## 环境
 
@@ -62,6 +62,6 @@ gt = w.ground_truth(**tr.meta["params"])     # 真值依赖采样配置，例如
 
 ## 工作约定（摘自 HANDOFF §0、§5）
 
-1. 每个 kill test 跑之前，先把预注册（预测、对照、判据、预算）给 Z 看，**Z 点头再跑**。
+1. 每个 kill test 跑之前，先把预注册（预测、对照、判据、预算）给 Z 看，**Z 点头再跑**。例外（Z 2026-11-04）：格 0、格 6 的预注册逐条实现审稿清单、sha256 冻结、并经只核真值的审稿 agent 确认后，视为已批；清单外的新增或偏离仍须 Z 点头。
 2. 结果记进 `results/ledger.md`，再更新 `cells.yaml` 的 status / confidence，并写明理由。
 3. 每格结束写一段大白话结论。
