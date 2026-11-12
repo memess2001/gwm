@@ -44,3 +44,5 @@ c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holon
 7dc670cdd905ea54c0591da402ba841988159a2f9236928303bd3b54f9f1ff5c  cells/6/c6_score.py
 f82c6b27fd335f1150b5424fe027afc3396f18c61383a77c9a4a13c8d8021e29  cells/6/manipulation_check.json
 ```
+
+- 2026-11-12 JST · 格 6 · prereg v1.2 的审稿确认：`cells/6/review_v1_2.md`（结论：确认；预先授权第 3 条）。v1.1、v1.2 都是冻结后的修订，按 `decisions` 仍需 Z 认可后才能开跑。prereg 状态行里引用的确认记录应读作本文件（prereg 已冻结，不再改）。
