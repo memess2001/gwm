@@ -33,3 +33,14 @@ fec7f1f4e38e1c503460cb9a064da6d4968cd38329240c62d6bfa66632fa1943  cells/6/c6_tra
 713a13466937fd561ec28983263b49f04c75c4d4925ff449676f240ad2437c6c  cells/6/c6_score.py
 f82c6b27fd335f1150b5424fe027afc3396f18c61383a77c9a4a13c8d8021e29  cells/6/manipulation_check.json
 ```
+
+- 2026-11-12 JST · 格 6 · prereg v1.2 · commit 664b554。按第二轮审稿（`cells/6/review_v1_1.md`）修订，见 `cells/6/prereg.md` §13。v1.1 未运行任何东西。sha256：
+
+```
+be4a84c7a43defc310fdcce689c9261c9b28c3191b4c16f4d81038c577287db3  cells/6/prereg.md
+c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holonomy.py
+10a2655161e0371fd8a80557636570a9cca1b1c98547586ff014d68c634a5607  cells/6/c6lib.py
+6b7ee961dad246774e314315d4580260ed47f7f1d3d2049c0e226413073a5663  cells/6/c6_train.py
+7dc670cdd905ea54c0591da402ba841988159a2f9236928303bd3b54f9f1ff5c  cells/6/c6_score.py
+f82c6b27fd335f1150b5424fe027afc3396f18c61383a77c9a4a13c8d8021e29  cells/6/manipulation_check.json
+```
