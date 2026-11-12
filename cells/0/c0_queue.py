@@ -51,8 +51,15 @@ def main(argv=None) -> int:
         dev = a.device
         if r["role"] == "device_control":                               # the same config on the other device
             dev = "cpu" if a.device != "cpu" else "mps"
+            if dev == "mps":
+                import torch
+                if not torch.backends.mps.is_available():
+                    print(f"[c0 queue] skip {r['name']}: no second device here", flush=True)
+                    continue
         if not trained:
             cmds.append([PY, "-m", "baselines.train"] + c.train_args(r, str(d), 1, dev) + ["--overwrite"])
+        # score only a finished or diverged run (a crash mid-training must not be recorded as "not learned")
+        cmds.append(["GUARD", str(d / "metrics.json")])
         cmds.append([PY, str(HERE / "c0_score.py"), "--run", str(d)])
         todo.append((r["name"], cmds))
     if a.phase == 1:
@@ -69,7 +76,13 @@ def main(argv=None) -> int:
     while todo or running:
         while todo and len(running) < a.jobs:
             name, cmds = todo.pop(0)
-            script = " ; ".join(" ".join(f"'{x}'" if " " in x or "{" in x else x for x in cmd) for cmd in cmds)
+            parts = []
+            for cmd in cmds:
+                if cmd[0] == "GUARD":
+                    parts.append(f"grep -qE '\"final\"|\"diverged\": true' '{cmd[1]}' || exit 3")
+                else:
+                    parts.append(" ".join(f"'{x}'" if " " in x or "{" in x else x for x in cmd))
+            script = " ; ".join(parts)
             p = subprocess.Popen(["bash", "-c", script], stdout=open(logs / f"{name}.log", "w"),
                                  stderr=subprocess.STDOUT, cwd=c.ROOT, env=env)
             running.append((name, p, time.time()))

@@ -46,3 +46,4 @@ c45f95c7b686cb045967fbb97979779070bc02fc0ecf41f6c2d05e496df14eaa  cells/0/c0_agg
 2a29a0cfae9d96e264f3519d6201d668ed672ef9d790bb89065bf884e849fb17  analysis/gates.py
 eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/controls.py
 ```
+- 2026-11-12 JST · 格 0 · prereg v2.2 的审稿确认：`cells/0/review_v2_2.md`（结论：确认；预先授权第 3 条）。v2.1、v2.2 都是冻结后的修订，按 Z 2026-11-12 的决定仍需 Z 逐次确认后才能开跑。
