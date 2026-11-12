@@ -116,6 +116,7 @@ def test_theta_gate_failure_with_high_kappa_is_inconclusive(tmp_path, monkeypatc
             f = tmp_path / r["name"] / "measures.json"
             m = json.loads(f.read_text())
             m["theta_gate_n8000"]["passed"] = False
+            m["theta_gate_n8000"]["r2_min"] = 0.93                 # omega-stretched, not folded (v2.2)
             m["seam"]["kappa"] = 8.0
             f.write_text(json.dumps(m))
     assert ag.aggregate()["angle_raw_arms"]["raw-jepa-sym"]["n_decided"] == 0
@@ -140,3 +141,23 @@ def test_p05_ignores_excluded_runs(tmp_path, monkeypatch):               # v2.1 
         f.write_text(json.dumps(m))
     v = ag.aggregate()["P05"]["angle_cs-sg"]
     assert v["status"] == "I" and v["decided"] == 4
+
+
+def test_fold_with_high_kappa_stays_decided(tmp_path, monkeypatch):     # v2.2 (second review R1)
+    """A latent folded onto conserved quantities has a large kappa-hat AND a very low theta R^2: it must stay in
+    the denominator as not_carrying_theta; only an omega-stretched latent (r2_min >= 0.8) is inconclusive."""
+    m = {"exclusion": {"excluded": False}, "theta_gate_n8000": {"passed": False, "r2_min": -0.1},
+         "seam": {"kappa": 5.7}, "consistency": "inconclusive"}
+    assert ag.run_class(m) == "not_carrying_theta"
+    m["theta_gate_n8000"]["r2_min"] = 0.93
+    assert ag.run_class(m) == "inconclusive"
+    m["seam"]["kappa"] = float("nan")
+    assert ag.run_class(m) == "inconclusive"
+
+
+def test_diverged_stub_does_not_crash(tmp_path, monkeypatch):
+    _world(tmp_path, monkeypatch, {"raw-recon-circ": "glued"})
+    f = tmp_path / "raw-jepa-sym_L_s2" / "measures.json"
+    f.write_text(json.dumps({"exclusion": {"excluded": True, "learned": False, "reason": "diverged"}}))
+    r = ag.aggregate()
+    assert "excluded" in r["P07"]["raw-jepa-sym"]["L"]

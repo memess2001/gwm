@@ -46,8 +46,13 @@ def main(argv=None) -> int:
         if (d / "measures.json").exists():
             continue
         cmds = []
-        if not (d / "metrics.json").exists() or '"final"' not in (d / "metrics.json").read_text():
-            cmds.append([PY, "-m", "baselines.train"] + c.train_args(r, str(d), 1, a.device) + ["--overwrite"])
+        mt = (d / "metrics.json").read_text() if (d / "metrics.json").exists() else ""
+        trained = '"final"' in mt or '"diverged": true' in mt          # a diverged run is not retrained
+        dev = a.device
+        if r["role"] == "device_control":                               # the same config on the other device
+            dev = "cpu" if a.device != "cpu" else "mps"
+        if not trained:
+            cmds.append([PY, "-m", "baselines.train"] + c.train_args(r, str(d), 1, dev) + ["--overwrite"])
         cmds.append([PY, str(HERE / "c0_score.py"), "--run", str(d)])
         todo.append((r["name"], cmds))
     if a.phase == 1:
@@ -64,7 +69,7 @@ def main(argv=None) -> int:
     while todo or running:
         while todo and len(running) < a.jobs:
             name, cmds = todo.pop(0)
-            script = " && ".join(" ".join(f"'{x}'" if " " in x or "{" in x else x for x in cmd) for cmd in cmds)
+            script = " ; ".join(" ".join(f"'{x}'" if " " in x or "{" in x else x for x in cmd) for cmd in cmds)
             p = subprocess.Popen(["bash", "-c", script], stdout=open(logs / f"{name}.log", "w"),
                                  stderr=subprocess.STDOUT, cwd=c.ROOT, env=env)
             running.append((name, p, time.time()))

@@ -22,6 +22,8 @@ import c0lib as c
 RUNS = c.ROOT / "runs" / "c0"
 TWO_THIRDS = 2 / 3
 KAPPA_GATE_MAX = 5.0
+R2_STRETCH_MIN = 0.8        # v2.2: theta-gate failures with kappa > 5 are 'stretched' (inconclusive) only if
+                            # r2_min >= 0.8 (stretched charts up to kappa = 60 read >= 0.90; full folds <= 0)
 DECIDED = ("glued", "torn", "not_carrying_theta")
 
 
@@ -39,9 +41,11 @@ def run_class(m: dict, gate_key: str = "theta_gate_n8000") -> str:
         return "excluded"
     if not m[gate_key]["passed"]:
         k = m.get("seam", {}).get("kappa")
-        if k is None or not np.isfinite(k) or k > KAPPA_GATE_MAX:
-            return "inconclusive"
-        return "not_carrying_theta"
+        if k is None or not np.isfinite(k):
+            return "inconclusive"                               # kappa unknown (same rule as the consistency table)
+        if k > KAPPA_GATE_MAX and m[gate_key].get("r2_min", -1.0) >= R2_STRETCH_MIN:
+            return "inconclusive"                               # omega-stretched, outside the gate's range (v2.2)
+        return "not_carrying_theta"                             # incl. folds onto conserved quantities (item 4)
     return m["consistency"]
 
 
@@ -160,7 +164,8 @@ def aggregate() -> dict:
         smo = [m["energy"]["smooth"] for m in rs]
         p06[arm] = dict(mine_decodable_and_smooth=sum(d and s for d, s in zip(dec, smo)) >= 2,
                         original_decodable_not_smooth=sum(d and not s for d, s in zip(dec, smo)) >= 2, n=len(rs))
-    p07 = {arm: {size: [run_class(m) if arm.startswith("raw") else h1_class(m)
+    p07 = {arm: {size: ["excluded" if m["exclusion"]["excluded"] else
+                        (run_class(m) if arm.startswith("raw") else h1_class(m))
                         for _, m in arm_runs(M, arm, sizes=(size,)) if m is not None]
                  for size in ("S", "M", "L", "XL")} for arm in c.ARMS}
     nulls = {k: dict(h1=v["h1"]["state"], seam=v["seam"]["ratio"], consistency=v["consistency"],

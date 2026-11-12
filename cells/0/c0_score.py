@@ -112,13 +112,15 @@ def measure(Z, S, Sprev, obs: str, seed: int = 0, decoded_angle=None) -> dict:
     sr = SM.seam_ratio_v2(Z, th, om, thp, groups=np.repeat(np.arange(len(Z) // c.HORIZON), c.HORIZON),
                           n_boot=200, seed=seed)
     fl = SM.seam_flags_v2(sr)
-    srf = SM.seam_ratio_v2(Z, th, om, thp, groups=np.repeat(np.arange(len(Z) // c.HORIZON), c.HORIZON),
-                           n_boot=0, seed=seed, diagnostics=False, omega_abs_min=1.6)
+    # secondary fast-rotation readout in the v1 definition (straddle windows kept): with straddle windows dropped
+    # almost every |omega| >= 1.6 crossing is removed (omega * dt > the window), so v2 sees |omega| <~ 1.2 only
+    srf = SM.seam_ratio(Z, th, om, groups=np.repeat(np.arange(len(Z) // c.HORIZON), c.HORIZON),
+                        n_boot=0, seed=seed, diagnostics=False, omega_abs_min=1.6)
     out["seam"] = dict(ratio=sr["ratio"], ci95=list(sr["ci95"]), status=sr["status"], verdict3=fl["verdict3"],
                        kappa=sr["kappa_first_pass"], fold_index=fl["fold_index"], folded=fl["folded_at_cut"],
                        omega_dominated=fl["omega_dominated"], in_range3=fl["in_range3"],
                        misalignment_suspect=fl["misalignment_suspect"], n_straddle_dropped=sr["n_straddle_dropped"],
-                       placebo_max=sr.get("placebo_max"), ratio_fast=srf["ratio"])
+                       placebo_max=sr.get("placebo_max"), ratio_fast_v1=srf["ratio"])
     # v2.1: a seam reading outside the instrument's range (fold, or omega dominance for a non-torn verdict; v1's
     # "kappa > 10 invalidates glued") makes the run inconclusive, like a fold
     invalid = bool(fl["folded_at_cut"] or not fl["in_range3"])
