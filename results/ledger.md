@@ -17,3 +17,18 @@ fb94ae6cea460e0a2bc61f79c891572482d84811a1feea76947175a11607fbdd  analysis/seam.
 53fff637cd01e651d376df0973427b4bfcd32927d6c08c5648d59edd54263c6b  cells/0/c0_score.py
 18e27ac743b983e320f73aefe35504a748c7d7b7613271f51b5faf0d94842f85  cells/0/c0_aggregate.py
 ```
+
+- 2026-11-12 JST · 格 0 · prereg v2 · commit ca9c154：审稿不确认（`cells/0/review_v2.md`），未运行任何东西，由 v2.1 取代。
+- 2026-11-12 JST · 格 0 · prereg v2.1 · commit cdebf56。sha256（含所调用的仪器文件）：
+
+```
+532ec03b3f95d8951131e205a4ba305c63d07ac04475d81b038b3437da5e7616  cells/0/prereg.md
+3836f67e14071db17fd0d0a1c03e0bf4df95192e76176d5283e469d97a5d179f  analysis/seam.py
+22d4a6edd789521c0a448331b6eabb37a0131b73023dd1dd59d67859188ef433  cells/0/c0lib.py
+43a4c7c2fce3db9c99e166a5828dedf7b92736d7c40d6ad1ac38def5b68a0784  cells/0/c0_score.py
+be445c2eec335cda5334a37eef2141bf1335492d16f0bde3eec6e04ffad0ad70  cells/0/c0_aggregate.py
+3645d838cbdd86341f6a7278495dc5e64573357996d529905c1bcd81cd8238cc  analysis/topology.py
+3da571aa1c9428747f5ae42dd396b862468ce044d90ce9fac4920dc4f6ccc675  analysis/smoothness.py
+2a29a0cfae9d96e264f3519d6201d668ed672ef9d790bb89065bf884e849fb17  analysis/gates.py
+eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/controls.py
+```
