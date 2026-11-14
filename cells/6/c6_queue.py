@@ -40,6 +40,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--steps", type=int, default=c.MAIN_STEPS)        # v1.4 review: must equal MAIN_STEPS
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--jobs-file", help="if this file exists, its integer overrides --jobs (re-read every 5 s)")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
     if a.steps != c.MAIN_STEPS:
@@ -64,8 +65,17 @@ def main(argv=None) -> int:
         return 0
     running = []
     env = {**__import__("os").environ, "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1"}
+    jobs = a.jobs
     while todo or running:
-        while todo and len(running) < a.jobs:
+        if a.jobs_file and Path(a.jobs_file).exists():
+            try:
+                new = int(Path(a.jobs_file).read_text().strip())
+                if new != jobs:
+                    print(f"[queue] jobs {jobs} -> {new}", flush=True)
+                    jobs = new
+            except ValueError:
+                pass
+        while todo and len(running) < jobs:
             name, cmds = todo.pop(0)
             script = " && ".join(" ".join(x) for x in cmds)
             log = open(logs / f"{name}.log", "w")

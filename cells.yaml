@@ -1196,6 +1196,10 @@ decisions:
       v1.3（p_home 0.1）的 S 尺寸 pilot 也没过 gate（10k：奇数次进入后正确率 0；20k：0.035 / 0.03）。
       Z 选择：数据与其余设定不动，先用 M 尺寸跑一次 20k 步 pilot；过了就把主实验改成只用能学会的尺寸（v1.4，重新冻结、审稿），
       不过就回到"换带记忆的模型"或"记为不确定"二选一。
+    cell_6_v1_4_approved: >
+      2026-11-14：M 的 20k 步 pilot 过了 gate（门 gate 四种状态都是 1.0）。prereg v1.4（commit 69ebea5，审稿确认 cells/6/review_v1_4.md）
+      只用尺寸 M、20k 步、21 个 run。Z 看过 §13 "判据变宽松了"一段后认可，开跑：只有 M 判据全过也算读数有效，
+      P6.6 在 M 上任一条胜出路线即可，结论只对尺寸 M 成立。没有加尺寸或种子作补偿。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
