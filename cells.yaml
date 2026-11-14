@@ -1189,6 +1189,13 @@ decisions:
       接受格 0 预注册 v2.2（冻结后按三轮审稿修订），包括：阶段 2 像素仪器检查失败时只停像素部分、保留阶段 1 的结论；
       收敛判据用 val 损失代替 pred_err[8]。允许开跑阶段 1。
     cell_0_compute: 阶段 1 现在就在云端跑（格 6 暂停期间）
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code
+    cell_6_after_failed_v1_3_pilots: >
+      v1.3（p_home 0.1）的 S 尺寸 pilot 也没过 gate（10k：奇数次进入后正确率 0；20k：0.035 / 0.03）。
+      Z 选择：数据与其余设定不动，先用 M 尺寸跑一次 20k 步 pilot；过了就把主实验改成只用能学会的尺寸（v1.4，重新冻结、审稿），
+      不过就回到"换带记忆的模型"或"记为不确定"二选一。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
