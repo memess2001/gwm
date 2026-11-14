@@ -52,3 +52,14 @@ f82c6b27fd335f1150b5424fe027afc3396f18c61383a77c9a4a13c8d8021e29  cells/6/manipu
 - 2026-11-12 JST · H-act · S · 种子 99 · 10k 步：位置 gate 1.000；门 gate n = 0 / 1 / 2 / 3 为 1.0 / 0.0 / 1.0 / 0.0 → 不通过。val 损失从 6k 步起停在约 0.009。
 - 2026-11-12 JST · H-act · S · 种子 99 · 20k 步：位置 gate 1.000；门 gate 1.0 / 0.0 / 1.0 / 0.0 → 不通过。val 损失 0.0088。
 - 按 §3 的规则：**停**。模型学成了"门永远关着"。真值核算：H-act 训练数据里只有 2.0% 的帧（5.75% 的 episode）受门的状态影响。改数据或模型都属清单外偏离，交 Z 决定。没有计算任何读数。
+
+- 2026-11-14 JST · 格 6 · prereg v1.3 · commit b30ff8f（Z 的决定：p_home 0.1；P6.5 降为描述）。sha256：
+
+```
+1db5e5d665c01bf4fc6904034e1afcc4e8748094ab0659f828b12de63f94f2d3  cells/6/prereg.md
+c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holonomy.py
+10a2655161e0371fd8a80557636570a9cca1b1c98547586ff014d68c634a5607  cells/6/c6lib.py
+6b7ee961dad246774e314315d4580260ed47f7f1d3d2049c0e226413073a5663  cells/6/c6_train.py
+2b44011f0acc8fde64ae1b9668f4ced1469daab556747582df82f31bfb71d117  cells/6/c6_score.py
+23ef3d078d41d115dcdc7ba44ecf9cf13b4328783e493ffcf7263b8e6c211b26  cells/6/manipulation_check.json
+```
