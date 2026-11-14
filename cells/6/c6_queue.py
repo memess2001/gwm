@@ -38,10 +38,12 @@ def run_list():
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--steps", type=int, required=True)
+    ap.add_argument("--steps", type=int, default=c.MAIN_STEPS)        # v1.4 review: must equal MAIN_STEPS
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
+    if a.steps != c.MAIN_STEPS:
+        raise SystemExit(f"--steps {a.steps} != MAIN_STEPS {c.MAIN_STEPS} (prereg section 3); the runs would be INCOMPLETE")
     logs = c.ROOT / "runs" / "c6" / "_logs"
     logs.mkdir(parents=True, exist_ok=True)
     todo = []

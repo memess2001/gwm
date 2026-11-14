@@ -79,3 +79,10 @@ c91b3543d0053e1b3d9330dd764539d3186cd333133c0d28326a282eff72960e  cells/6/c6lib.
 42c5bb2610c103eaa6f1d3505f42be86d97d1253d3863d147e26a9a388784f05  cells/6/c6_score.py
 23ef3d078d41d115dcdc7ba44ecf9cf13b4328783e493ffcf7263b8e6c211b26  cells/6/manipulation_check.json
 ```
+- 2026-11-14 JST · 格 6 · prereg v1.4 的审稿确认：`cells/6/review_v1_4.md`（结论：确认，无阻塞）。非阻塞问题不改冻结文件，记在这里：
+  - (1) §13 "v1.4 不会多判出死"以 S 为 NE 为前提，这个前提是反事实的（照 v1.3 字面，S 的 pilot 不过就停）。不带前提时，16 格里有 7 格判定不同，两个方向都有。v1.4 新开放的最终状态是 alive 与 merged_into:HCDP。
+  - (2) Z 认可时应明确看过 §13 "判据变宽松了"一段。
+  - (3) 同尺寸、同步数的 H-act pilot 若有两个，`protocol_check` 的结果取决于目录遍历顺序；现在只有一个 M 的 20k pilot（种子 99），不受影响。
+  - (4) `steps_used` 把清单外的 run 也算进去，方向保守。
+  - (5) `c6_queue --steps` 原来必须手填；已改为默认取 `MAIN_STEPS`，填别的值就拒绝。`c6_queue.py` 不在冻结之列。
+  - (6) 文字遗留：`c6_train.py`、`c6_score.py` 的文档示例仍是 S、10k；状态行与 §10 仍指向 `review_v1.md`；日期行仍是 2026-11-12。
