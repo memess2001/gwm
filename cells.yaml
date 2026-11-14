@@ -1178,6 +1178,17 @@ decisions:
       包括三处统计量定义的改动（precision@4 取平局期望值；P6.3 的 ≥ 2 次偶数环路只报告；模型检查按分支取最小值）。
       只接受这一次：以后同类修订仍须逐次请 Z 点头。
     status_changes_confirmed: "格 1、3、7 → thought_killed，格 8 → lit_killed（第一周报告提议，handoff 作者已接受）"
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code（Z 在会话里回答选择题）
+    cell_6_after_failed_pilots: >
+      两次 pilot（10k、20k 步）都没过 gate（模型学成"门永远关着"；主动档只有 2% 的帧受门状态影响）。
+      Z 选择：主动档 p_home 从 0.01 提到 0.1（受影响的帧约 8%），放弃主动档与被动档的覆盖匹配，P6.5 降为描述；
+      改完重新冻结、审稿，先用 S 尺寸重跑 pilot。
+    cell_0_v2_2: >
+      接受格 0 预注册 v2.2（冻结后按三轮审稿修订），包括：阶段 2 像素仪器检查失败时只停像素部分、保留阶段 1 的结论；
+      收敛判据用 val 损失代替 pred_err[8]。允许开跑阶段 1。
+    cell_0_compute: 阶段 1 现在就在云端跑（格 6 暂停期间）
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
