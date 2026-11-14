@@ -47,3 +47,4 @@ c45f95c7b686cb045967fbb97979779070bc02fc0ecf41f6c2d05e496df14eaa  cells/0/c0_agg
 eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/controls.py
 ```
 - 2026-11-12 JST · 格 0 · prereg v2.2 的审稿确认：`cells/0/review_v2_2.md`（结论：确认；预先授权第 3 条）。v2.1、v2.2 都是冻结后的修订，按 Z 2026-11-12 的决定仍需 Z 逐次确认后才能开跑。
+- 2026-11-14 JST · 格 0 · Z 接受 prereg v2.2（含两处点名的改动：像素仪器失败只停像素部分；收敛判据用 val 损失），允许开跑阶段 1，在云端跑。决定记录在 `cell6/v1` 分支 `cells.yaml` 的 `decisions`。
