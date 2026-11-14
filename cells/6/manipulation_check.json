@@ -1,80 +1,83 @@
 {
- "rule": "p_home = the P_HOME_GRID value whose open-door attempts (2000 episodes, seed SPLIT_SEEDS['train'] + 777, hidden world) are closest to passive_cover's on the same seed; ties -> smaller",
+ "rule": "v1.3 (Z 2026-11-14): p_home fixed at 0.1 after both pilots at the coverage-matched p_home = 0.01 failed the door gate; coverage matching to passive_cover is given up (P6.5 descriptive)",
  "p_home": {
-  "p_home": 0.01,
-  "target_open_attempts": 213,
-  "grid": [
-   [
-    0.0,
-    112
+  "p_home": 0.1,
+  "previous": {
+   "p_home": 0.01,
+   "target_open_attempts": 213,
+   "grid": [
+    [
+     0.0,
+     112
+    ],
+    [
+     0.005,
+     153
+    ],
+    [
+     0.01,
+     223
+    ],
+    [
+     0.015,
+     282
+    ],
+    [
+     0.02,
+     321
+    ],
+    [
+     0.03,
+     450
+    ],
+    [
+     0.05,
+     692
+    ],
+    [
+     0.1,
+     1101
+    ]
    ],
-   [
-    0.005,
-    153
-   ],
-   [
-    0.01,
-    223
-   ],
-   [
-    0.015,
-    282
-   ],
-   [
-    0.02,
-    321
-   ],
-   [
-    0.03,
-    450
-   ],
-   [
-    0.05,
-    692
-   ],
-   [
-    0.1,
-    1101
-   ]
-  ],
-  "seed": 777
+   "seed": 777
+  }
  },
  "coverage_train_seed": {
   "H-act_n2000": {
    "episodes": 2000,
-   "door_attempts": 1570,
-   "open_door_attempts": 234,
-   "frames_outside_R0": 0.0084609375,
-   "episodes_leaving_R0": 0.0575,
-   "attempts_after_0_entries": 1200,
-   "attempts_after_1_entries": 173,
-   "attempts_after_2_entries": 82,
-   "attempts_after_3_entries": 33,
-   "attempts_after_4plus_entries": 82
+   "door_attempts": 4765,
+   "open_door_attempts": 1063,
+   "frames_outside_R0": 0.0448515625,
+   "episodes_leaving_R0": 0.1865,
+   "attempts_after_0_entries": 3051,
+   "attempts_after_1_entries": 764,
+   "attempts_after_2_entries": 435,
+   "attempts_after_3_entries": 178,
+   "attempts_after_4plus_entries": 337
   },
   "H-act_n500": {
    "episodes": 500,
-   "door_attempts": 330,
-   "open_door_attempts": 47,
-   "frames_outside_R0": 0.00821875,
-   "episodes_leaving_R0": 0.056,
-   "attempts_after_0_entries": 263,
-   "attempts_after_1_entries": 35,
-   "attempts_after_2_entries": 11,
-   "attempts_after_3_entries": 7,
-   "attempts_after_4plus_entries": 14
+   "door_attempts": 1203,
+   "open_door_attempts": 290,
+   "frames_outside_R0": 0.048875,
+   "episodes_leaving_R0": 0.172,
+   "attempts_after_0_entries": 744,
+   "attempts_after_1_entries": 198,
+   "attempts_after_2_entries": 111,
+   "attempts_after_3_entries": 49,
+   "attempts_after_4plus_entries": 101
   },
   "H-act_n250": {
    "episodes": 250,
-   "door_attempts": 159,
-   "open_door_attempts": 16,
-   "frames_outside_R0": 0.003125,
-   "episodes_leaving_R0": 0.036,
-   "attempts_after_0_entries": 129,
-   "attempts_after_1_entries": 11,
-   "attempts_after_2_entries": 12,
-   "attempts_after_3_entries": 1,
-   "attempts_after_4plus_entries": 6
+   "door_attempts": 626,
+   "open_door_attempts": 124,
+   "frames_outside_R0": 0.0456875,
+   "episodes_leaving_R0": 0.164,
+   "attempts_after_0_entries": 443,
+   "attempts_after_1_entries": 79,
+   "attempts_after_2_entries": 24,
+   "attempts_after_3_entries": 31,
+   "attempts_after_4plus_entries": 49
   },
   "H-pc_n2000": {
    "episodes": 2000,
@@ -102,27 +105,27 @@
   },
   "C-open_n2000": {
    "episodes": 2000,
-   "door_attempts": 1331,
-   "open_door_attempts": 1331,
-   "frames_outside_R0": 0.04621875,
-   "episodes_leaving_R0": 0.2995,
-   "attempts_after_0_entries": 981,
-   "attempts_after_1_entries": 169,
-   "attempts_after_2_entries": 75,
-   "attempts_after_3_entries": 33,
-   "attempts_after_4plus_entries": 73
+   "door_attempts": 4815,
+   "open_door_attempts": 4815,
+   "frames_outside_R0": 0.20840625,
+   "episodes_leaving_R0": 0.6785,
+   "attempts_after_0_entries": 3222,
+   "attempts_after_1_entries": 667,
+   "attempts_after_2_entries": 404,
+   "attempts_after_3_entries": 191,
+   "attempts_after_4plus_entries": 331
   },
   "C-vis_n2000": {
    "episodes": 2000,
-   "door_attempts": 1570,
-   "open_door_attempts": 234,
-   "frames_outside_R0": 0.0084609375,
-   "episodes_leaving_R0": 0.0575,
-   "attempts_after_0_entries": 1200,
-   "attempts_after_1_entries": 173,
-   "attempts_after_2_entries": 82,
-   "attempts_after_3_entries": 33,
-   "attempts_after_4plus_entries": 82
+   "door_attempts": 4765,
+   "open_door_attempts": 1063,
+   "frames_outside_R0": 0.0448515625,
+   "episodes_leaving_R0": 0.1865,
+   "attempts_after_0_entries": 3051,
+   "attempts_after_1_entries": 764,
+   "attempts_after_2_entries": 435,
+   "attempts_after_3_entries": 178,
+   "attempts_after_4plus_entries": 337
   }
  }
 }

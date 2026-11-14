@@ -481,8 +481,9 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
         def med(cond, key="auc_strat"):
             return float(np.median([R[(cond, size, sd, c.N_TRAIN_MAIN)]["s"][key] for sd in (0, 1, 2)]))
         act, pc, pn = med("H-act"), med("H-pc"), med("H-pn")
-        p65[size] = {"auc_act": act, "auc_pc": pc, "auc_pn": pn, "holds": abs(act - pc) <= 0.05 and pn <= 0.6,
-                     "falsified": act - pc > 0.10, "pn_red_flag": pn > 0.6}
+        # v1.3 (Z 2026-11-14): coverage is no longer matched (p_home 0.1), so P6.5 is descriptive only
+        p65[size] = {"auc_act": act, "auc_pc": pc, "auc_pn": pn, "descriptive_only": True,
+                     "act_minus_pc": act - pc, "pn_red_flag": pn > 0.6}
     out["P65"] = p65
     # ---------------- secondary: AUC against gate accuracy (all scored runs)
     out["auc_vs_gate"] = [{"run": k, "auc_strat": v["auc_strat"], "door_acc": v.get("door_acc"),
