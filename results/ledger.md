@@ -64,3 +64,4 @@ c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holon
 23ef3d078d41d115dcdc7ba44ecf9cf13b4328783e493ffcf7263b8e6c211b26  cells/6/manipulation_check.json
 ```
 - 2026-11-14 JST · 格 6 · prereg v1.3 的审稿确认：`cells/6/review_v1_3.md`（结论：确认）。三处非阻塞的文字问题不改冻结文件，记在这里：(1) "受门状态影响的帧"在训练种子上，p_home 0.01 为 2.0%，p_home 0.1 为 7.2%（§2 的 7.7% 来自种子 777）；定义是"门永远关着"的 rollout 与真值不符的帧；(2) 状态行应指向 `review_v1_3.md`；(3) 对照表第 9 行"P6.5 可被证伪"在 v1.3 下应读作"P6.5 为描述"。
+- 2026-11-14 JST · 格 6 v1.3 pilot · H-act · S · 种子 99 · 10k 步（p_home 0.1）：位置 gate 1.000；门 gate n = 0 / 1 / 2 / 3 为 1.0 / 0.0 / 1.0 / 0.0 → 不通过。val 损失 0.025。按 §3 接着跑 20k 步的 pilot。
