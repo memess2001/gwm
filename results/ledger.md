@@ -68,3 +68,14 @@ c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holon
 - 2026-11-14 JST · 格 6 v1.3 pilot · H-act · S · 种子 99 · 20k 步（p_home 0.1）：位置 gate 0.999；门 gate n = 0 / 1 / 2 / 3 为 1.0 / 0.035 / 0.96 / 0.03 → 不通过。val 损失 0.0206（10k 时 0.025）。按 §3：**停**，交 Z 决定。没有计算任何读数。
 - 2026-11-14 JST · 格 6 · Z 决定先用 M 尺寸跑 20k 步 pilot（数据与其余设定不动）；结果只看训练损失与 gate。
 - 2026-11-14 JST · 格 6 v1.3 设定下的 M 尺寸 pilot · H-act · M（50.0 万参数）· 种子 99 · 20k 步（p_home 0.1）：位置 gate 1.000（n = 24109）；门 gate n = 0 / 1 / 2 / 3 为 1.0 / 1.0 / 1.0 / 1.0（各 200 个事件）→ **通过**。val 损失 4k / 8k / 12k / 16k / 20k 步为 0.0244 / 0.0200 / 0.0016 / 0.00032 / 0.00021（S 在 20k 步停在 0.0206）。单线程、与格 0 的 3 个 job 同机，用时 6638 s。没有计算任何读数。按 Z 的决定，下一步是 v1.4：主实验只用 M。
+
+- 2026-11-14 JST · 格 6 · prereg v1.4 · commit 69ebea5（Z 的决定：主实验只用尺寸 M，20k 步；21 个 run）。sha256：
+
+```
+6259766a9746437b10a0b9b9551086474f0bded56f86fd915c32761ebfb35fe7  cells/6/prereg.md
+c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holonomy.py
+c91b3543d0053e1b3d9330dd764539d3186cd333133c0d28326a282eff72960e  cells/6/c6lib.py
+6b7ee961dad246774e314315d4580260ed47f7f1d3d2049c0e226413073a5663  cells/6/c6_train.py
+42c5bb2610c103eaa6f1d3505f42be86d97d1253d3863d147e26a9a388784f05  cells/6/c6_score.py
+23ef3d078d41d115dcdc7ba44ecf9cf13b4328783e493ffcf7263b8e6c211b26  cells/6/manipulation_check.json
+```
