@@ -32,6 +32,8 @@ CONDITIONS = {
 }
 N_TRAIN_MAIN, N_VAL = 2000, 200
 DATA_EFF_N = (250, 500)                 # extra H-act runs (P6.6 data efficiency; 2000 = the main run)
+SIZES = ("M",)                          # v1.4 (Z 2026-11-14): S never passed the door gate (v1.3 pilots)
+MAIN_STEPS = 20000                      # v1.4: set by the H-act M pilot at 20k steps (prereg section 3)
 P_HOME_GRID = (0.0, 0.005, 0.01, 0.015, 0.02, 0.03, 0.05, 0.1)
 LOOP_LEN = (2, 8)                       # random-walk part of each active-tier loop (zoo default)
 CAL_SEED_OFFSET = 777                   # coverage-matching seed: SPLIT_SEEDS["train"] + 777 (never trained on)

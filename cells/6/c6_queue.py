@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """Run queue for cell 6 (orchestration only; not part of the frozen scoring code).
 
-    python cells/6/c6_queue.py --steps 10000 --jobs 4            # all 42 runs: train + gate, then score
-    python cells/6/c6_queue.py --steps 10000 --jobs 4 --dry-run
+    python cells/6/c6_queue.py --steps 20000 --jobs 4            # all 21 runs (v1.4, M only): train + gate, then score
+    python cells/6/c6_queue.py --steps 20000 --jobs 4 --dry-run
 
-Order: S before M, main conditions before data-efficiency runs. Each job is single-threaded (OpenMP
+Order: main conditions before data-efficiency runs. Each job is single-threaded (OpenMP
 oversubscription slows small models 10-100x here). Skips runs whose gate.json / scores.json already exist, so it
 can be restarted. Logs go to runs/c6/_logs/.
 """
@@ -26,7 +26,7 @@ PY = sys.executable
 
 def run_list():
     out = []
-    for size in ("S", "M"):
+    for size in c.SIZES:
         for cond in ("H-act", "C-open", "C-vis", "H-pc", "H-pn"):
             for seed in (0, 1, 2):
                 out.append((cond, size, seed, c.N_TRAIN_MAIN))

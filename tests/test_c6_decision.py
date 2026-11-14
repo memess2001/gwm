@@ -1,4 +1,4 @@
-"""The cell-6 decision table (cells/6/c6_score.aggregate, v1.1) on fabricated run directories (no models)."""
+"""The cell-6 decision table (cells/6/c6_score.aggregate, v1.4: M only) on fabricated run directories (no models)."""
 import json
 import sys
 from pathlib import Path
@@ -9,7 +9,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "cells" / "6"))
 import c6_score as cs                                   # noqa: E402
 
-STEPS = 10000
+STEPS = 20000
+SIZES = ("M",)
 
 
 def _arrays(h_even=0.0, h_null=0.0, h_odd=1.0, n_z=20, obs_closed_odd=True):
@@ -26,7 +27,7 @@ def _arrays(h_even=0.0, h_null=0.0, h_odd=1.0, n_z=20, obs_closed_odd=True):
 
 
 def _write(root, cond, size, seed, n=2000, gate=True, s=None, arrays=None, steps=STEPS, pilot=False):
-    d = root / (f"{cond}_{size}_s{seed}_n{n}" + ("_pilot" if pilot else ""))
+    d = root / (f"{cond}_{size}_s{seed}_n{n}" + (f"_pilot{steps}" if pilot else ""))
     d.mkdir(parents=True)
     (d / "c6_run.json").write_text(json.dumps({"cond": cond, "size": size, "seed": seed, "n_train": n,
                                                "pilot": pilot, "steps": steps}))
@@ -41,11 +42,11 @@ def _write(root, cond, size, seed, n=2000, gate=True, s=None, arrays=None, steps
 
 
 def _world(root, primary=None, controls=None, ctl_s=None, ctl_gate=True, eff=None, gates=None, skip=(),
-           pilot_pass=True):
-    _write(root, "H-act", "S", 99, steps=STEPS, pilot=True, gate=pilot_pass)
+           pilot_pass=True, pilot_size="M", pilot_steps=STEPS):
+    _write(root, "H-act", pilot_size, 99, steps=pilot_steps, pilot=True, gate=pilot_pass)
     eff = eff or {n: {"auc_strat": 0.5, "base_auc_strat": 0.5, "prec4_R0": 0.25, "base_prec4_R0": 0.25}
                   for n in (250, 500)}
-    for size in ("S", "M"):
+    for size in SIZES:
         for sd in (0, 1, 2):
             g = True if gates is None else gates[size][sd]
             _write(root, "H-act", size, sd, gate=g, s=(primary or {}))
@@ -77,14 +78,14 @@ def test_data_efficiency_win(tmp_path):
     _world(tmp_path, eff={250: {"auc_strat": 0.95, "base_auc_strat": 0.6, "prec4_R0": 0.25, "base_prec4_R0": 0.25},
                           500: {"auc_strat": 0.95, "base_auc_strat": 0.95, "prec4_R0": 0.25, "base_prec4_R0": 0.25}})
     r = cs.aggregate(tmp_path)
-    assert r["P66"]["S"]["win_data_det"] and r["status"] == "alive"
+    assert r["P66"]["M"]["win_data_det"] and r["status"] == "alive"
 
 
 def test_nonspecific_readout_is_dead_when_controls_learned(tmp_path):
     _world(tmp_path, controls=_arrays(h_even=1.0, h_null=1.0, h_odd=1.0))
     r = cs.aggregate(tmp_path)
     assert r["readout_verdict"] == "READOUT_DEAD" and r["status"] == "dead"
-    assert r["per_size"]["S"]["not_specific"]
+    assert r["per_size"]["M"]["not_specific"]
 
 
 def test_control_that_did_not_learn_is_unchecked(tmp_path):            # review C
@@ -100,7 +101,7 @@ def test_control_gate_failure_is_unchecked(tmp_path):                  # review 
 def test_tau_ceiling_fails_p63(tmp_path):                              # review E
     _world(tmp_path, primary={"tau": 1.0})
     r = cs.aggregate(tmp_path)
-    assert not r["per_size"]["S"]["P63_size"] and r["per_size"]["S"]["exceedance"][0]["tau_ceiling"]
+    assert not r["per_size"]["M"]["P63_size"] and r["per_size"]["M"]["exceedance"][0]["tau_ceiling"]
 
 
 def test_failure_with_failed_model_check_is_inconclusive(tmp_path):
@@ -109,23 +110,23 @@ def test_failure_with_failed_model_check_is_inconclusive(tmp_path):
 
 
 def test_gate_failures_make_size_not_evaluable(tmp_path):
-    _world(tmp_path, gates={"S": [True, False, False], "M": [True, False, False]})
+    _world(tmp_path, gates={"M": [True, False, False]})
     r = cs.aggregate(tmp_path)
-    assert r["per_size"]["S"]["state"] == "NE" and r["readout_verdict"] == "INCONCLUSIVE"
+    assert r["per_size"]["M"]["state"] == "NE" and r["readout_verdict"] == "INCONCLUSIVE"
 
 
 def test_one_checked_failure_plus_gate_failure_is_unchecked(tmp_path):  # review N
-    _world(tmp_path, gates={"S": [True, True, False], "M": [True, True, False]})
-    for size in ("S", "M"):
+    _world(tmp_path, gates={"M": [True, True, False]})
+    for size in SIZES:
         d = tmp_path / f"H-act_{size}_s0_n2000"
         s = json.loads((d / "scores.json").read_text())
         s["auc_strat"] = 0.6
         (d / "scores.json").write_text(json.dumps(s))
     r = cs.aggregate(tmp_path)
-    assert r["per_size"]["S"]["state"] == "FAIL_UNCHECKED" and r["readout_verdict"] == "INCONCLUSIVE"
+    assert r["per_size"]["M"]["state"] == "FAIL_UNCHECKED" and r["readout_verdict"] == "INCONCLUSIVE"
 
 
-def test_size_disagreement_is_inconclusive(tmp_path):
+def test_checked_failure_on_m_is_dead(tmp_path):                      # v1.4: M's state alone decides
     _world(tmp_path)
     for sd in (0, 1, 2):
         d = tmp_path / f"H-act_M_s{sd}_n2000"
@@ -133,12 +134,34 @@ def test_size_disagreement_is_inconclusive(tmp_path):
         s["auc_strat"] = 0.6
         (d / "scores.json").write_text(json.dumps(s))
     r = cs.aggregate(tmp_path)
-    assert r["per_size"]["S"]["state"] == "PASS" and r["per_size"]["M"]["state"] == "FAIL_CHECKED"
-    assert r["readout_verdict"] == "INCONCLUSIVE"
+    assert r["per_size"]["M"]["state"] == "FAIL_CHECKED" and r["readout_verdict"] == "READOUT_DEAD"
+    assert list(r["per_size"]) == ["M"]
+
+
+def test_v14_needs_21_runs_and_no_s_runs():
+    req = cs.required_runs()
+    assert len(req) == 21 and {k[1] for k in req} == {"M"}
+    assert cs.c.SIZES == ("M",) and cs.c.MAIN_STEPS == 20000
+
+
+def test_s_pilot_does_not_set_the_step_count(tmp_path):                # v1.4 step rule
+    _world(tmp_path, pilot_size="S")                                    # only an S pilot, even if it passed
+    r = cs.aggregate(tmp_path)
+    assert r["readout_verdict"] == "INCOMPLETE" and r["protocol"]["steps_by_rule"] is None
+
+
+def test_runs_at_10k_steps_are_incomplete(tmp_path):                    # v1.4: main runs must use 20k steps
+    _world(tmp_path)
+    for d in tmp_path.glob("*_n2000"):
+        m = json.loads((d / "c6_run.json").read_text())
+        m["steps"] = 10000
+        (d / "c6_run.json").write_text(json.dumps(m))
+    r = cs.aggregate(tmp_path)
+    assert r["readout_verdict"] == "INCOMPLETE" and not r["protocol"]["ok"]
 
 
 def test_missing_control_run_is_incomplete(tmp_path):                  # review B
-    _world(tmp_path, skip={("C-vis", "S", 0), ("C-vis", "S", 1), ("C-vis", "S", 2)})
+    _world(tmp_path, skip={("C-vis", "M", 0), ("C-vis", "M", 1), ("C-vis", "M", 2)})
     r = cs.aggregate(tmp_path)
     assert r["readout_verdict"] == "INCOMPLETE" and len(r["missing_runs"]) == 3
 
@@ -149,7 +172,7 @@ def test_missing_data_efficiency_run_is_incomplete(tmp_path):          # review 
 
 
 def test_step_rule_is_enforced(tmp_path):                               # review J
-    _world(tmp_path, pilot_pass=False)                                  # 10k pilot failed, no 20k pilot
+    _world(tmp_path, pilot_pass=False)                                  # the M 20k pilot failed its gate
     r = cs.aggregate(tmp_path)
     assert r["readout_verdict"] == "INCOMPLETE" and not r["protocol"]["ok"]
 

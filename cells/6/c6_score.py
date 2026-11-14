@@ -329,26 +329,24 @@ def _seed_ok(xs, k=2):
 
 
 def required_runs():
-    """The 42 runs the decision table needs (cells/6/prereg.md section 9)."""
-    out = [(cond, size, sd, c.N_TRAIN_MAIN) for size in ("S", "M") for cond in c.CONDITIONS for sd in (0, 1, 2)]
-    out += [("H-act", size, sd, n) for size in ("S", "M") for n in c.DATA_EFF_N for sd in (0, 1, 2)]
+    """The runs the decision table needs (cells/6/prereg.md section 9): 21 since v1.4 (M only)."""
+    out = [(cond, size, sd, c.N_TRAIN_MAIN) for size in c.SIZES for cond in c.CONDITIONS for sd in (0, 1, 2)]
+    out += [("H-act", size, sd, n) for size in c.SIZES for n in c.DATA_EFF_N for sd in (0, 1, 2)]
     return out
 
 
 def protocol_check(runs_dir: Path, R: dict) -> dict:
-    """Pilot step rule (prereg section 3, review J): 10k if the 10k pilot passed its gate, else 20k if the 20k
-    pilot passed, else stop; every scored run must use that step count."""
+    """Pilot step rule (prereg section 3, review J; v1.4): the main runs use MAIN_STEPS (20k), and only if the
+    H-act pilot of every size in SIZES passed its gate at that step count; pilots of other sizes (the v1.3 S
+    pilots) are history and do not count. Every scored run must use that step count."""
     pil = {}
     for d in runs_dir.glob("*_pilot*"):
         if (d / "c6_run.json").exists() and (d / "gate.json").exists():
             m = json.loads((d / "c6_run.json").read_text())
-            pil[int(m["steps"])] = bool(json.loads((d / "gate.json").read_text())["pass"])
-    if pil.get(10000):
-        steps = 10000
-    elif 10000 in pil and pil.get(20000):
-        steps = 20000
-    else:
-        steps = None
+            if m.get("cond", "H-act") != "H-act":
+                continue
+            pil[f'{m["size"]}_{int(m["steps"])}'] = bool(json.loads((d / "gate.json").read_text())["pass"])
+    steps = c.MAIN_STEPS if all(pil.get(f"{size}_{c.MAIN_STEPS}") for size in c.SIZES) else None
     used = sorted({int(v["meta"]["steps"]) for v in R.values()})
     return {"pilots": pil, "steps_by_rule": steps, "steps_used": used,
             "ok": steps is not None and used == [steps]}
@@ -378,7 +376,7 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
     mc_ok = lambda r: r["s"]["model_check"] >= THRESH["model_check"]           # noqa: E731
     out["per_size"] = {}
     size_state = {}
-    for size in ("S", "M"):
+    for size in c.SIZES:
         prim = [R[("H-act", size, sd, c.N_TRAIN_MAIN)] for sd in (0, 1, 2)]
         gp = [p["gate"]["pass"] for p in prim]
         rec = {"gate_pass": gp, "evaluable": _seed_ok(gp)}
@@ -429,19 +427,19 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
         rec["not_specific"] = bool(rec["P61_size"] and rec["P62_size"] and not rec["P63_size"])   # review I
         size_state[size] = st
         out["per_size"][size] = rec
-    a, b = size_state["S"], size_state["M"]
-    if a == b == "PASS":
+    states = [size_state[s] for s in c.SIZES]          # v1.4: SIZES = ("M",), so this is M's state alone
+    if all(st == "PASS" for st in states):
         verdict = "READOUT_WORKS"
-    elif "PASS" in (a, b):
+    elif "PASS" in states:
         verdict = "INCONCLUSIVE"
-    elif "FAIL_CHECKED" in (a, b):
+    elif "FAIL_CHECKED" in states:
         verdict = "READOUT_DEAD"
     else:
         verdict = "INCONCLUSIVE"
     out["readout_verdict"] = verdict
     # ---------------- P6.6
     p66 = {}
-    for size in ("S", "M"):
+    for size in c.SIZES:
         prim = [R[("H-act", size, sd, c.N_TRAIN_MAIN)] for sd in (0, 1, 2)]
         ok = [p for p in prim if p["gate"]["pass"]]
         if len(ok) < 2:
@@ -469,15 +467,15 @@ def aggregate(runs_dir: Path = RUNS) -> dict:
                      "win_data_loc": wins(need["holo_loc"], need["base_loc"])}
     out["P66"] = p66
     geo = None
-    if verdict == "READOUT_WORKS" and all(p66.get(s) for s in ("S", "M")):
+    if verdict == "READOUT_WORKS" and all(p66.get(s) for s in c.SIZES):
         metrics = ("win_auc", "win_prec", "win_data_det", "win_data_loc")
-        geo = any(p66["S"][m] and p66["M"][m] for m in metrics)
+        geo = any(all(p66[s][m] for s in c.SIZES) for m in metrics)
     out["geometric_claim_survives"] = geo
     out["status"] = {"READOUT_WORKS": ("alive" if geo else "merged_into:HCDP (Zhang et al. 2026-07)"),
                      "READOUT_DEAD": "dead", "INCONCLUSIVE": "unchanged (inconclusive)"}[verdict]
     # ---------------- P6.5 (secondary)
     p65 = {}
-    for size in ("S", "M"):
+    for size in c.SIZES:
         def med(cond, key="auc_strat"):
             return float(np.median([R[(cond, size, sd, c.N_TRAIN_MAIN)]["s"][key] for sd in (0, 1, 2)]))
         act, pc, pn = med("H-act"), med("H-pc"), med("H-pn")
