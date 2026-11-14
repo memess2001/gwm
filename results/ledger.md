@@ -63,3 +63,4 @@ c19cacc5c98a9654ddc8476a5ea2177caf8de3ab7bc1d002d45d53b062f2a970  analysis/holon
 2b44011f0acc8fde64ae1b9668f4ced1469daab556747582df82f31bfb71d117  cells/6/c6_score.py
 23ef3d078d41d115dcdc7ba44ecf9cf13b4328783e493ffcf7263b8e6c211b26  cells/6/manipulation_check.json
 ```
+- 2026-11-14 JST · 格 6 · prereg v1.3 的审稿确认：`cells/6/review_v1_3.md`（结论：确认）。三处非阻塞的文字问题不改冻结文件，记在这里：(1) "受门状态影响的帧"在训练种子上，p_home 0.01 为 2.0%，p_home 0.1 为 7.2%（§2 的 7.7% 来自种子 777）；定义是"门永远关着"的 rollout 与真值不符的帧；(2) 状态行应指向 `review_v1_3.md`；(3) 对照表第 9 行"P6.5 可被证伪"在 v1.3 下应读作"P6.5 为描述"。
