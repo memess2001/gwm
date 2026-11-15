@@ -222,3 +222,70 @@
 [val]   step  20000  loss 0.022658
 [train] done in 7142.3s
 [c6] gate {"door_acc": {"0": 0.835, "1": 0.61, "2": 0.34, "3": 0.64}, "door_n": {"0": 200, "1": 200, "2": 200, "3": 200}, "position_acc": 0.9995852171388279, "position_n": 24109, "door_gate_applies": true, "pass": false}
+{
+ "model_check": 0.5356996002284409,
+ "model_check_all": 0.9660123046875,
+ "model_check_bit_sensitive": 0.5356996002284409,
+ "model_check_bit_sensitive_frames": 700400,
+ "model_check_all_A": 0.9660123046875,
+ "model_check_all_B": 0.988121484375,
+ "model_check_bit_sensitive_A": 0.5356996002284409,
+ "model_check_bit_sensitive_B": 0.8842090234151914,
+ "auc_strat": 0.5143676746890937,
+ "auc_strat_ci": [
+  0.49920389659336517,
+  0.5288498486730558
+ ],
+ "auc_pooled": 0.5698533854166666,
+ "auc_strat_mean_probe": 0.5130468819898005,
+ "auc_oracle_probe": 0.5214900017893889,
+ "auc_m1_latent": 0.4921781336673526,
+ "tau": 1.0,
+ "prec4_R0": 0.75,
+ "ranks_switch_R0": [
+  8,
+  3,
+  4,
+  2
+ ],
+ "ranks_door_adjacent_R0": [
+  6,
+  10
+ ],
+ "door_adjacent_in_top4": false,
+ "prec4_R1": null,
+ "plaq_R1_coverage": [
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100
+ ],
+ "base_auc_strat": 0.5074995349606267,
+ "base_auc_strat_mixed": 0.49765559942303117,
+ "base_prec4_R0": 1.0,
+ "base_ranks_switch_R0": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "cond": "H-act",
+ "size": "M",
+ "seed": 2,
+ "steps": 20000,
+ "n_train": 500,
+ "pilot": false,
+ "p_home": 0.1
+}

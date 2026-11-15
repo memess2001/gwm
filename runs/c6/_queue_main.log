@@ -47,3 +47,5 @@
 [queue] done H-act_M_s2_n250 rc=0 127.2 min
 [queue] done H-act_M_s0_n500 rc=0 128.8 min
 [queue] done H-act_M_s1_n500 rc=0 128.0 min
+[queue] done H-act_M_s2_n500 rc=0 128.5 min
+[queue] all finished
