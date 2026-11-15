@@ -1,0 +1,77 @@
+{
+ "h1": {
+  "state": "none",
+  "b_main": 0,
+  "b_stab": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "top_pi": [
+   1.6487113153895412,
+   1.6343467045490794,
+   1.6222658754494832
+  ],
+  "abs_rho": 0.3389997481065131,
+  "wrapping_class": 0
+ },
+ "seam": {
+  "ratio": NaN,
+  "ci95": [
+   NaN,
+   NaN
+  ],
+  "status": "insufficient",
+  "verdict3": "insufficient",
+  "kappa": 0.45472633921219674,
+  "fold_index": NaN,
+  "folded": false,
+  "omega_dominated": false,
+  "in_range3": false,
+  "misalignment_suspect": false,
+  "n_straddle_dropped": 0,
+  "placebo_max": NaN,
+  "ratio_fast_v1": NaN
+ },
+ "consistency": "inconclusive",
+ "h1_none_high_kappa": false,
+ "theta_gate_n8000": {
+  "r2_min": 0.9997420345824691,
+  "passed": true
+ },
+ "theta_gate_n2000": {
+  "r2_min": 0.9986655668133675,
+  "passed": true
+ },
+ "energy": {
+  "knn_r2": 0.9779821233091921,
+  "quad_r2": 0.9978039882689826,
+  "linear_r2": 0.4886699632759435,
+  "lipschitz_tail": 4.200808490684669,
+  "decodable": true,
+  "smooth": false
+ },
+ "collapse": {
+  "min_std": 1.0936378023416382,
+  "effective_rank": 7.998076651860516,
+  "collapsed": false
+ },
+ "exclusion": {
+  "learned": true,
+  "collapsed": false,
+  "pred8": 2.0471105167017548e-05,
+  "copy8": 1.50241411955952,
+  "excluded": false
+ },
+ "convergence": {
+  "converged": false,
+  "rel_change": 0.8770584729569589
+ },
+ "meta": {
+  "run": "cs-jepa-sym_M_s2_neg",
+  "analysis_index": 0,
+  "device": "cpu",
+  "steps": 20000
+ }
+}

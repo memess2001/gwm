@@ -1,0 +1,224 @@
+[train] warning: load 3.7 + 1 threads > 4 cores; OpenMP oversubscription can slow small models 10-100x (measured here) - use --threads 1 per parallel job
+[train] toggle_grid/grid recon-S seed=99 params=100396 device=cpu threads=1 windows=2000 data=0.2s
+[train] step    100  loss 18.905  lr 1.01e-04  0.133s/step
+[train] step    200  loss 1.814  lr 2.01e-04  0.137s/step
+[train] step    300  loss 0.17367  lr 3.01e-04  0.133s/step
+[train] step    400  loss 0.17076  lr 4.01e-04  0.130s/step
+[train] step    500  loss 0.17062  lr 5.01e-04  0.140s/step
+[train] step    600  loss 0.17166  lr 6.01e-04  0.137s/step
+[train] step    700  loss 0.17053  lr 7.01e-04  0.132s/step
+[train] step    800  loss 0.17191  lr 8.01e-04  0.141s/step
+[train] step    900  loss 0.17294  lr 9.01e-04  0.158s/step
+[train] step   1000  loss 0.17004  lr 1.00e-03  0.136s/step
+[val]   step   1000  loss 0.1686
+[train] step   1100  loss 0.16771  lr 1.00e-03  0.133s/step
+[train] step   1200  loss 0.16673  lr 1.00e-03  0.130s/step
+[train] step   1300  loss 0.16188  lr 9.99e-04  0.133s/step
+[train] step   1400  loss 0.15859  lr 9.99e-04  0.148s/step
+[train] step   1500  loss 0.15696  lr 9.98e-04  0.155s/step
+[train] step   1600  loss 0.15523  lr 9.98e-04  0.137s/step
+[train] step   1700  loss 0.15133  lr 9.97e-04  0.139s/step
+[train] step   1800  loss 0.14541  lr 9.96e-04  0.133s/step
+[train] step   1900  loss 0.13942  lr 9.94e-04  0.135s/step
+[train] step   2000  loss 0.13548  lr 9.93e-04  0.132s/step
+[val]   step   2000  loss 0.13859
+[train] step   2100  loss 0.13199  lr 9.92e-04  0.143s/step
+[train] step   2200  loss 0.12579  lr 9.90e-04  0.134s/step
+[train] step   2300  loss 0.11844  lr 9.88e-04  0.137s/step
+[train] step   2400  loss 0.1107  lr 9.87e-04  0.149s/step
+[train] step   2500  loss 0.10544  lr 9.85e-04  0.134s/step
+[train] step   2600  loss 0.10154  lr 9.83e-04  0.129s/step
+[train] step   2700  loss 0.09537  lr 9.80e-04  0.136s/step
+[train] step   2800  loss 0.090628  lr 9.78e-04  0.152s/step
+[train] step   2900  loss 0.084678  lr 9.76e-04  0.145s/step
+[train] step   3000  loss 0.080474  lr 9.73e-04  0.153s/step
+[val]   step   3000  loss 0.084222
+[train] step   3100  loss 0.078267  lr 9.70e-04  0.140s/step
+[train] step   3200  loss 0.074348  lr 9.67e-04  0.128s/step
+[train] step   3300  loss 0.072366  lr 9.64e-04  0.154s/step
+[train] step   3400  loss 0.070497  lr 9.61e-04  0.153s/step
+[train] step   3500  loss 0.065539  lr 9.58e-04  0.138s/step
+[train] step   3600  loss 0.061895  lr 9.55e-04  0.136s/step
+[train] step   3700  loss 0.057949  lr 9.51e-04  0.128s/step
+[train] step   3800  loss 0.05387  lr 9.47e-04  0.135s/step
+[train] step   3900  loss 0.051089  lr 9.44e-04  0.144s/step
+[train] step   4000  loss 0.046778  lr 9.40e-04  0.140s/step
+[val]   step   4000  loss 0.047935
+[train] step   4100  loss 0.041623  lr 9.36e-04  0.138s/step
+[train] step   4200  loss 0.040295  lr 9.32e-04  0.135s/step
+[train] step   4300  loss 0.036453  lr 9.27e-04  0.151s/step
+[train] step   4400  loss 0.034403  lr 9.23e-04  0.147s/step
+[train] step   4500  loss 0.034658  lr 9.19e-04  0.135s/step
+[train] step   4600  loss 0.033263  lr 9.14e-04  0.133s/step
+[train] step   4700  loss 0.029015  lr 9.09e-04  0.148s/step
+[train] step   4800  loss 0.0299  lr 9.05e-04  0.149s/step
+[train] step   4900  loss 0.026329  lr 9.00e-04  0.146s/step
+[train] step   5000  loss 0.026739  lr 8.95e-04  0.144s/step
+[val]   step   5000  loss 0.030344
+[train] step   5100  loss 0.02606  lr 8.89e-04  0.145s/step
+[train] step   5200  loss 0.024339  lr 8.84e-04  0.151s/step
+[train] step   5300  loss 0.024592  lr 8.79e-04  0.147s/step
+[train] step   5400  loss 0.025592  lr 8.73e-04  0.138s/step
+[train] step   5500  loss 0.026663  lr 8.68e-04  0.138s/step
+[train] step   5600  loss 0.025495  lr 8.62e-04  0.150s/step
+[train] step   5700  loss 0.024483  lr 8.56e-04  0.153s/step
+[train] step   5800  loss 0.024221  lr 8.51e-04  0.136s/step
+[train] step   5900  loss 0.025079  lr 8.45e-04  0.136s/step
+[train] step   6000  loss 0.023747  lr 8.39e-04  0.133s/step
+[val]   step   6000  loss 0.028629
+[train] step   6100  loss 0.024692  lr 8.33e-04  0.171s/step
+[train] step   6200  loss 0.023538  lr 8.26e-04  0.133s/step
+[train] step   6300  loss 0.022802  lr 8.20e-04  0.139s/step
+[train] step   6400  loss 0.023492  lr 8.14e-04  0.141s/step
+[train] step   6500  loss 0.024401  lr 8.07e-04  0.147s/step
+[train] step   6600  loss 0.024509  lr 8.01e-04  0.137s/step
+[train] step   6700  loss 0.023847  lr 7.94e-04  0.134s/step
+[train] step   6800  loss 0.024338  lr 7.87e-04  0.141s/step
+[train] step   6900  loss 0.024241  lr 7.80e-04  0.135s/step
+[train] step   7000  loss 0.023327  lr 7.73e-04  0.142s/step
+[val]   step   7000  loss 0.027266
+[train] step   7100  loss 0.023603  lr 7.67e-04  0.142s/step
+[train] step   7200  loss 0.024399  lr 7.59e-04  0.134s/step
+[train] step   7300  loss 0.022894  lr 7.52e-04  0.147s/step
+[train] step   7400  loss 0.02439  lr 7.45e-04  0.143s/step
+[train] step   7500  loss 0.023581  lr 7.38e-04  0.143s/step
+[train] step   7600  loss 0.02297  lr 7.31e-04  0.136s/step
+[train] step   7700  loss 0.023158  lr 7.23e-04  0.142s/step
+[train] step   7800  loss 0.022925  lr 7.16e-04  0.136s/step
+[train] step   7900  loss 0.023739  lr 7.08e-04  0.142s/step
+[train] step   8000  loss 0.02301  lr 7.01e-04  0.149s/step
+[val]   step   8000  loss 0.028604
+[train] step   8100  loss 0.023193  lr 6.93e-04  0.145s/step
+[train] step   8200  loss 0.022553  lr 6.86e-04  0.136s/step
+[train] step   8300  loss 0.022905  lr 6.78e-04  0.141s/step
+[train] step   8400  loss 0.022848  lr 6.70e-04  0.143s/step
+[train] step   8500  loss 0.022532  lr 6.62e-04  0.142s/step
+[train] step   8600  loss 0.022605  lr 6.55e-04  0.140s/step
+[train] step   8700  loss 0.022979  lr 6.47e-04  0.154s/step
+[train] step   8800  loss 0.022695  lr 6.39e-04  0.139s/step
+[train] step   8900  loss 0.021618  lr 6.31e-04  0.148s/step
+[train] step   9000  loss 0.021971  lr 6.23e-04  0.137s/step
+[val]   step   9000  loss 0.026044
+[train] step   9100  loss 0.021603  lr 6.15e-04  0.147s/step
+[train] step   9200  loss 0.023126  lr 6.07e-04  0.143s/step
+[train] step   9300  loss 0.023028  lr 5.99e-04  0.151s/step
+[train] step   9400  loss 0.022002  lr 5.90e-04  0.142s/step
+[train] step   9500  loss 0.022324  lr 5.82e-04  0.159s/step
+[train] step   9600  loss 0.022521  lr 5.74e-04  0.156s/step
+[train] step   9700  loss 0.021543  lr 5.66e-04  0.148s/step
+[train] step   9800  loss 0.021648  lr 5.58e-04  0.156s/step
+[train] step   9900  loss 0.021744  lr 5.50e-04  0.147s/step
+[train] step  10000  loss 0.021536  lr 5.41e-04  0.143s/step
+[val]   step  10000  loss 0.024366
+[train] step  10100  loss 0.021689  lr 5.33e-04  0.138s/step
+[train] step  10200  loss 0.020916  lr 5.25e-04  0.138s/step
+[train] step  10300  loss 0.020681  lr 5.17e-04  0.136s/step
+[train] step  10400  loss 0.021478  lr 5.08e-04  0.136s/step
+[train] step  10500  loss 0.019974  lr 5.00e-04  0.138s/step
+[train] step  10600  loss 0.019761  lr 4.92e-04  0.124s/step
+[train] step  10700  loss 0.020384  lr 4.83e-04  0.123s/step
+[train] step  10800  loss 0.020675  lr 4.75e-04  0.129s/step
+[train] step  10900  loss 0.019665  lr 4.67e-04  0.133s/step
+[train] step  11000  loss 0.019732  lr 4.59e-04  0.128s/step
+[val]   step  11000  loss 0.023912
+[train] step  11100  loss 0.019532  lr 4.50e-04  0.127s/step
+[train] step  11200  loss 0.019143  lr 4.42e-04  0.139s/step
+[train] step  11300  loss 0.019828  lr 4.34e-04  0.142s/step
+[train] step  11400  loss 0.019383  lr 4.26e-04  0.133s/step
+[train] step  11500  loss 0.018982  lr 4.18e-04  0.130s/step
+[train] step  11600  loss 0.018603  lr 4.10e-04  0.130s/step
+[train] step  11700  loss 0.018489  lr 4.01e-04  0.136s/step
+[train] step  11800  loss 0.019184  lr 3.93e-04  0.128s/step
+[train] step  11900  loss 0.018968  lr 3.85e-04  0.125s/step
+[train] step  12000  loss 0.018925  lr 3.77e-04  0.126s/step
+[val]   step  12000  loss 0.022393
+[train] step  12100  loss 0.018672  lr 3.69e-04  0.131s/step
+[train] step  12200  loss 0.0177  lr 3.61e-04  0.137s/step
+[train] step  12300  loss 0.018105  lr 3.53e-04  0.131s/step
+[train] step  12400  loss 0.018253  lr 3.45e-04  0.137s/step
+[train] step  12500  loss 0.017933  lr 3.38e-04  0.123s/step
+[train] step  12600  loss 0.017019  lr 3.30e-04  0.140s/step
+[train] step  12700  loss 0.017466  lr 3.22e-04  0.138s/step
+[train] step  12800  loss 0.016889  lr 3.14e-04  0.133s/step
+[train] step  12900  loss 0.01757  lr 3.07e-04  0.132s/step
+[train] step  13000  loss 0.018039  lr 2.99e-04  0.139s/step
+[val]   step  13000  loss 0.021279
+[train] step  13100  loss 0.017181  lr 2.92e-04  0.135s/step
+[train] step  13200  loss 0.017204  lr 2.84e-04  0.128s/step
+[train] step  13300  loss 0.017745  lr 2.77e-04  0.127s/step
+[train] step  13400  loss 0.017547  lr 2.69e-04  0.126s/step
+[train] step  13500  loss 0.01723  lr 2.62e-04  0.128s/step
+[train] step  13600  loss 0.017294  lr 2.55e-04  0.127s/step
+[train] step  13700  loss 0.016387  lr 2.48e-04  0.125s/step
+[train] step  13800  loss 0.016456  lr 2.41e-04  0.129s/step
+[train] step  13900  loss 0.017106  lr 2.33e-04  0.132s/step
+[train] step  14000  loss 0.016296  lr 2.27e-04  0.134s/step
+[val]   step  14000  loss 0.02086
+[train] step  14100  loss 0.01623  lr 2.20e-04  0.131s/step
+[train] step  14200  loss 0.016432  lr 2.13e-04  0.126s/step
+[train] step  14300  loss 0.016281  lr 2.06e-04  0.129s/step
+[train] step  14400  loss 0.017102  lr 1.99e-04  0.134s/step
+[train] step  14500  loss 0.015977  lr 1.93e-04  0.122s/step
+[train] step  14600  loss 0.016014  lr 1.86e-04  0.125s/step
+[train] step  14700  loss 0.016597  lr 1.80e-04  0.122s/step
+[train] step  14800  loss 0.016019  lr 1.74e-04  0.130s/step
+[train] step  14900  loss 0.015893  lr 1.67e-04  0.128s/step
+[train] step  15000  loss 0.015597  lr 1.61e-04  0.152s/step
+[val]   step  15000  loss 0.020628
+[train] step  15100  loss 0.01616  lr 1.55e-04  0.132s/step
+[train] step  15200  loss 0.016029  lr 1.49e-04  0.130s/step
+[train] step  15300  loss 0.016067  lr 1.44e-04  0.130s/step
+[train] step  15400  loss 0.016717  lr 1.38e-04  0.127s/step
+[train] step  15500  loss 0.015435  lr 1.32e-04  0.136s/step
+[train] step  15600  loss 0.015088  lr 1.27e-04  0.139s/step
+[train] step  15700  loss 0.016173  lr 1.21e-04  0.132s/step
+[train] step  15800  loss 0.015506  lr 1.16e-04  0.132s/step
+[train] step  15900  loss 0.015427  lr 1.11e-04  0.135s/step
+[train] step  16000  loss 0.015564  lr 1.05e-04  0.131s/step
+[val]   step  16000  loss 0.020831
+[train] step  16100  loss 0.015191  lr 1.00e-04  0.134s/step
+[train] step  16200  loss 0.015003  lr 9.55e-05  0.136s/step
+[train] step  16300  loss 0.015185  lr 9.07e-05  0.125s/step
+[train] step  16400  loss 0.015165  lr 8.60e-05  0.144s/step
+[train] step  16500  loss 0.015401  lr 8.14e-05  0.133s/step
+[train] step  16600  loss 0.014875  lr 7.70e-05  0.139s/step
+[train] step  16700  loss 0.015174  lr 7.26e-05  0.131s/step
+[train] step  16800  loss 0.014548  lr 6.84e-05  0.128s/step
+[train] step  16900  loss 0.015025  lr 6.43e-05  0.131s/step
+[train] step  17000  loss 0.01443  lr 6.03e-05  0.122s/step
+[val]   step  17000  loss 0.020839
+[train] step  17100  loss 0.015605  lr 5.64e-05  0.132s/step
+[train] step  17200  loss 0.014812  lr 5.26e-05  0.142s/step
+[train] step  17300  loss 0.01488  lr 4.90e-05  0.150s/step
+[train] step  17400  loss 0.014887  lr 4.55e-05  0.135s/step
+[train] step  17500  loss 0.014702  lr 4.21e-05  0.144s/step
+[train] step  17600  loss 0.01426  lr 3.89e-05  0.142s/step
+[train] step  17700  loss 0.014617  lr 3.57e-05  0.138s/step
+[train] step  17800  loss 0.01462  lr 3.27e-05  0.141s/step
+[train] step  17900  loss 0.014874  lr 2.98e-05  0.141s/step
+[train] step  18000  loss 0.014412  lr 2.71e-05  0.143s/step
+[val]   step  18000  loss 0.02059
+[train] step  18100  loss 0.014505  lr 2.45e-05  0.141s/step
+[train] step  18200  loss 0.01468  lr 2.20e-05  0.147s/step
+[train] step  18300  loss 0.014103  lr 1.96e-05  0.146s/step
+[train] step  18400  loss 0.014686  lr 1.74e-05  0.146s/step
+[train] step  18500  loss 0.014054  lr 1.53e-05  0.146s/step
+[train] step  18600  loss 0.01435  lr 1.33e-05  0.149s/step
+[train] step  18700  loss 0.014214  lr 1.15e-05  0.139s/step
+[train] step  18800  loss 0.014238  lr 9.81e-06  0.147s/step
+[train] step  18900  loss 0.014321  lr 8.25e-06  0.141s/step
+[train] step  19000  loss 0.013947  lr 6.82e-06  0.142s/step
+[val]   step  19000  loss 0.020592
+[train] step  19100  loss 0.014146  lr 5.53e-06  0.137s/step
+[train] step  19200  loss 0.013936  lr 4.37e-06  0.142s/step
+[train] step  19300  loss 0.014587  lr 3.35e-06  0.133s/step
+[train] step  19400  loss 0.014534  lr 2.46e-06  0.136s/step
+[train] step  19500  loss 0.014329  lr 1.71e-06  0.134s/step
+[train] step  19600  loss 0.014638  lr 1.09e-06  0.135s/step
+[train] step  19700  loss 0.014476  lr 6.15e-07  0.134s/step
+[train] step  19800  loss 0.013815  lr 2.73e-07  0.135s/step
+[train] step  19900  loss 0.014181  lr 6.83e-08  0.136s/step
+[train] step  20000  loss 0.013545  lr 0.00e+00  0.137s/step
+[val]   step  20000  loss 0.020604
+[train] done in 2759.9s
+[c6] gate {"door_acc": {"0": 1.0, "1": 0.035, "2": 0.96, "3": 0.03}, "door_n": {"0": 200, "1": 200, "2": 200, "3": 200}, "position_acc": 0.9989630428470696, "position_n": 24109, "door_gate_applies": true, "pass": false}

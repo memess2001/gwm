@@ -1,0 +1,12 @@
+[train] pendulum/angle_raw recon-M seed=1 params=501217 device=cpu threads=1 windows=112000 data=0.1s
+[train] step    100  loss 16.866  lr 1.01e-04  0.052s/step
+[train] step    200  loss 12.396  lr 2.01e-04  0.052s/step
+[train] step    300  loss 12.344  lr 3.01e-04  0.051s/step
+[train] step    400  loss 11.873  lr 4.01e-04  0.050s/step
+[train] step    500  loss 11.933  lr 5.01e-04  0.048s/step
+[train] step    600  loss 11.026  lr 6.01e-04  0.050s/step
+[train] step    700  loss 10.5  lr 7.01e-04  0.056s/step
+[train] step    800  loss 10.613  lr 8.01e-04  0.048s/step
+[train] step    900  loss 9.9515  lr 9.01e-04  0.051s/step
+[train] step   1000  loss 9.592  lr 1.00e-03  0.048s/step
+[val]   step   1000  loss 8.0649

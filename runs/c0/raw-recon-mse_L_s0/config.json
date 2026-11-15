@@ -1,0 +1,156 @@
+{
+ "train": {
+  "world": "pendulum",
+  "obs": "angle_raw",
+  "allow_state_obs": false,
+  "world_kwargs": {
+   "omega_max": 2.5
+  },
+  "horizon": 64,
+  "n_train": 2000,
+  "n_val": 200,
+  "data_index": 0,
+  "standardize": false,
+  "anchors": "all",
+  "variant": "recon",
+  "size": "L",
+  "latent_dim": 8,
+  "history": 2,
+  "K": 8,
+  "loss": "mse",
+  "pixel_out": "linear",
+  "lambda_lat": 0.1,
+  "vicreg": [
+   25.0,
+   25.0,
+   1.0
+  ],
+  "norm": "layer",
+  "width": null,
+  "channels": null,
+  "seed": 0,
+  "steps": 20000,
+  "batch": 128,
+  "lr": 0.001,
+  "wd": 0.0001,
+  "warmup": null,
+  "clip": 1.0,
+  "device": "cpu",
+  "channels_last": "auto",
+  "threads": 1,
+  "deterministic": true,
+  "log_every": 100,
+  "eval_every": 1000,
+  "n_eval": 1024,
+  "n_eval_final": 4096,
+  "rollout_k": [
+   1,
+   8,
+   32
+  ],
+  "latent_k": [
+   1,
+   8
+  ],
+  "out": "/home/user/gwm_c0/runs/c0/raw-recon-mse_L_s0",
+  "overwrite": true,
+  "quiet": false
+ },
+ "model": {
+  "obs_shape": [
+   1
+  ],
+  "obs_kind": "vector",
+  "action_dim": 0,
+  "variant": "recon",
+  "size": "L",
+  "latent_dim": 8,
+  "history": 2,
+  "K": 8,
+  "width": 808,
+  "channels": 0,
+  "depth": 2,
+  "norm": "layer",
+  "loss": "mse",
+  "pixel_out": "linear",
+  "angle_scale": 1.0,
+  "lambda_lat": 0.1,
+  "vicreg": [
+   25.0,
+   25.0,
+   1.0
+  ],
+  "vic_gamma": 1.0,
+  "vic_eps": 0.0001
+ },
+ "params": {
+  "params": 2001433,
+  "params_encoder": 665800,
+  "params_transition": 670648,
+  "params_decoder": 664985,
+  "params_recon": 2001433,
+  "params_jepa": 1336448,
+  "width": 808,
+  "channels": 0
+ },
+ "flops": {
+  "train_flops_per_sample": 82142896.0,
+  "fwd_flops_encoder": 1321888.0,
+  "fwd_flops_transition": 1331584.0,
+  "fwd_flops_decoder": 1320272.0
+ },
+ "warmup": 1000,
+ "data": {
+  "spec": {
+   "obs_shape": [
+    1
+   ],
+   "obs_dtype": "float32",
+   "action": {
+    "type": "none"
+   }
+  },
+  "seeds": {
+   "train": 0,
+   "val": 1000000
+  },
+  "n_traj": {
+   "train": 2000,
+   "val": 200
+  },
+  "horizon": 64,
+  "windows": {
+   "train": 112000,
+   "val": 11200
+  },
+  "world_params": {
+   "omega0": 1.0,
+   "gamma": 0.0,
+   "dt": 0.1,
+   "n_sub": 20,
+   "integrator": "auto",
+   "init": "box",
+   "omega_max": 2.5,
+   "E_lo": null,
+   "E_hi": null,
+   "policy": "none",
+   "u_max": 1.0,
+   "hold": 10,
+   "pixel_noise": 0.0,
+   "radius": 22.0,
+   "rod_sigma": 0.8,
+   "bob_sigma": 2.5
+  },
+  "obs_total_var_train": 3.0170776672436745,
+  "normalizer": null
+ },
+ "env": {
+  "device": "cpu",
+  "threads": 1,
+  "channels_last": false,
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "python": "3.13.18",
+  "platform": "Linux-6.18.44-fc-v470-x86_64-with-glibc2.39"
+ }
+}

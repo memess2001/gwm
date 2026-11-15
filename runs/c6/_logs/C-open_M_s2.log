@@ -1,0 +1,2 @@
+[train] toggle_grid/grid recon-M seed=2 params=499828 device=cpu threads=1 windows=2000 data=0.2s
+[train] step    100  loss 10.862  lr 1.01e-04  0.350s/step
