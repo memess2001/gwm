@@ -44,3 +44,4 @@
 [queue] start H-act_M_s1_n500
 [queue] done H-act_M_s1_n250 rc=0 128.4 min
 [queue] start H-act_M_s2_n500
+[queue] done H-act_M_s2_n250 rc=0 127.2 min
