@@ -1,0 +1,67 @@
+{
+ "model_check": 0.9398972015990862,
+ "model_check_all": 0.9958890625,
+ "model_check_bit_sensitive": 0.9398972015990862,
+ "model_check_bit_sensitive_frames": 700400,
+ "model_check_all_A": 0.9958890625,
+ "model_check_all_B": 0.9993826171875,
+ "model_check_bit_sensitive_A": 0.9398972015990862,
+ "model_check_bit_sensitive_B": 0.9909737292975442,
+ "auc_strat": 1.0,
+ "auc_strat_ci": [
+  1.0,
+  1.0
+ ],
+ "auc_pooled": 1.0,
+ "auc_strat_mean_probe": 1.0,
+ "auc_oracle_probe": 1.0,
+ "auc_m1_latent": 1.0,
+ "tau": 0.0,
+ "prec4_R0": 1.0,
+ "ranks_switch_R0": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "ranks_door_adjacent_R0": [
+  5,
+  7
+ ],
+ "door_adjacent_in_top4": false,
+ "prec4_R1": null,
+ "plaq_R1_coverage": [
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100
+ ],
+ "base_auc_strat": 1.0,
+ "base_auc_strat_mixed": 1.0,
+ "base_prec4_R0": 1.0,
+ "base_ranks_switch_R0": [
+  1,
+  3,
+  2,
+  4
+ ],
+ "cond": "C-vis",
+ "size": "M",
+ "seed": 1,
+ "steps": 20000,
+ "n_train": 2000,
+ "pilot": false,
+ "p_home": 0.1
+}

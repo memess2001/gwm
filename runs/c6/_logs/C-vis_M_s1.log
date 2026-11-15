@@ -168,3 +168,123 @@
 [train] step  15200  loss 0.00098183  lr 1.49e-04  0.345s/step
 [train] step  15300  loss 0.00093258  lr 1.44e-04  0.357s/step
 [train] step  15400  loss 0.0010091  lr 1.38e-04  0.344s/step
+[train] step  15500  loss 0.00090215  lr 1.32e-04  0.336s/step
+[train] step  15600  loss 0.00089816  lr 1.27e-04  0.340s/step
+[train] step  15700  loss 0.00087738  lr 1.21e-04  0.333s/step
+[train] step  15800  loss 0.0010135  lr 1.16e-04  0.333s/step
+[train] step  15900  loss 0.00085968  lr 1.11e-04  0.336s/step
+[train] step  16000  loss 0.00082801  lr 1.05e-04  0.343s/step
+[val]   step  16000  loss 0.0010521
+[train] step  16100  loss 0.00079932  lr 1.00e-04  0.337s/step
+[train] step  16200  loss 0.00078444  lr 9.55e-05  0.333s/step
+[train] step  16300  loss 0.00082139  lr 9.07e-05  0.340s/step
+[train] step  16400  loss 0.00078595  lr 8.60e-05  0.344s/step
+[train] step  16500  loss 0.00076743  lr 8.14e-05  0.335s/step
+[train] step  16600  loss 0.00082191  lr 7.70e-05  0.336s/step
+[train] step  16700  loss 0.00072542  lr 7.26e-05  0.338s/step
+[train] step  16800  loss 0.00066398  lr 6.84e-05  0.347s/step
+[train] step  16900  loss 0.00072153  lr 6.43e-05  0.340s/step
+[train] step  17000  loss 0.0008058  lr 6.03e-05  0.331s/step
+[val]   step  17000  loss 0.00085596
+[train] step  17100  loss 0.00071695  lr 5.64e-05  0.352s/step
+[train] step  17200  loss 0.00067803  lr 5.26e-05  0.354s/step
+[train] step  17300  loss 0.00076233  lr 4.90e-05  0.332s/step
+[train] step  17400  loss 0.00068932  lr 4.55e-05  0.333s/step
+[train] step  17500  loss 0.00074474  lr 4.21e-05  0.331s/step
+[train] step  17600  loss 0.00077403  lr 3.89e-05  0.347s/step
+[train] step  17700  loss 0.00067479  lr 3.57e-05  0.358s/step
+[train] step  17800  loss 0.00066595  lr 3.27e-05  0.352s/step
+[train] step  17900  loss 0.00070339  lr 2.98e-05  0.346s/step
+[train] step  18000  loss 0.00067935  lr 2.71e-05  0.332s/step
+[val]   step  18000  loss 0.00081733
+[train] step  18100  loss 0.0006904  lr 2.45e-05  0.332s/step
+[train] step  18200  loss 0.00061376  lr 2.20e-05  0.336s/step
+[train] step  18300  loss 0.00064599  lr 1.96e-05  0.337s/step
+[train] step  18400  loss 0.00060628  lr 1.74e-05  0.340s/step
+[train] step  18500  loss 0.00062457  lr 1.53e-05  0.334s/step
+[train] step  18600  loss 0.00064932  lr 1.33e-05  0.330s/step
+[train] step  18700  loss 0.00062408  lr 1.15e-05  0.340s/step
+[train] step  18800  loss 0.00064429  lr 9.81e-06  0.339s/step
+[train] step  18900  loss 0.00065467  lr 8.25e-06  0.337s/step
+[train] step  19000  loss 0.00060931  lr 6.82e-06  0.358s/step
+[val]   step  19000  loss 0.00073403
+[train] step  19100  loss 0.00059851  lr 5.53e-06  0.362s/step
+[train] step  19200  loss 0.00069348  lr 4.37e-06  0.378s/step
+[train] step  19300  loss 0.00066898  lr 3.35e-06  0.378s/step
+[train] step  19400  loss 0.00063997  lr 2.46e-06  0.365s/step
+[train] step  19500  loss 0.0006419  lr 1.71e-06  0.366s/step
+[train] step  19600  loss 0.00063693  lr 1.09e-06  0.387s/step
+[train] step  19700  loss 0.00065202  lr 6.15e-07  0.371s/step
+[train] step  19800  loss 0.0006303  lr 2.73e-07  0.380s/step
+[train] step  19900  loss 0.00065927  lr 6.83e-08  0.368s/step
+[train] step  20000  loss 0.00061728  lr 0.00e+00  0.368s/step
+[val]   step  20000  loss 0.00073025
+[train] done in 6862.5s
+[c6] gate {"door_acc": {"0": 1.0, "1": 1.0, "2": 1.0, "3": 1.0}, "door_n": {"0": 200, "1": 200, "2": 200, "3": 200}, "position_acc": 1.0, "position_n": 24109, "door_gate_applies": true, "pass": true}
+{
+ "model_check": 0.9398972015990862,
+ "model_check_all": 0.9958890625,
+ "model_check_bit_sensitive": 0.9398972015990862,
+ "model_check_bit_sensitive_frames": 700400,
+ "model_check_all_A": 0.9958890625,
+ "model_check_all_B": 0.9993826171875,
+ "model_check_bit_sensitive_A": 0.9398972015990862,
+ "model_check_bit_sensitive_B": 0.9909737292975442,
+ "auc_strat": 1.0,
+ "auc_strat_ci": [
+  1.0,
+  1.0
+ ],
+ "auc_pooled": 1.0,
+ "auc_strat_mean_probe": 1.0,
+ "auc_oracle_probe": 1.0,
+ "auc_m1_latent": 1.0,
+ "tau": 0.0,
+ "prec4_R0": 1.0,
+ "ranks_switch_R0": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "ranks_door_adjacent_R0": [
+  5,
+  7
+ ],
+ "door_adjacent_in_top4": false,
+ "prec4_R1": null,
+ "plaq_R1_coverage": [
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100
+ ],
+ "base_auc_strat": 1.0,
+ "base_auc_strat_mixed": 1.0,
+ "base_prec4_R0": 1.0,
+ "base_ranks_switch_R0": [
+  1,
+  3,
+  2,
+  4
+ ],
+ "cond": "C-vis",
+ "size": "M",
+ "seed": 1,
+ "steps": 20000,
+ "n_train": 2000,
+ "pilot": false,
+ "p_home": 0.1
+}

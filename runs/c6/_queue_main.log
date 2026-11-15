@@ -22,3 +22,5 @@
 [queue] start C-vis_M_s2
 [queue] done C-open_M_s2 rc=0 123.9 min
 [queue] start H-pc_M_s0
+[queue] done C-vis_M_s1 rc=0 121.8 min
+[queue] start H-pc_M_s1
