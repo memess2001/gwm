@@ -1,2 +1,5 @@
 [train] warning: load 3.9 + 1 threads > 4 cores; OpenMP oversubscription can slow small models 10-100x (measured here) - use --threads 1 per parallel job
 [train] toggle_grid/grid recon-M seed=0 params=499828 device=cpu threads=1 windows=500 data=0.1s
+[train] step    100  loss 10.923  lr 1.01e-04  0.356s/step
+[train] step    200  loss 0.17685  lr 2.01e-04  0.367s/step
+[train] step    300  loss 0.17105  lr 3.01e-04  0.382s/step
