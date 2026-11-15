@@ -108,3 +108,19 @@
 [c0 queue] restart after container restart 2026-11-15T03:28:25Z
 [c0 queue] skip cs-recon_M_s0_dev2: no second device here
 [c0 queue] phase 1: 15 jobs
+[c0 queue] done raw-recon-mse_M_s0_lat0 17.1 min
+[c0 queue] done raw-recon-mse_M_s2_lat0 17.2 min
+[c0 queue] done raw-recon-mse_M_s1_lat0 17.3 min
+[c0 queue] done raw-recon-circ_M_s0_lat0 16.4 min
+[c0 queue] done raw-recon-circ_M_s1_lat0 16.4 min
+[c0 queue] done null-angle_cs_M_s0 0.2 min
+[c0 queue] done null-angle_cs_M_s1 0.2 min
+[c0 queue] done raw-recon-circ_M_s2_lat0 16.7 min
+[c0 queue] done null-angle_cs_M_s2 0.2 min
+[c0 queue] done null-angle_raw_M_s0 0.2 min
+[c0 queue] done null-angle_raw_M_s1 0.2 min
+[c0 queue] done null-angle_raw_M_s2 0.2 min
+[c0 queue] done null-pixels64_M_s0 0.4 min
+[c0 queue] done null-pixels64_M_s1 0.4 min
+[c0 queue] done null-pixels64_M_s2 0.4 min
+[c0 queue] all finished

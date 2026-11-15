@@ -1,0 +1,67 @@
+{
+ "model_check": 0.9891263541778398,
+ "model_check_all": 0.995380078125,
+ "model_check_bit_sensitive": 0.9891263541778398,
+ "model_check_bit_sensitive_frames": 745840,
+ "model_check_all_A": 0.9976478515625,
+ "model_check_all_B": 0.995380078125,
+ "model_check_bit_sensitive_A": 0.9935508956344524,
+ "model_check_bit_sensitive_B": 0.9891263541778398,
+ "auc_strat": 0.5029708779909325,
+ "auc_strat_ci": [
+  0.4999964260018752,
+  0.5067973666707684
+ ],
+ "auc_pooled": 0.5016303385416667,
+ "auc_strat_mean_probe": 0.5029607805959483,
+ "auc_oracle_probe": 0.4990934783169662,
+ "auc_m1_latent": 0.5021344771064007,
+ "tau": 0.0,
+ "prec4_R0": 0.25,
+ "ranks_switch_R0": [
+  5,
+  7,
+  11,
+  15
+ ],
+ "ranks_door_adjacent_R0": [
+  1,
+  3
+ ],
+ "door_adjacent_in_top4": false,
+ "prec4_R1": null,
+ "plaq_R1_coverage": [
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100,
+  100
+ ],
+ "base_auc_strat": 0.5004277769098247,
+ "base_auc_strat_mixed": 0.4997628463778959,
+ "base_prec4_R0": 0.0,
+ "base_ranks_switch_R0": [
+  7,
+  11,
+  13,
+  15
+ ],
+ "cond": "C-open",
+ "size": "M",
+ "seed": 2,
+ "steps": 20000,
+ "n_train": 2000,
+ "pilot": false,
+ "p_home": 0.1
+}

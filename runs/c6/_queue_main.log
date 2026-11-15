@@ -16,3 +16,9 @@
 [queue] restart after container restart 2026-11-15T03:28:25Z
 [queue] 16 runs to do
 [queue] start C-open_M_s2
+[queue] jobs 1 -> 4
+[queue] start C-vis_M_s0
+[queue] start C-vis_M_s1
+[queue] start C-vis_M_s2
+[queue] done C-open_M_s2 rc=0 123.9 min
+[queue] start H-pc_M_s0
