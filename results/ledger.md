@@ -48,3 +48,4 @@ eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/contr
 ```
 - 2026-11-12 JST · 格 0 · prereg v2.2 的审稿确认：`cells/0/review_v2_2.md`（结论：确认；预先授权第 3 条）。v2.1、v2.2 都是冻结后的修订，按 Z 2026-11-12 的决定仍需 Z 逐次确认后才能开跑。
 - 2026-11-14 JST · 格 0 · Z 接受 prereg v2.2（含两处点名的改动：像素仪器失败只停像素部分；收敛判据用 val 损失），允许开跑阶段 1，在云端跑。决定记录在 `cell6/v1` 分支 `cells.yaml` 的 `decisions`。
+- 2026-11-15 JST · 格 0 · 阶段 1 结果（prereg v2.2，commit 08702ee）。计分前重新核对冻结的 9 个文件，sha256 全部一致。105 个训练 run 与 9 个零对照全部测量，无排除。判定 DECIDED：P0.1 / P0.2 pass；P0.3 = F；P0.4-sg = F（撕开率 1.0）；P0.4-sym = T；θ gate n = 2000 敏感性相同；P0.5 留到阶段 2；P0.6 我的预测 F，原版只在 raw-recon-mse 上成立。按 §7 改 `cells.yaml`：格 0 exists high → mid（status 不变），notes 记 sg "继承切口"、sym "粘合"；格 4 yields mid → lowmid；格 15 notes 记声明产出。偏离：设备对照没跑（云端无 MPS）；按 Z 2026-11-14 的决定在云端跑，容器重启 3 次，中断的 run 从头重训。结果：`cells/0/result.md`、`cells/0/result_data.json`；逐 run 输出备份在分支 `runs-backup/2026-11`。

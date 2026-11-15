@@ -77,8 +77,8 @@ cells:
     prediction: （v0.3 原版，照常打分）中等尺寸下 H1 出现但跨种子不稳定；能量可解码但不平滑。v0.4 主预测见 cells/0/prereg.md：潜空间拓扑由训练目标的几何决定，而不是由数据决定。
     kill_test: 见 cells/0/prereg.md（草案，待 Z 批准）：观测（angle_cs / angle_raw / pixels64）× 目标（recon-mse / recon-circular / jepa）× 4 尺寸 × 3 种子，外加只摆动的负对照数据。
     cost_days: 2
-    confidence: {exists: high, novel: low, yields: high}
-    status: unexplored
+    confidence: {exists: mid, novel: low, yields: high}   # 阶段 1（2026-11-15）：P0.3 = F，exists high → mid（prereg §7）
+    status: unexplored   # §7：P0.3 = F 时 status 不变，等阶段 2 的 P0.5
     neighbors: [1, 4, 9, 15, 5]
     exits: []
     collision: n/a
@@ -105,6 +105,12 @@ cells:
       (2) Z 选定的三个小选择：jepa-sg 与 jepa-sym 都跑、分开计分；θ gate 以 n = 8000 为主、n = 2000 做敏感性；加一个初始化后不训练的编码器作零对照。
       (3) 提议（回答 Q1）：格 0 卸下"地基"角色，真正的公共前提现在是 rules R1–R5。本格剩下的独立问题是 P0.5（像素 JEPA 会不会粘合 / 折叠角度），按普通格子打分。
       (4) 按 rules.R3 的精确版：潜空间拓扑对微分同胚不变，但不是预测分布的泛函，它描述"模型怎样实现规律"而不是世界。v0.4 的主预测（拓扑由训练目标决定）正是这个意思，结论要按"关于模型"来写。
+      阶段 1 结果（2026-11-15 JST，prereg v2.2，见 cells/0/result.md）：
+      (1) angle_raw 上 recon-mse、recon-circular、jepa-sg 在 S / M / L 全部撕开（各 9/9），jepa-sym 全部粘合（9/9）。P0.3 = F，P0.4-sg = F，P0.4-sym = T；仪器检查 P0.1 / P0.2 通过。
+      (2) 机制（§7 判定表）：sg "继承切口"（撕开率 1.0），sym "粘合"。限定：angle_raw 的未训练编码器读"不绕的环 + 不确定"，与训练后的分类不同，所以"继承"没有零对照的直接支持；angle_cs 上训练后与未训练相同（环 + 粘合）。
+      (3) 描述：jepa-sym 的粘合在 K = 1 时消失（3/3 撕开）；λ_lat = 0 不改变 recon 的撕开；粘合的 jepa-sym 跨切口一步误差仍是非跨切口的约 500 倍。
+      (4) 同源对照：angle 上 PH 与接缝比 0 分歧，拓扑读数没有多给信息；像素 S 上 3/9 分歧，等阶段 2 的像素仪器检查。
+      (5) P0.6："可解码且平滑"在 L 尺寸三个 recon 臂上都不成立；原版"可解码不平滑"只在 raw-recon-mse 上成立。
 
   - id: 1
     name: 曲率即规律（测地线世界模型）
@@ -231,7 +237,7 @@ cells:
     prediction: 严格固定参数量与潜维数时，拓扑匹配（S¹×R）的 WM 长程误差低于欧氏潜空间；强制错误拓扑比欧氏更差；拓扑由持续同调自动判定（Betti 数预测正确）。
     kill_test: pendulum 像素：潜空间 S¹×R vs R² vs R³（容量严格对齐）；4 尺寸；加错配测试；用 van Hulst 2026 的乘积拓扑先验或 flow 式 encoder 处理优化障碍。所有尺寸欧氏 ≥ 匹配 → 死。
     cost_days: 2
-    confidence: {exists: high, novel: low, yields: mid}
+    confidence: {exists: high, novel: low, yields: lowmid}   # 格 0 阶段 1（2026-11-15）：P0.4-sym = T、P0.4-sg = F → yields −1 档（格 0 prereg §7；与阶段 2 的 P0.5 相加，截断在 ±1 档）
     status: unexplored
     neighbors: [1, 10, 11]
     exits: [known_topology_datasets_SO3_joint_spaces]
@@ -254,6 +260,7 @@ cells:
       CHyLL（Teng, Liu, Song, Sreenath 2025-12）在混合系统上完成了"发现粘合 → 学流 → ripser 验 Betti 数 → 长程胜出"。
       Nicollier 2026 在 JEPA 静态恢复层面做了"几何匹配的目标更好"。
       剩下的空位：光滑系统上用持续上同调选潜流形；"拓扑 vs 流形约束"的归因；Lenia 吸引子拓扑；把可训练性当实验变量。
+      格 0 阶段 1（2026-11-15 JST，cells/0/result.md）：angle_raw 上只有对称 JEPA（K = 8）把切口粘上，stop-grad JEPA 与两种重建都撕开。按格 0 判定表 yields mid → lowmid：在 JEPA 潜空间里"先发现拓扑"不那么必要。P0.3 = F，所以 must (7) 不触发。
 
   - id: 5
     name: 可分辨性即规律（模型流形世界模型）
@@ -620,6 +627,7 @@ cells:
       (1) 本格主线改为"标定 benchmark + 窗口反演对称化读数"，并把这个手法抽象成生成器的第 7 个算子 symmetrize（见 axes.operator_notes）。
       (2) LeHami：handoff 作者只核到论文存在（作者含 Yalovetzky、Balestriero、LeCun，2026 年 10 月；TuringPost 2026-10-24 有解读）。解读里没有提 log|det J|、Liouville、保守摆上的虚假收缩、耗散留作 future work；这几条细节引用前请对照全文再核一次。
       Code 复核（2026-11-12 JST）：已对照全文核实，见 rules.code_review.citations（arXiv 2610.15267v1：§3.2 / 图 4 右的累积 log|det J|；附录 C.4 把耗散留作 future work）。
+      格 0 阶段 1（2026-11-15 JST）的声明产出：格 0 的检查点（保守世界里的一批模型，runs/c0/，备份分支 runs-backup/2026-11 不含 model.pt）与二级能量漂移（measures.json 的 energy_drift），供格 15 标定虚假收缩，见 cells/0/result.md。
 
   # ---- 第二轮生成（handoff 作者 v0.4，2026-11-04）：16 格，v0.5 加 same_source / self_review ----
 
