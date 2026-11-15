@@ -1,0 +1,1 @@
+[train] warning: load 3.9 + 1 threads > 4 cores; OpenMP oversubscription can slow small models 10-100x (measured here) - use --threads 1 per parallel job

@@ -28,3 +28,5 @@
 [queue] start H-pc_M_s2
 [queue] done C-vis_M_s2 rc=0 125.4 min
 [queue] start H-pn_M_s0
+[queue] done H-pc_M_s0 rc=0 125.5 min
+[queue] start H-pn_M_s1
