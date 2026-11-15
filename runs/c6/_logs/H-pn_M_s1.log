@@ -64,3 +64,8 @@
 [train] step   5700  loss 1.6686e-05  lr 8.56e-04  0.344s/step
 [train] step   5800  loss 0.028655  lr 8.51e-04  0.335s/step
 [train] step   5900  loss 7.012e-05  lr 8.45e-04  0.342s/step
+[train] step   6000  loss 4.3728e-06  lr 8.39e-04  0.345s/step
+[val]   step   6000  loss 3.1411e-06
+[train] step   6100  loss 2.2875e-06  lr 8.33e-04  0.334s/step
+[train] step   6200  loss 1.4579e-06  lr 8.26e-04  0.345s/step
+[train] step   6300  loss 1.0481e-06  lr 8.20e-04  0.347s/step

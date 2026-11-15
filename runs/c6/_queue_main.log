@@ -32,3 +32,7 @@
 [queue] start H-pn_M_s1
 [queue] done H-pc_M_s1 rc=0 125.3 min
 [queue] start H-pn_M_s2
+[queue] done H-pn_M_s0 rc=0 124.1 min
+[queue] start H-act_M_s0_n250
+[queue] done H-pc_M_s2 rc=0 125.1 min
+[queue] start H-act_M_s1_n250
