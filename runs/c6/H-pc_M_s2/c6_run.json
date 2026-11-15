@@ -1,0 +1,9 @@
+{
+ "cond": "H-pc",
+ "size": "M",
+ "seed": 2,
+ "steps": 20000,
+ "n_train": 2000,
+ "pilot": false,
+ "p_home": 0.0
+}
