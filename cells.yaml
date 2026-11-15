@@ -291,7 +291,7 @@ cells:
     kill_test: 见 cells/6/prereg.md（草案，待 Z 批准）。过 gate（模型学会了隐变量）但读数测不出或定位不了 → 死。
     cost_days: 2
     confidence: {exists: high, novel: midhigh, yields: mid}
-    status: unexplored
+    status: merged_into:HCDP   # 2026-11-15 JST，prereg v1.4 §7：读数有效，P6.6 没有胜过非几何基线（Zhang et al. 2026-07）；只有尺寸 M，见 cells/6/result.md
     neighbors: [1, 12, 8, 2]
     exits: [popgym, arc_agi_3_stretch]
     collision: B
@@ -319,6 +319,7 @@ cells:
       (2) 预先授权（见 decisions）：v1 预注册逐条实现上面的 15 条清单（文末附逐条对照表），提交并把 sha256 记进 results/ledger.md，再由审稿 agent 按 rules.R4 确认。三条齐了即可开跑，不必再等 Z；清单之外的任何新增或偏离仍须 Z 点头。
       (3) handoff 作者意见（回答 Q2）：若与非几何基线（P6.6）打平，就 merged_into HCDP。唯一可能多出来的是连续极限下的曲率 2-形式，网格世界上测不到，不为它保留本格。
       (4) 第二轮生成的格 18（挠率 = 动作交换子）自审后并入本格，作副读数。
+      结果（2026-11-15 JST，prereg v1.4，只有尺寸 M，cells/6/result.md）：读数层有效（H-act 种子 0、1：分层 AUC 0.998 / 0.996，R0 precision@4 = 1.0，对 C-open、C-vis 特异；种子 2 没过门 gate）。几何层 P6.6 没有胜出：非几何 same_source 基线 AUC 0.994 / 0.976（差的中位数 0.012，门槛 0.05），precision@4 同为 1.0，数据效率相同（探测都要 2000 条，定位都是 500 条；500 条时基线定位 1.0、和乐 0.75）。按 §7 status → merged_into:HCDP。这个最终状态只在 v1.4 下可达，v1.3 会判不确定（S 的 pilot 从没过门 gate）。限定：种子 0、1 的 τ = 0，特异性判据实际是"H_obs 不为零的环路 ≤ 10%"；C-vis 种子 1、2 的模型检查 0.94，略低于 0.95。
 
   - id: 7
     name: 两种直线 → α-计（对偶平坦世界模型）
@@ -530,6 +531,7 @@ cells:
     notes: >
       v0.3：撞车最重；Castro 组可能很快推出正式版。优先级下调。
       v0.4（2026-11-03）：第二轮文献截至今日未见正式版，A− 不变。有向最短路是 quasimetric，可与格 8 合并。
+      格 6 结果（2026-11-15 JST，cells/6/result.md）：和乐曲率图定位到的是来源（开关），不是后果（门）。H-act 过 gate 的种子里两个门邻接小方格排第 7–10；门邻接进前 4 只出现在没学会门的模型上。
 
   - id: 13
     name: 因果正交（信息几何因果世界模型）
