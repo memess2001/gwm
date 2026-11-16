@@ -161,7 +161,7 @@ cells:
     kill_test: wright_fisher（一般对称收益 / 循环突变梯子 / RPS + 突变）；从轨迹拟合 F（MPL 为基线）；Fisher-Hodge 与欧氏 HHD head-to-head。欧氏版同样好 → 死。原"三世界"测试降为估计器校准，因为它测的是定理。
     cost_days: 1
     confidence: {exists: high, novel: low, yields: mid}
-    status: unexplored
+    status: thought_killed   # 2026-11-16 JST，Z 的决定：思想实验 + 独立核对（cells/2/review_thought_experiment.md），不跑算力
     neighbors: [7, 5, 6]
     exits: [physics_discovery_datasets]
     collision: "A-（命题层）/ B+（方法层）"
@@ -178,6 +178,11 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议：
       (1) 与格 7 合为一格（回答 Q6）：格 7 的二分 e/m 检验 + r_min 作为本格工具，连续 α-计维持死亡。
       (2) 世界首选 Wright–Fisher 计数；同源对照 = 欧氏 Hodge / 势回归残差。按 rules.R3，主张只能是"更好的统计量"（省数据、稳、可解释），不是"看到更多"。
+      v0.6（2026-11-16 JST，Claude Code；cells/2/thought_experiment_2026-11-16.md 与独立核对 cells/2/review_thought_experiment.md）：
+      (1) 有限 N 的 WF 噪声协方差 (diag x − xxᵀ)/(2N_e) 就是 Shahshahani 度量的逆。带突变（每种类型都有正的突变流入）的平稳过程里，ρ 加权、势函数族不受限的 Fisher-Hodge 残差 × 2N_e 恰好等于熵产生率；暂态数据上它是 housekeeping 熵产生（Dechant–Sasa–Ito 2022）。按 R2 与同源熵产生打平（恒等式），格点数值相差约 0.01%。
+      (2) 对欧氏 HHD 的胜利是定理（Legacci 2024），按 R1 救不了格子。MPL 本身就是 Fisher 加权，比的是函数族。
+      (3) 判 thought_killed，没有跑算力。唯一真实的分岔：噪声不是 Fisher 型（环境适应度噪声、类型依赖的后代方差）时，Fisher-Hodge 问"机制是不是 Shahshahani 梯度"，熵产生问"是否细致平衡"，弱突变 × 环境噪声下两者排序相反。但那里胜负也由定理决定，最强对照是参数化机制检验，至多是新格子的起点。
+      (4) 保留：Fisher-Hodge 分解可作 benchmark 的真值工具；只用多项式基会报假旋度（梯度世界 1.11），基里要有 log x_i，或改为分解 b − ∇·D。
 
   - id: 3
     name: 搬运还是改权（Wasserstein–Fisher–Rao 世界模型）
