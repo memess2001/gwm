@@ -1202,6 +1202,10 @@ decisions:
       2026-11-14：M 的 20k 步 pilot 过了 gate（门 gate 四种状态都是 1.0）。prereg v1.4（commit 69ebea5，审稿确认 cells/6/review_v1_4.md）
       只用尺寸 M、20k 步、21 个 run。Z 看过 §13 "判据变宽松了"一段后认可，开跑：只有 M 判据全过也算读数有效，
       P6.6 在 M 上任一条胜出路线即可，结论只对尺寸 M 成立。没有加尺寸或种子作补偿。
+    cell_2_next_then_thought_kill: >
+      2026-11-16：格 0、格 6 跑完后，Z 选格 2 作为下一格（越过原顺序里的格 15），这周不写周报。写预注册前的思想实验
+      （cells/2/thought_experiment_2026-11-16.md）发现：Fisher 读数对欧氏分解按定理赢，对熵产生按恒等式打平。Z 决定：
+      先由只核真值、不训练模型的 agent 独立核对推导，成立就把格 2 记为 thought_killed，不跑算力；之后做格 9。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
