@@ -9,10 +9,13 @@ deterministic ODE. Optional finite-population drift: x_{t+1} ~ Multinomial(pop_s
   selection           x * (f - x.f)                         exact: x ∝ x0 exp(t f)       +1      gradient, V = f.x
   migration           mu (m - x)                            exact: m + (x0 - m) e^{-mu t} -1     gradient, V = mu sum_i m_i log x_i
   mutation            u x Q   (Q rate matrix, rows sum 0)   exact: x0 expm(u t Q)        -1 / None   gradient iff Q parent-independent
-  mixed               selection + migration                 RK4, n_sub substeps          None    gradient, V = f.x + mu sum m log x
+  mixed               selection + migration                 RK4, n_sub substeps (*)      None    gradient, V = f.x + mu sum m log x
   mutation_selection  selection + mutation                  RK4                          None    gradient iff Q parent-independent
   rps                 x_i ((Ax)_i - x.Ax), zero-sum RPS A   RK4                          None    rotational; H = sum x*_i log x_i conserved
                       (default A; other payoffs ``rps_A``:                                       exact criteria in ``replicator_hodge``)
+  (*) every RK4 substep is projected back onto the simplex (clip at 0, divide by the sum): off the simplex the
+      replicator-type fields amplify round-off in sum(x) wherever the mean fitness is negative enough, so long
+      unprojected paths left the simplex (found 2026-11-17; reports/2026-11-17_external_review.md section 8).
 
 Conventions (Amari): alpha = +1 <-> e-connection = straight lines in the natural parameters theta_i = log(x_i/x_K);
 alpha = -1 <-> m-connection = straight lines in the mixture / expectation parameters eta = x. Selection is an
@@ -260,7 +263,11 @@ class WrightFisher(World):
             k2 = _field(x + 0.5 * h * k1, mech, p, Q, A)
             k3 = _field(x + 0.5 * h * k2, mech, p, Q, A)
             k4 = _field(x + h * k3, mech, p, Q, A)
-            x = x + h / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4)
+            # Back onto the simplex after every substep. With s = sum(x) the replicator-type fields satisfy
+            # d(s - 1)/dt = -r (s - 1), r = x.f + mu (mixed), x.f (mutation_selection), x.Ax (rps): where r < 0
+            # round-off in s grows like exp(|r| t) and long paths leave the simplex (the exact flow is invariant
+            # under f -> f + const, the off-simplex numerical flow is not). The projection changes x by O(1e-16).
+            x = _normalize(x + h / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4))
         return x
 
     def _draw(self, rng, mech, given, c):

@@ -143,3 +143,11 @@ d4d8f9e6b95f54d4214f0ecedf78cd0152c28975a4720e5a56d8d176c09e43df  cells/0/prereg
 f46e0d18f4f5fa9b605266300f4f0b18075ddb5e208289ef2ab23e87f3b19a0e  cells/0/c0_ext.py
 eb4bef540a8eb12aedfb1b95667a9558739f544ec18e0d623b786a60f86ba171  cells/0/ext_convergence_baseline.json
 ```
+- 2026-11-17 JST · 格 0 · 延伸 E1 的环境复现检查（`c0_ext.py --envcheck`，不计分）：`raw-jepa-sym_S_s0` 按阶段 1 的参数原样重跑 20000 步，分类"粘合"，接缝比 1.0515042212106465，val 损失 0.006504046119516715，三项都与备份里的阶段 1 结果逐位相同。本环境复现阶段 1。
+
+## 动物园修复记录
+
+- 2026-11-17 JST · `zoo/wright_fisher.py` · 单纯形漂移。确定性模式下 `mixed`、`mutation_selection`、`rps` 走 RK4，原来每步之后不投影回单纯形。记 s = Σx，这类向量场满足 d(s − 1)/dt = −r·(s − 1)（r = x·f + μ、x·f、x·Ax），r < 0 时舍入误差按指数放大。K = 3、600 步、400 条路径、种子 1：`mixed_only` 有 14 条偏离超过 1e-9（3 条变成非有限值），`mutation_selection` 有 52 条（9 条）。实测增长率与 −r 三位小数一致。修法：每个 RK4 子步之后截断并归一化；修后两个预设的最大偏离都是 2.2e-16。新增 5 个测试（`tests/test_wright_fisher.py` 的长视界不变性；`tests/test_zoo_independent.py` 用 log 坐标下的独立积分器对照 600 步），在修复前的代码上有 4 个失败，修复后全过；全套 310 个测试通过。
+  - 影响：只在长视界的确定性多机制路径上出现（1e-16 放大到 1e-6 约需 25 个时间单位；默认 `seg_steps = 20`）。有限种群模式不受影响。格 0、格 6 不用这个世界，冻结文件不涉及。
+  - 重跑 `cells/9/exploratory/c9_clock_metric.py`（600 步的 `mixed_only`），新输出存为同目录的 `c9_clock_metric_after_simplex_fix.out`，原输出保留。只有 mixed 两行变化：n 从 295 / 399 变为 298 / 400，CV 的变化不超过 0.006，最优时钟不变（euclid、logit）。格 9 notes v0.6 的结论（Fisher 在 8 个情形里只赢 1 个）不变。`precheck_c9_noise_clock.py` 用有限种群，输出与提交的逐字相同。
+  - 发现经过与验证数字：`reports/2026-11-17_external_review.md` §8。

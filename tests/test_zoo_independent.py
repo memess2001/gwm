@@ -404,6 +404,30 @@ def test_wf_labels_at_step_t_reproduce_step_t(K, schedule):
     assert np.array_equal(tr.obs, tr.state.astype(np.float32))                      # freq obs = state only
 
 
+@pytest.mark.parametrize("mech", ["mixed", "mutation_selection"])
+def test_wf_long_horizon_against_log_coordinate_solver(mech):
+    """600 steps (60 time units) with every fitness negative, so the mean fitness plus mu is below zero on the whole
+    path: off the simplex the field is then transversally unstable (d(sum x - 1)/dt = -(x.f + mu)(sum x - 1)), and an
+    integrator working in x drifts away. The reference works in log coordinates y (x = softmax(y)), which cannot
+    leave the simplex: dy_i/dt = f_i + mu m_i / x_i (mixed), f_i + u / (K x_i) (selection + uniform mutation)."""
+    K, f, x0 = 3, np.array([-1.0, -1.6, -2.3]), np.array([0.3, 0.3, 0.4])
+    mu, m, u = 0.2, np.array([0.2, 0.3, 0.5]), 0.5
+    par = dict(f=f, mu=mu, m=m) if mech == "mixed" else dict(f=f, u=u)
+    tr = WrightFisher(K=K, x0=x0, schedule=[(mech, 60.0, par)]).sample(0, 600, 1, "freq")
+
+    def soft(y):
+        z = np.exp(y - y.max())
+        return z / z.sum()
+
+    def rhs(_, y):
+        x = soft(y)
+        return f + (mu * m / x if mech == "mixed" else u / (K * x))
+    sol = solve_ivp(rhs, (0, 60.0), np.log(x0), t_eval=tr.t, method="DOP853", rtol=1e-12, atol=1e-13)
+    ref = np.array([soft(y) for y in sol.y.T])
+    assert (ref @ f + (mu if mech == "mixed" else 0.0)).max() < -0.5            # unstable off the simplex throughout
+    assert np.abs(tr.state[0] - ref).max() < 1e-8
+
+
 def _circulation(v, center, r, n=3000):
     """Line integral of the Fisher-dual 1-form sum_i v_i / x_i dx_i around a circle in the simplex."""
     K = len(center)

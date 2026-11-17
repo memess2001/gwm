@@ -207,3 +207,15 @@ def test_seed_determinism_and_disjoint_splits():
         assert not (x0[s1][:, None] == x0[s2][None]).all(-1).any()
     for m in w.obs_modes:
         assert w.sample(0, 2, 2, m).obs.shape[2:] == w.spec(m)["obs_shape"]
+
+
+@pytest.mark.parametrize("preset", ["mixed_only", "mutation_selection", "rps"])
+def test_long_deterministic_paths_stay_on_the_simplex(preset):
+    """RK4 mechanisms over a long horizon (60 time units): before every substep was projected back onto the
+    simplex, round-off in sum(x) grew like exp(|x.f + mu| t) on paths with negative mean fitness, and 14 of 400
+    mixed_only paths (52 of 400 mutation_selection paths) left the simplex, some becoming non-finite."""
+    X = WrightFisher(K=3, schedule=preset, seg_steps=600).sample(seed=1, horizon=600, n_traj=400, obs_mode="freq").state
+    assert np.isfinite(X).all()
+    assert X.min() >= 0.0
+    assert np.abs(X.sum(-1) - 1.0).max() < 1e-12
+
