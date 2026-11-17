@@ -1,0 +1,32 @@
+## A. locked branch, gamma = 0.1: singularity set = zero set of det J
+   u        theta*    det J     sigma_min  |lam|_min  maxRe(lam)  dtheta*/du  1/detJ
+   0         0.00000   1.00000   0.90499    1.00000    -0.10000       1.000      1.000
+   0.5       0.52360   0.86603   0.81799    0.93060    -0.10000       1.155      1.155
+   0.8       0.92730   0.60000   0.58262    0.77460    -0.10000       1.667      1.667
+   0.9       1.11977   0.43589   0.42562    0.66022    -0.10000       2.294      2.294
+   0.99      1.42926   0.14107   0.13828    0.37559    -0.10000       7.089      7.089
+   0.999     1.52607   0.04471   0.04384    0.21145    -0.10000      22.366     22.366
+   0.9999    1.55665   0.01414   0.01387    0.11892    -0.10000      70.712     70.712
+   0.99999   1.56632   0.00447   0.00439    0.02565    -0.02565     223.610    223.607
+   1         1.57080   0.00000   0.00000    0.00000    -0.00000         inf  7337840.533
+   1.001    Newton fails: no equilibrium (past the fold)
+   extrapolated fold from u in [0.6, 0.8]: det J linear -> 1.409; (det J)^2 linear (fold normal-form exponent) -> 1.061; max Re(lam) -> never crosses 0; truth 1.000
+
+## B. lower edge of the hysteresis loop (homoclinic, global) vs the fold (local), zoo rollouts
+   gamma   u_c (rollout)   Melnikov 8 gamma/pi   fold u   width of bistable band
+   0.05       0.130           0.127            1.000    0.870
+   0.1        0.255           0.255            1.000    0.745
+   0.2        0.490           0.509            1.000    0.510
+   0.3        0.699           0.764            1.000    0.301
+   0.45       0.924           1.146            1.000    0.076
+   0.55       0.994           1.401            1.000    0.006
+   0.6     none below 1       1.528            1.000    0 (no bistability)
+   0.65    none below 1       1.655            1.000    0 (no bistability)
+   0.8     none below 1       2.037            1.000    0 (no bistability)
+
+## C. planning consequence, gamma = 0.1, constant u = 0.5
+   locked equilibrium theta* = 0.524, det J = 0.866 (far from the fold: map and margin both say 'safe')
+   start omega = 0.0: mean omega over the last 100 time units =  0.000 -> locked
+   start omega = 1.0: mean omega over the last 100 time units = -0.000 -> locked
+   start omega = 2.0: mean omega over the last 100 time units =  2.469 -> RUNNING
+   start omega = 3.0: mean omega over the last 100 time units =  2.470 -> RUNNING

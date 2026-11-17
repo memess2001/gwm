@@ -1,0 +1,21 @@
+1. S-dependence of the (q, p) part of the contact field
+   d/dS q' = Derivative(H(q, p, S), S, p)
+   d/dS p' = -p*Derivative(H(q, p, S), (S, 2)) - Derivative(H(q, p, S), S, q)
+   with H = A(q,p) + B(q,S):  d/dS p' = -p*Derivative(B(q, S), (S, 2)) - Derivative(B(q, S), S, q)  -> must vanish for every p: B_SS = 0 and B_qS = 0 -> B = g S + C(q)
+   H0 + g S     : d/dS q' = 0,  d/dS p' = 0,  div_(q,p) = -g
+   H0 + g S^2/2 : d/dS q' = 0,  d/dS p' = -g*p,  div_(q,p) = -S*g
+   H0 + S*k(q)  : d/dS q' = 0,  d/dS p' = -Derivative(k(q), q),  div_(q,p) = -k(q)
+   n = 2, H = H0 + g S: div_(q,p) = -2*g  (uniform)
+
+2. zoo damped pendulum vs contact field with H = p^2/2 - w0^2 cos q + 2 gamma S
+   gamma=0.05, omega0=1.0: max |contact - zoo| = 0.00e+00; zoo divergence -0.100, contact -g = -0.100
+   gamma=0.3, omega0=1.7: max |contact - zoo| = 0.00e+00; zoo divergence -0.600, contact -g = -0.600
+   energy: d/dt H0 along the contact flow = -g*p**2  (zoo: dE/dt = -2 gamma omega^2)
+
+3. gauge of S
+   (q', p') change under H0 -> H0 + k: [0, 0] ; S' changes by -k
+
+4. fixed-point traces (coordinate-free) where contact is misspecified
+   double pendulum, joint damping: tr(Jacobian) at fixed points (c = 1): {'down-down': -6, 'down-up': -2, 'up-down': -2, 'up-up': -6}
+   double pendulum, mass  damping: tr(Jacobian) at fixed points (c = 1): {'down-down': -2, 'down-up': -2, 'up-down': -2, 'up-up': -2}
+   Van der Pol (mu = 1.0): trace at the origin +1.000; time-mean divergence on the limit cycle -1.061 (the two must be equal for a conformally symplectic flow)

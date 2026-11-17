@@ -1,0 +1,40 @@
+== articulation-point baseline on toggle_grid
+   n_doors=1: articulation points (x, y) = [(5, 3), (6, 3), (7, 3)]; == door cells and their two neighbours: True
+   n_doors=2: articulation points (x, y) = [(5, 3), (6, 3), (7, 3), (11, 3), (12, 3), (13, 3)]; == door cells and their two neighbours: True
+   n_doors=3: articulation points (x, y) = [(5, 3), (6, 3), (7, 3), (11, 3), (12, 3), (13, 3), (17, 3), (18, 3), (19, 3)]; == door cells and their two neighbours: True
+
+== toggle_grid n_doors=1: 25 starts (room 0, doors closed), K <= 80
+   V1 (positions, <=k, doors in): Betti values seen = [(1, 0)]; starts with any change = 0
+   V2 (exactly k): topology changes per start, median 0 (min 0, max 6); first change at k = [None, 1]
+   V3 (full state, layers): k* == model-BFS steps to first switch entry for every start: True
+   V4 (positions, door cells left out): k* == model-BFS steps to first cell of room 1 for every start: True
+   V3: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [-5]
+   V4: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [1]
+
+== toggle_grid n_doors=2: 25 starts (room 0, doors closed), K <= 80
+   V1 (positions, <=k, doors in): Betti values seen = [(1, 0)]; starts with any change = 0
+   V2 (exactly k): topology changes per start, median 0 (min 0, max 6); first change at k = [None, 1]
+   V3 (full state, layers): k* == model-BFS steps to first switch entry for every start: True
+   V4 (positions, door cells left out): k* == model-BFS steps to first cell of room 1 for every start: True
+   V3: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [-5]
+   V4: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [1]
+
+== toggle_grid n_doors=3: 25 starts (room 0, doors closed), K <= 80
+   V1 (positions, <=k, doors in): Betti values seen = [(1, 0)]; starts with any change = 0
+   V2 (exactly k): topology changes per start, median 0 (min 0, max 6); first change at k = [None, 1]
+   V3 (full state, layers): k* == model-BFS steps to first switch entry for every start: True
+   V4 (positions, door cells left out): k* == model-BFS steps to first cell of room 1 for every start: True
+   V3: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [-5]
+   V4: Spearman(k*, true BFS steps to door) = 1.000; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [1]
+
+== toggle_grid n_doors=1, corrupted model (10% of entries): 25 starts (room 0, doors closed), K <= 80
+   V1 (positions, <=k, doors in): Betti values seen = [(1, 0)]; starts with any change = 0
+   V2 (exactly k): topology changes per start, median 0 (min 0, max 6); first change at k = [None, 1, 2]
+   V3 (full state, layers): k* == model-BFS steps to first switch entry for every start: True
+   V4 (positions, door cells left out): k* == model-BFS steps to first cell of room 1 for every start: True
+   V3: Spearman(k*, true BFS steps to door) = 0.890; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [-5]
+   V4: Spearman(k*, true BFS steps to door) = 0.890; Spearman(k*, model-BFS steps to door) = 1.000; k* - model door steps in [1]
+
+== loop maze (door at (6, 3), second opening at (6, 1)); free space Betti = (1, 1)
+   k* (b1: 0 -> 1) == max BFS distance over the obstacle's 4 neighbours, every start: True
+   Spearman(k*, BFS steps to door) = 0.882; to second opening = 0.864; to min(door, opening) = 1.000; to max(door, opening) = 0.891

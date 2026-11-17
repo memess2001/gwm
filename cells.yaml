@@ -161,7 +161,7 @@ cells:
     kill_test: wright_fisher（一般对称收益 / 循环突变梯子 / RPS + 突变）；从轨迹拟合 F（MPL 为基线）；Fisher-Hodge 与欧氏 HHD head-to-head。欧氏版同样好 → 死。原"三世界"测试降为估计器校准，因为它测的是定理。
     cost_days: 1
     confidence: {exists: high, novel: low, yields: mid}
-    status: unexplored
+    status: thought_killed   # 2026-11-16 JST，Z 的决定：思想实验 + 独立核对（cells/2/review_thought_experiment.md），不跑算力
     neighbors: [7, 5, 6]
     exits: [physics_discovery_datasets]
     collision: "A-（命题层）/ B+（方法层）"
@@ -178,6 +178,11 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议：
       (1) 与格 7 合为一格（回答 Q6）：格 7 的二分 e/m 检验 + r_min 作为本格工具，连续 α-计维持死亡。
       (2) 世界首选 Wright–Fisher 计数；同源对照 = 欧氏 Hodge / 势回归残差。按 rules.R3，主张只能是"更好的统计量"（省数据、稳、可解释），不是"看到更多"。
+      v0.6（2026-11-16 JST，Claude Code；cells/2/thought_experiment_2026-11-16.md 与独立核对 cells/2/review_thought_experiment.md）：
+      (1) 有限 N 的 WF 噪声协方差 (diag x − xxᵀ)/(2N_e) 就是 Shahshahani 度量的逆。带突变（每种类型都有正的突变流入）的平稳过程里，ρ 加权、势函数族不受限的 Fisher-Hodge 残差 × 2N_e 恰好等于熵产生率；暂态数据上它是 housekeeping 熵产生（Dechant–Sasa–Ito 2022）。按 R2 与同源熵产生打平（恒等式），格点数值相差约 0.01%。
+      (2) 对欧氏 HHD 的胜利是定理（Legacci 2024），按 R1 救不了格子。MPL 本身就是 Fisher 加权，比的是函数族。
+      (3) 判 thought_killed，没有跑算力。唯一真实的分岔：噪声不是 Fisher 型（环境适应度噪声、类型依赖的后代方差）时，Fisher-Hodge 问"机制是不是 Shahshahani 梯度"，熵产生问"是否细致平衡"，弱突变 × 环境噪声下两者排序相反。但那里胜负也由定理决定，最强对照是参数化机制检验，至多是新格子的起点。
+      (4) 保留：Fisher-Hodge 分解可作 benchmark 的真值工具；只用多项式基会报假旋度（梯度世界 1.11），基里要有 log x_i，或改为分解 b − ∇·D。
 
   - id: 3
     name: 搬运还是改权（Wasserstein–Fisher–Rao 世界模型）
@@ -291,7 +296,7 @@ cells:
     kill_test: 见 cells/6/prereg.md（草案，待 Z 批准）。过 gate（模型学会了隐变量）但读数测不出或定位不了 → 死。
     cost_days: 2
     confidence: {exists: high, novel: midhigh, yields: mid}
-    status: unexplored
+    status: merged_into:HCDP   # 2026-11-15 JST，prereg v1.4 §7：读数有效，P6.6 没有胜过非几何基线（Zhang et al. 2026-07）；只有尺寸 M，见 cells/6/result.md
     neighbors: [1, 12, 8, 2]
     exits: [popgym, arc_agi_3_stretch]
     collision: B
@@ -319,6 +324,7 @@ cells:
       (2) 预先授权（见 decisions）：v1 预注册逐条实现上面的 15 条清单（文末附逐条对照表），提交并把 sha256 记进 results/ledger.md，再由审稿 agent 按 rules.R4 确认。三条齐了即可开跑，不必再等 Z；清单之外的任何新增或偏离仍须 Z 点头。
       (3) handoff 作者意见（回答 Q2）：若与非几何基线（P6.6）打平，就 merged_into HCDP。唯一可能多出来的是连续极限下的曲率 2-形式，网格世界上测不到，不为它保留本格。
       (4) 第二轮生成的格 18（挠率 = 动作交换子）自审后并入本格，作副读数。
+      结果（2026-11-15 JST，prereg v1.4，只有尺寸 M，cells/6/result.md）：读数层有效（H-act 种子 0、1：分层 AUC 0.998 / 0.996，R0 precision@4 = 1.0，对 C-open、C-vis 特异；种子 2 没过门 gate）。几何层 P6.6 没有胜出：非几何 same_source 基线 AUC 0.994 / 0.976（差的中位数 0.012，门槛 0.05），precision@4 同为 1.0，数据效率相同（探测都要 2000 条，定位都是 500 条；500 条时基线定位 1.0、和乐 0.75）。按 §7 status → merged_into:HCDP。这个最终状态只在 v1.4 下可达，v1.3 会判不确定（S 的 pilot 从没过门 gate）。限定：种子 0、1 的 τ = 0，特异性判据实际是"H_obs 不为零的环路 ≤ 10%"；C-vis 种子 1、2 的模型检查 0.94，略低于 0.95。
 
   - id: 7
     name: 两种直线 → α-计（对偶平坦世界模型）
@@ -434,6 +440,12 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议（回答 Q7）：
       世界用 Wright–Fisher 计数：二项噪声让 σ 随状态自然变化，白化欧氏弧长和 Fisher 弧长这时才分得开；单摆遮挡只作负对照。
       同源对照 = 冻结 σ 的白化欧氏弧长（rules.R2）。HANDOFF §7 第 4 条对 TOTR 的过度解读已在 HANDOFF v0.5 更正。
+      v0.6（2026-11-16 JST，Claude Code，写预注册前的真值检查，cells/9/exploratory/c9_clock_metric.py，不训练模型）：
+      精确 WF 路径（选择、迁移、两者混合；随机起点与稀有入侵者；事件 = 最终胜者首次超过 0.5 或 0.9）上，事件时刻跨种子的 CV：
+      墙钟 0.83–2.40，各种弧长 0.46–1.32。任何弧长都远比墙钟规整，这是去掉速度的重参数化效果（TOTR 的地盘）。
+      在几种弧长之间，Fisher（Shahshahani）只在 8 个情形里赢 1 个（差 0.014），欧氏赢 5 个，logit（clr）赢 2 个，没有偏向 Fisher 的机制。
+      所以第一条预测（事件在 τ 里更规整）在"胜过欧氏弧长"这一步大概率不成立；按 R1，这类精确状态上的结果能削弱、不能救。
+      第二条（在 τ 里训练、换回墙钟评估的 k 步误差）是真正的约束型问题，思想实验判不了，但目前看不出它为什么偏向 Fisher：选择主导时 logit 弧长让时钟速率恒定，迁移主导时欧氏更好。
 
   - id: 10
     name: 尺度即时间（重整化群世界模型）
@@ -530,6 +542,7 @@ cells:
     notes: >
       v0.3：撞车最重；Castro 组可能很快推出正式版。优先级下调。
       v0.4（2026-11-03）：第二轮文献截至今日未见正式版，A− 不变。有向最短路是 quasimetric，可与格 8 合并。
+      格 6 结果（2026-11-15 JST，cells/6/result.md）：和乐曲率图定位到的是来源（开关），不是后果（门）。H-act 过 gate 的种子里两个门邻接小方格排第 7–10；门邻接进前 4 只出现在没学会门的模型上。
 
   - id: 13
     name: 因果正交（信息几何因果世界模型）
@@ -1170,6 +1183,40 @@ decisions:
       theta_gate: "n = 8000 为主，n = 2000 做敏感性检查"
       null_encoder: "加一个初始化后不训练的编码器作零对照"
     delivery: "handoff 作者的改动走新分支 + PR，不直接改 main"
+  - date: 2026-11-12
+    by: Z
+    recorded_by: Claude Code（Z 在会话里回答选择题）
+    cell_6_post_freeze_revisions: >
+      接受格 6 预注册 v1.1 / v1.2（冻结后、开跑前按独立审稿意见修订；第三轮审稿确认 v1.2，cells/6/review_v1_2.md），
+      包括三处统计量定义的改动（precision@4 取平局期望值；P6.3 的 ≥ 2 次偶数环路只报告；模型检查按分支取最小值）。
+      只接受这一次：以后同类修订仍须逐次请 Z 点头。
+    status_changes_confirmed: "格 1、3、7 → thought_killed，格 8 → lit_killed（第一周报告提议，handoff 作者已接受）"
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code（Z 在会话里回答选择题）
+    cell_6_after_failed_pilots: >
+      两次 pilot（10k、20k 步）都没过 gate（模型学成"门永远关着"；主动档只有 2% 的帧受门状态影响）。
+      Z 选择：主动档 p_home 从 0.01 提到 0.1（受影响的帧约 8%），放弃主动档与被动档的覆盖匹配，P6.5 降为描述；
+      改完重新冻结、审稿，先用 S 尺寸重跑 pilot。
+    cell_0_v2_2: >
+      接受格 0 预注册 v2.2（冻结后按三轮审稿修订），包括：阶段 2 像素仪器检查失败时只停像素部分、保留阶段 1 的结论；
+      收敛判据用 val 损失代替 pred_err[8]。允许开跑阶段 1。
+    cell_0_compute: 阶段 1 现在就在云端跑（格 6 暂停期间）
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code
+    cell_6_after_failed_v1_3_pilots: >
+      v1.3（p_home 0.1）的 S 尺寸 pilot 也没过 gate（10k：奇数次进入后正确率 0；20k：0.035 / 0.03）。
+      Z 选择：数据与其余设定不动，先用 M 尺寸跑一次 20k 步 pilot；过了就把主实验改成只用能学会的尺寸（v1.4，重新冻结、审稿），
+      不过就回到"换带记忆的模型"或"记为不确定"二选一。
+    cell_6_v1_4_approved: >
+      2026-11-14：M 的 20k 步 pilot 过了 gate（门 gate 四种状态都是 1.0）。prereg v1.4（commit 69ebea5，审稿确认 cells/6/review_v1_4.md）
+      只用尺寸 M、20k 步、21 个 run。Z 看过 §13 "判据变宽松了"一段后认可，开跑：只有 M 判据全过也算读数有效，
+      P6.6 在 M 上任一条胜出路线即可，结论只对尺寸 M 成立。没有加尺寸或种子作补偿。
+    cell_2_next_then_thought_kill: >
+      2026-11-16：格 0、格 6 跑完后，Z 选格 2 作为下一格（越过原顺序里的格 15），这周不写周报。写预注册前的思想实验
+      （cells/2/thought_experiment_2026-11-16.md）发现：Fisher 读数对欧氏分解按定理赢，对熵产生按恒等式打平。Z 决定：
+      先由只核真值、不训练模型的 agent 独立核对推导，成立就把格 2 记为 thought_killed，不跑算力；之后做格 9。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
