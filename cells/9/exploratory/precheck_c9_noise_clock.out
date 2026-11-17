@@ -1,0 +1,63 @@
+A. per-step squared increment, binned by heterozygosity H (zoo WF, K=3, selection_only, dt=0.1)
+  N=  100  (K-1)/N = 0.02000
+   H-bin(mean)  E[Fisher^2] total / noise only   E[Euclid^2] noise only * N   n
+        0.230      0.02062 / 0.01889            0.226   (H = 0.230)    1481
+        0.402      0.02190 / 0.01933            0.393   (H = 0.402)    1483
+        0.497      0.02260 / 0.01947            0.490   (H = 0.497)    1471
+        0.559      0.02294 / 0.01955            0.569   (H = 0.559)    1492
+        0.629      0.02348 / 0.01968            0.615   (H = 0.629)    1489
+  N= 1000  (K-1)/N = 0.00200
+   H-bin(mean)  E[Fisher^2] total / noise only   E[Euclid^2] noise only * N   n
+        0.086      0.00232 / 0.00180            0.080   (H = 0.086)    3276
+        0.251      0.00311 / 0.00186            0.239   (H = 0.251)    3275
+        0.395      0.00363 / 0.00191            0.379   (H = 0.395)    3278
+        0.503      0.00451 / 0.00196            0.498   (H = 0.503)    3275
+        0.605      0.00552 / 0.00200            0.609   (H = 0.605)    3277
+
+B. exact grid Bayes filter, K = 2 (selection +-s with symmetric mutation u; dt = 0.1; burn-in 20 steps removed)
+
+  N=100, n_obs=100, s=0.5, u=0.1, sign constant:  noise (K-1)/N = 0.01000, mean net drift^2 = 0.00051; share of steps with drift^2 > noise: 0.01
+   posterior var / (mu(1-mu)) = c: mean 6.15e-03, CV across all steps 0.122, CV of per-step mean over the 5 mu-bins: 0.021
+   E[increment^2 | mu-bin] / overall E[increment^2]   (mu-bins = quintiles of the posterior mean)
+   bin mean mu       wall     fisher     frozen  hell_post   hell_obs   eucl_obs   surprise
+         0.086      1.000      0.978      0.555      0.982      1.049      0.547      0.988
+         0.228      1.000      1.006      1.280      1.002      0.949      1.299      0.997
+         0.608      1.000      1.030      1.692      1.031      0.959      1.691      1.029
+         0.832      1.000      1.001      1.019      0.994      0.941      1.018      0.985
+         0.931      1.000      0.984      0.453      0.992      1.102      0.444      1.001
+   predicted vs measured E[ds_F^2]: bins 1.74/1.57, 1.67/1.62, 1.70/1.65, 1.66/1.61, 1.78/1.58
+   median over trajectories of R^2(fisher clock ~ affine in other clock):  wall 0.9988, frozen 0.9959, hell_post 1.0000, hell_obs 0.9996, eucl_obs 0.9955, surprise 0.9997
+   per-step correlation of fisher increments with:  frozen 0.914, hell_post 0.998, hell_obs 0.846, eucl_obs 0.777, surprise 0.952
+   CV of per-step increments (0 = wall clock):  fisher 0.75, frozen 0.83, hell_post 0.76, hell_obs 0.78, eucl_obs 0.84, surprise 0.39
+
+  N=2000, n_obs=2000, s=3.0, u=0.1, sign constant:  noise (K-1)/N = 0.00050, mean net drift^2 = 0.00006; share of steps with drift^2 > noise: 0.00
+   posterior var / (mu(1-mu)) = c: mean 2.84e-04, CV across all steps 0.032, CV of per-step mean over the 5 mu-bins: 0.012
+   E[increment^2 | mu-bin] / overall E[increment^2]   (mu-bins = quintiles of the posterior mean)
+   bin mean mu       wall     fisher     frozen  hell_post   hell_obs   eucl_obs   surprise
+         0.033      1.000      0.968      0.862      0.980      0.994      0.845      0.991
+         0.039      1.000      1.015      1.066      1.008      0.997      1.071      0.956
+         0.752      1.000      1.014      1.181      0.998      0.993      1.224      1.106
+         0.962      1.000      1.018      1.026      1.014      1.003      1.020      0.930
+         0.968      1.000      0.986      0.866      1.000      1.012      0.840      1.017
+   predicted vs measured E[ds_F^2]: bins 2.00/1.46, 1.85/1.53, 2.14/1.53, 1.81/1.54, 2.03/1.49
+   median over trajectories of R^2(fisher clock ~ affine in other clock):  wall 0.9986, frozen 0.9999, hell_post 1.0000, hell_obs 0.9998, eucl_obs 0.9997, surprise 0.9996
+   per-step correlation of fisher increments with:  frozen 0.995, hell_post 1.000, hell_obs 0.894, eucl_obs 0.888, surprise 0.844
+   CV of per-step increments (0 = wall clock):  fisher 0.75, frozen 0.76, hell_post 0.76, hell_obs 0.76, eucl_obs 0.76, surprise 0.41
+
+  N=2000, n_obs=2000, s=3.0, u=0.1, sign alternates every 40 steps:  noise (K-1)/N = 0.00050, mean net drift^2 = 0.00705; share of steps with drift^2 > noise: 0.55
+   posterior var / (mu(1-mu)) = c: mean 2.95e-04, CV across all steps 0.045, CV of per-step mean over the 5 mu-bins: 0.028
+   E[increment^2 | mu-bin] / overall E[increment^2]   (mu-bins = quintiles of the posterior mean)
+   bin mean mu       wall     fisher     frozen  hell_post   hell_obs   eucl_obs   surprise
+         0.038      1.000      0.103      0.022      0.098      0.223      0.050      0.929
+         0.112      1.000      1.039      0.711      1.038      1.031      0.733      1.035
+         0.509      1.000      2.783      3.613      2.796      2.552      3.512      1.060
+         0.894      1.000      0.971      0.633      0.970      0.967      0.654      1.031
+         0.962      1.000      0.103      0.021      0.098      0.227      0.050      0.945
+   predicted vs measured E[ds_F^2]: bins 3.22/2.44, 26.12/24.48, 65.79/65.56, 24.78/22.88, 3.17/2.42
+   median over trajectories of R^2(fisher clock ~ affine in other clock):  wall 0.9965, frozen 0.9996, hell_post 1.0000, hell_obs 0.9998, eucl_obs 0.9998, surprise 0.9966
+   per-step correlation of fisher increments with:  frozen 0.964, hell_post 1.000, hell_obs 0.945, eucl_obs 0.947, surprise 0.158
+   CV of per-step increments (0 = wall clock):  fisher 0.83, frozen 1.07, hell_post 0.85, hell_obs 0.77, eucl_obs 1.03, surprise 0.40
+
+C. deterministic exact paths (zoo, K = 3): clock rate near the fixed point
+  selection -> vertex         euclid: slope +0.93, stopped 0.76;  fisher: slope +0.44, stopped 0.66;  logit: slope -0.01, stopped 0.00
+  migration -> m (interior)   euclid: slope +1.00, stopped 0.85;  fisher: slope +0.99, stopped 0.84;  logit: slope +0.99, stopped 0.84
