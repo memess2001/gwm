@@ -133,3 +133,13 @@ eb44263da6ab50ea985e11cfc58cbfaa7665f94cb22a0117e2e561b3ef4ab300  analysis/contr
 - 2026-11-12 JST · 格 0 · prereg v2.2 的审稿确认：`cells/0/review_v2_2.md`（结论：确认；预先授权第 3 条）。v2.1、v2.2 都是冻结后的修订，按 Z 2026-11-12 的决定仍需 Z 逐次确认后才能开跑。
 - 2026-11-14 JST · 格 0 · Z 接受 prereg v2.2（含两处点名的改动：像素仪器失败只停像素部分；收敛判据用 val 损失），允许开跑阶段 1，在云端跑。决定记录在 `cell6/v1` 分支 `cells.yaml` 的 `decisions`。
 - 2026-11-15 JST · 格 0 · 阶段 1 结果（prereg v2.2，commit 08702ee）。计分前重新核对冻结的 9 个文件，sha256 全部一致。105 个训练 run 与 9 个零对照全部测量，无排除。判定 DECIDED：P0.1 / P0.2 pass；P0.3 = F；P0.4-sg = F（撕开率 1.0）；P0.4-sym = T；θ gate n = 2000 敏感性相同；P0.5 留到阶段 2；P0.6 我的预测 F，原版只在 raw-recon-mse 上成立。按 §7 改 `cells.yaml`：格 0 exists high → mid（status 不变），notes 记 sg "继承切口"、sym "粘合"；格 4 yields mid → lowmid；格 15 notes 记声明产出。偏离：设备对照没跑（云端无 MPS）；按 Z 2026-11-14 的决定在云端跑，容器重启 3 次，中断的 run 从头重训。结果：`cells/0/result.md`、`cells/0/result_data.json`；逐 run 输出备份在分支 `runs-backup/2026-11`。
+
+## 格 0 延伸运行 E1：收敛复查
+
+- 2026-11-17 JST · 格 0 · 延伸预注册 E1（`cells/0/prereg_ext_convergence.md`）· commit 3dab71f。原始角度的四个臂、S 与 M、种子 0 / 1 / 2，同一配方训练 100000 步（阶段 1 是 20000 步）。Z 2026-11-17 在会话里同意（对"格 0 的收敛复查：四个臂训练到 5 倍步数"回复"开始做吧"）；设计里超出这句话的选择写在预注册 §2。不改 v2.2 的冻结文件与阶段 1 的判定；开跑前核对 v2.2 的 9 个冻结文件，sha256 全部一致。数据门在本环境重跑，主世界与负对照都选中 index 0，H1 读数与阶段 1 的记录逐位相同。sha256：
+
+```
+d4d8f9e6b95f54d4214f0ecedf78cd0152c28975a4720e5a56d8d176c09e43df  cells/0/prereg_ext_convergence.md
+f46e0d18f4f5fa9b605266300f4f0b18075ddb5e208289ef2ab23e87f3b19a0e  cells/0/c0_ext.py
+eb4bef540a8eb12aedfb1b95667a9558739f544ec18e0d623b786a60f86ba171  cells/0/ext_convergence_baseline.json
+```
