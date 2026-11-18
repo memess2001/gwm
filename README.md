@@ -4,7 +4,7 @@
 每个想法（格）按 **文献杀 → 思想实验杀 → 算力杀** 的顺序处决，只有幸存者才去碰外部 benchmark。
 方法与约定见 `HANDOFF.md`。
 
-**现状（2026-11-18）：** 格 0 阶段 1 与格 6 已跑完，格 2 已判死；其余格子都做了预检（只核真值）。32 格的几何对象与同源量对照见 `correspondence_table.md`，需要 Z 决定的事见 `reports/2026-11-18_progress.md` 开头。
+**现状（2026-11-19）：** 格 0 阶段 1 与格 6 已跑完，格 0 的收敛复查（训练 5 倍长）分类全部不变，格 2 已判死；其余格子都做了预检（只核真值）。32 格的几何对象与同源量对照见 `correspondence_table.md`，需要 Z 决定的事见 `reports/2026-11-18_progress.md` 开头。
 
 ## 文件导航
 
@@ -17,7 +17,7 @@
 | `literature_audit_round2.md` | 第二轮补查与引用核对（2026-11-03）；原始结构化输出在 `results/lit_round2_raw.json` |
 | `cells/thought_experiments_2026-11-03.md` | 思想实验杀 / 修正：格 0、1、6、7、9、15，以及跨格模式 |
 | `cells/<id>/prereg.md` | 预注册。格 0（v2.2）、格 6（v1.4）经 Z 批准并已跑完；格 15 只有草案（`cells/15/prereg_draft_2026-11-18.md`），未批准，不运行 |
-| `cells/<id>/result.md` | 结果（格 0 阶段 1、格 6）；格 0 的收敛复查见 `cells/0/prereg_ext_convergence.md` |
+| `cells/<id>/result.md` | 结果（格 0 阶段 1、格 6）；格 0 的收敛复查见 `cells/0/result_ext_convergence.md`（预注册 `cells/0/prereg_ext_convergence.md`） |
 | `cells/<id>/precheck_*.md` | 写预注册之前的检查：只核真值、不训练模型，判断能否由思想实验决定；脚本在同格的 `exploratory/` |
 | `cells/<id>/exploratory/` | 已披露的探索性数值检查（不是 kill test） |
 | `cells/0/calibration.md` | 格 0 测量仪器（持续同调、能量平滑度）在真值嵌入上的校准报告 |

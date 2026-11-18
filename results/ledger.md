@@ -144,6 +144,9 @@ f46e0d18f4f5fa9b605266300f4f0b18075ddb5e208289ef2ab23e87f3b19a0e  cells/0/c0_ext
 eb4bef540a8eb12aedfb1b95667a9558739f544ec18e0d623b786a60f86ba171  cells/0/ext_convergence_baseline.json
 ```
 - 2026-11-17 JST · 格 0 · 延伸 E1 的环境复现检查（`c0_ext.py --envcheck`，不计分）：`raw-jepa-sym_S_s0` 按阶段 1 的参数原样重跑 20000 步，分类"粘合"，接缝比 1.0515042212106465，val 损失 0.006504046119516715，三项都与备份里的阶段 1 结果逐位相同。本环境复现阶段 1。
+- 2026-11-18 JST · 格 0 · 延伸 E1 进度：S 的两个 JEPA 臂（6 个 run）训练并计分完成。S 的两个重建臂跑到一半时容器重启（16:30 JST），已完成并计分的 3 个（raw-recon-mse_S_s0、s1，raw-recon-circ_S_s0）保留，中断的 3 个（raw-recon-mse_S_s2，raw-recon-circ_S_s1、s2）按预注册 §9 从头重训。只有完成训练的 run 计分。
+- 2026-11-18 JST · 格 0 · 延伸 E1 进度：S 的四个臂（12 个 run）全部完成，四个格子都是"保持"。M 的 jepa-sg（3 个 run）完成。其间容器又重启过一次（22:06 JST 前后），发生在两批之间，没有打断训练中的 run。
+- 2026-11-19 JST · 格 0 · 延伸 E1 结果（预注册 `cells/0/prereg_ext_convergence.md`，commit 3dab71f）。计分前核对冻结文件：v2.2 的 9 个与 E1 的 3 个，sha256 全部一致。24 个 run 全部训练到 100000 步并计分，无排除。8 个格子（四个臂 × S、M）都是"保持"，总读法"稳定"，E1.1 成立；E1.2 不成立（按 v2.2 口径收敛的 run：20000 步 0/24，100000 步 0/24）。M 的后三批（jepa-sym、recon-mse、recon-circ）在 22:06 JST 那次重启之后跑，没有中断。按 §6 不改 status 与 confidence，只在格 0 的 notes 记一句。结果：`cells/0/result_ext_convergence.md`、`cells/0/result_ext_convergence.json`；逐 run 输出只在容器的 `runs/c0_ext100k/`，没有备份到分支。
 
 ## 动物园修复记录
 
@@ -151,5 +154,3 @@ eb4bef540a8eb12aedfb1b95667a9558739f544ec18e0d623b786a60f86ba171  cells/0/ext_co
   - 影响：只在长视界的确定性多机制路径上出现（1e-16 放大到 1e-6 约需 25 个时间单位；默认 `seg_steps = 20`）。有限种群模式不受影响。格 0、格 6 不用这个世界，冻结文件不涉及。
   - 重跑 `cells/9/exploratory/c9_clock_metric.py`（600 步的 `mixed_only`），新输出存为同目录的 `c9_clock_metric_after_simplex_fix.out`，原输出保留。只有 mixed 两行变化：n 从 295 / 399 变为 298 / 400，CV 的变化不超过 0.006，最优时钟不变（euclid、logit）。格 9 notes v0.6 的结论（Fisher 在 8 个情形里只赢 1 个）不变。`precheck_c9_noise_clock.py` 用有限种群，输出与提交的逐字相同。
   - 发现经过与验证数字：`reports/2026-11-17_external_review.md` §8。
-- 2026-11-18 JST · 格 0 · 延伸 E1 进度：S 的两个 JEPA 臂（6 个 run）训练并计分完成。S 的两个重建臂跑到一半时容器重启（16:30 JST），已完成并计分的 3 个（raw-recon-mse_S_s0、s1，raw-recon-circ_S_s0）保留，中断的 3 个（raw-recon-mse_S_s2，raw-recon-circ_S_s1、s2）按预注册 §9 从头重训。只有完成训练的 run 计分。
-- 2026-11-18 JST · 格 0 · 延伸 E1 进度：S 的四个臂（12 个 run）全部完成，四个格子都是"保持"。M 的 jepa-sg（3 个 run）完成。其间容器又重启过一次（22:06 JST 前后），发生在两批之间，没有打断训练中的 run。
