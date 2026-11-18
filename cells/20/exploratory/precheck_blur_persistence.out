@@ -1,0 +1,14 @@
+A. translation loop (bump carried once around the domain), noise sd 0.01
+   death/birth of the longest H1 bar, no noise, L = 128:
+     w =  3: sigma  0:    6.0   sigma  4:   10.0   sigma 16:   29.6   sigma 32:   35.4
+     w =  6: sigma  0:   12.0   sigma  4:   14.4   sigma 16:   30.4   sigma 32:   35.4
+     w = 12: sigma  0:   23.5   sigma  4:   24.6   sigma 16:   32.9   sigma 32:   35.4
+   vanishing sigma, L = 128: w =  3: 33.12   w =  6: 47.0   w = 12: 47.0
+   vanishing sigma, L = 256: w =  3: 47.0   w =  6: 66.7   w = 12: 94.65
+
+B. internal loop (shape oscillation of a bump of width w, deformation wavenumber 3 / w), L = 256
+   noise sd 0.003: vanishing sigma  w =  4: 2.96 (0.74 w)   w =  8: 7.37 (0.92 w)   w = 16: 16.09 (1.01 w)
+   noise sd 0.01: vanishing sigma  w =  4: 1.36 (0.34 w)   w =  8: 3.84 (0.48 w)   w = 16: 9.56 (0.60 w)
+   w =  4: size of the blurred deformation mode, |blur(A)| / |A|, at sigma = 0.25 w, 0.5 w, 1 w: 0.756, 0.385, 0.0891
+   w =  8: size of the blurred deformation mode, |blur(A)| / |A|, at sigma = 0.25 w, 0.5 w, 1 w: 0.756, 0.385, 0.0891
+   w = 16: size of the blurred deformation mode, |blur(A)| / |A|, at sigma = 0.25 w, 0.5 w, 1 w: 0.756, 0.385, 0.0891
