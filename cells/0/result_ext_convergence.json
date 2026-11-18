@@ -61,6 +61,36 @@
     "n_straddle": 463
    }
   },
+  "raw-recon-mse_S_s2": {
+   "cls": "torn",
+   "cls_phase1": "torn",
+   "steps": 100000,
+   "seam_ratio": 26.144627758955647,
+   "seam_ratio_phase1": 19.135730347057013,
+   "kappa": 0.5318961664450649,
+   "h1_state": "none",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.7244932699834579
+   },
+   "conv_rel_change_phase1": 0.7266475443558511,
+   "val_loss_key": "recon",
+   "val_loss_final": 0.0354658548894804,
+   "val_loss_final_phase1": 0.0825882232747972,
+   "val_loss_at": {
+    "20000": 1.5857555624097586,
+    "40000": 0.4362763036042452,
+    "60000": 0.2532332460395992,
+    "80000": 0.19767652871087193,
+    "100000": 0.0354658548894804
+   },
+   "cross_cut": {
+    "excess_ratio": 50.52085680374574,
+    "n_straddle": 463
+   }
+  },
   "raw-recon-circ_S_s0": {
    "cls": "torn",
    "cls_phase1": "torn",
@@ -88,6 +118,66 @@
    },
    "cross_cut": {
     "excess_ratio": 0.724035192120088,
+    "n_straddle": 463
+   }
+  },
+  "raw-recon-circ_S_s1": {
+   "cls": "torn",
+   "cls_phase1": "torn",
+   "steps": 100000,
+   "seam_ratio": 34.947680338090365,
+   "seam_ratio_phase1": 21.277547379557628,
+   "kappa": 0.7820258420054186,
+   "h1_state": "none",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.18168526745397356
+   },
+   "conv_rel_change_phase1": 0.30658740878716007,
+   "val_loss_key": "recon",
+   "val_loss_final": 0.008312301244586706,
+   "val_loss_final_phase1": 0.007649836770724505,
+   "val_loss_at": {
+    "20000": 0.02052501158323139,
+    "40000": 0.03426003456115723,
+    "60000": 0.01265150390099734,
+    "80000": 0.010919817083049566,
+    "100000": 0.008312301244586706
+   },
+   "cross_cut": {
+    "excess_ratio": 12.955438168980905,
+    "n_straddle": 463
+   }
+  },
+  "raw-recon-circ_S_s2": {
+   "cls": "torn",
+   "cls_phase1": "torn",
+   "steps": 100000,
+   "seam_ratio": 34.56508940176191,
+   "seam_ratio_phase1": 13.076541466683036,
+   "kappa": 0.564740833313602,
+   "h1_state": "none",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.2128658527209847
+   },
+   "conv_rel_change_phase1": 0.2672567955810481,
+   "val_loss_key": "recon",
+   "val_loss_final": 0.007297574367839843,
+   "val_loss_final_phase1": 0.0073386074509471655,
+   "val_loss_at": {
+    "20000": 0.03874923358671367,
+    "40000": 0.01123543462017551,
+    "60000": 0.011695324734319001,
+    "80000": 0.007678236637730151,
+    "100000": 0.007297574367839843
+   },
+   "cross_cut": {
+    "excess_ratio": 12.792282583904061,
     "n_straddle": 463
    }
   },
@@ -273,9 +363,9 @@
   }
  },
  "cells": {
-  "raw-recon-mse_S": "incomplete",
+  "raw-recon-mse_S": "kept",
   "raw-recon-mse_M": "incomplete",
-  "raw-recon-circ_S": "incomplete",
+  "raw-recon-circ_S": "kept",
   "raw-recon-circ_M": "incomplete",
   "raw-jepa-sg_S": "kept",
   "raw-jepa-sg_M": "incomplete",
@@ -283,6 +373,6 @@
   "raw-jepa-sym_M": "incomplete"
  },
  "overall": "stable",
- "n_runs_scored": 9,
+ "n_runs_scored": 12,
  "n_runs_planned": 24
 }
