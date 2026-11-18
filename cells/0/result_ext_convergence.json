@@ -450,6 +450,96 @@
     "excess_ratio": 312.6741973679215,
     "n_straddle": 463
    }
+  },
+  "raw-jepa-sym_M_s0": {
+   "cls": "glued",
+   "cls_phase1": "glued",
+   "steps": 100000,
+   "seam_ratio": 0.9369230147437466,
+   "seam_ratio_phase1": 1.0165466568695063,
+   "kappa": 0.5931935675632782,
+   "h1_state": "ring",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.3918300060993472
+   },
+   "conv_rel_change_phase1": 0.4027389636761901,
+   "val_loss_key": "inv",
+   "val_loss_final": 0.0006490529158327263,
+   "val_loss_final_phase1": 0.004987951964722015,
+   "val_loss_at": {
+    "20000": 0.008502951415721327,
+    "40000": 0.004222985968226567,
+    "60000": 0.0021319957595551386,
+    "80000": 0.0008529606675438117,
+    "100000": 0.0006490529158327263
+   },
+   "cross_cut": {
+    "excess_ratio": 579.9043416956331,
+    "n_straddle": 463
+   }
+  },
+  "raw-jepa-sym_M_s1": {
+   "cls": "glued",
+   "cls_phase1": "glued",
+   "steps": 100000,
+   "seam_ratio": 0.6699421299881684,
+   "seam_ratio_phase1": 0.6910396836320033,
+   "kappa": 0.5683529433056297,
+   "h1_state": "ring",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.3821144727151471
+   },
+   "conv_rel_change_phase1": 0.31848803571941514,
+   "val_loss_key": "inv",
+   "val_loss_final": 0.0006848969751445111,
+   "val_loss_final_phase1": 0.004174807036179118,
+   "val_loss_at": {
+    "20000": 0.009026206389535218,
+    "40000": 0.0035238232230767608,
+    "60000": 0.002310357042006217,
+    "80000": 0.0008346852773684077,
+    "100000": 0.0006848969751445111
+   },
+   "cross_cut": {
+    "excess_ratio": 380.9492418194435,
+    "n_straddle": 463
+   }
+  },
+  "raw-jepa-sym_M_s2": {
+   "cls": "glued",
+   "cls_phase1": "glued",
+   "steps": 100000,
+   "seam_ratio": 0.8912420585899213,
+   "seam_ratio_phase1": 0.7998678813300425,
+   "kappa": 0.6238333570997157,
+   "h1_state": "ring",
+   "theta_gate_passed": true,
+   "excluded": false,
+   "convergence": {
+    "converged": false,
+    "rel_change": 0.3601640537833902
+   },
+   "conv_rel_change_phase1": 0.34527622334884195,
+   "val_loss_key": "inv",
+   "val_loss_final": 0.000653804710964323,
+   "val_loss_final_phase1": 0.0058704568655230105,
+   "val_loss_at": {
+    "20000": 0.00987684284336865,
+    "40000": 0.004160082928137854,
+    "60000": 0.002420521035674028,
+    "80000": 0.0009004639650811441,
+    "100000": 0.000653804710964323
+   },
+   "cross_cut": {
+    "excess_ratio": 900.6854526857578,
+    "n_straddle": 463
+   }
   }
  },
  "cells": {
@@ -460,9 +550,9 @@
   "raw-jepa-sg_S": "kept",
   "raw-jepa-sg_M": "kept",
   "raw-jepa-sym_S": "kept",
-  "raw-jepa-sym_M": "incomplete"
+  "raw-jepa-sym_M": "kept"
  },
  "overall": "stable",
- "n_runs_scored": 15,
+ "n_runs_scored": 18,
  "n_runs_planned": 24
 }
