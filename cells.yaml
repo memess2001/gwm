@@ -1226,6 +1226,14 @@ decisions:
       2026-11-16：格 0、格 6 跑完后，Z 选格 2 作为下一格（越过原顺序里的格 15），这周不写周报。写预注册前的思想实验
       （cells/2/thought_experiment_2026-11-16.md）发现：Fisher 读数对欧氏分解按定理赢，对熵产生按恒等式打平。Z 决定：
       先由只核真值、不训练模型的 agent 独立核对推导，成立就把格 2 记为 thought_killed，不跑算力；之后做格 9。
+  - date: 2026-11-17
+    by: Z
+    recorded_by: "外部评估会话（Claude Code），Z 在会话里的原话是\"开始做吧\""
+    external_review_items: >
+      对 reports/2026-11-17_external_review.md 里"你说一声我就可以开始"的三项回复"开始做吧"：
+      (1) 剩下格子的预检（只核真值）与对照表；(2) 格 0 的收敛复查（原始角度的四个臂训练到 5 倍步数，设计见
+      cells/0/prereg_ext_convergence.md）与格 15 的预注册草案（不运行）；(3) 修动物园的数值问题。
+      不包括：合并进 main、"有希望"指什么、预检建议的状态变更，这些仍由 Z 定。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
