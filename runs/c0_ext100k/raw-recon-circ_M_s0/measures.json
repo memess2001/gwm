@@ -1,0 +1,91 @@
+{
+ "h1": {
+  "state": "none",
+  "b_main": 0,
+  "b_stab": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "top_pi": [
+   1.859563407725718,
+   1.8267472067569914,
+   1.7794289851857126
+  ],
+  "abs_rho": 0.11638667729880714,
+  "wrapping_class": 0
+ },
+ "seam": {
+  "ratio": 34.72931099949638,
+  "ci95": [
+   28.51870222014734,
+   40.36884635049866
+  ],
+  "status": "ok",
+  "verdict3": "torn",
+  "kappa": 0.7684414791602279,
+  "fold_index": 0.8800514662819201,
+  "folded": false,
+  "omega_dominated": false,
+  "in_range3": true,
+  "misalignment_suspect": false,
+  "n_straddle_dropped": 463,
+  "placebo_max": 3.751089047505353,
+  "ratio_fast_v1": 49.83390228180956
+ },
+ "consistency": "torn",
+ "h1_none_high_kappa": false,
+ "theta_gate_n8000": {
+  "r2_min": 0.997724370889508,
+  "passed": true
+ },
+ "theta_gate_n2000": {
+  "r2_min": 0.987455471025319,
+  "passed": false
+ },
+ "energy": {
+  "knn_r2": 0.9673209713537713,
+  "quad_r2": 0.9905174389022698,
+  "linear_r2": 0.854263561642947,
+  "lipschitz_tail": 112.81412791071024,
+  "decodable": true,
+  "smooth": false
+ },
+ "pointwise": {
+  "frac_ok": 1.0,
+  "holds": true,
+  "n_bad": 0,
+  "max_err": 0.2679706976175176
+ },
+ "collapse": {
+  "min_std": 2.637491930800203,
+  "effective_rank": 4.670721788821978,
+  "collapsed": false
+ },
+ "exclusion": {
+  "learned": true,
+  "collapsed": false,
+  "nmse": 0.0001690450882767923,
+  "excluded": false
+ },
+ "convergence": {
+  "converged": false,
+  "rel_change": 0.618937736165703
+ },
+ "cross_cut": {
+  "excess_ratio": 0.8449158414586831,
+  "n_straddle": 463
+ },
+ "energy_drift": {
+  "k": 32,
+  "median_abs_drift": 0.08360203759733265,
+  "true_energy_sd": 1.2044042097800085
+ },
+ "meta": {
+  "run": "raw-recon-circ_M_s0",
+  "analysis_index": 0,
+  "device": "cpu",
+  "steps": 100000
+ }
+}
