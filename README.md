@@ -26,7 +26,7 @@
 | `analysis/` | 预注册测量用的仪器 |
 | `results/ledger.md` | 实验流水账：只记预注册里列出的量 |
 | `results/bench_cpu.md` | baseline 在 4 核 CPU 上的吞吐实测（安静机器），以及格 0、格 6 的预算表 |
-| `reports/` | 进展报告（`2026-11-18_progress.md`，开头是需要 Z 决定的事）；外部评估（`2026-11-17_external_review.md`）；给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
+| `reports/` | 进展报告（`2026-11-18_progress.md`，开头是需要 Z 决定的事）；外部评估（`2026-11-17_external_review.md`）；Wright–Fisher 的 RK4 分支离开单纯形的修复记录（`2026-11-17_wf_simplex_fix.md`）；给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
 
 ## 环境
 
