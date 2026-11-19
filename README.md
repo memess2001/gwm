@@ -4,7 +4,7 @@
 每个想法（格）按 **文献杀 → 思想实验杀 → 算力杀** 的顺序处决，只有幸存者才去碰外部 benchmark。
 方法与约定见 `HANDOFF.md`。
 
-**现状（2026-11-19）：** 格 0 阶段 1 与格 6 已跑完，格 0 的收敛复查（训练 5 倍长）分类全部不变，格 2 已判死；其余格子都做了预检（只核真值）。32 格的几何对象与同源量对照见 `correspondence_table.md`，需要 Z 决定的事见 `reports/2026-11-18_progress.md` 开头。
+**现状（2026-11-19）：** 格 0 阶段 1 与格 6 已跑完，格 0 的收敛复查（训练 5 倍长）分类全部不变，格 2 已判死；其余格子都做了预检（只核真值），关键恒等式经另一家模型（Antigravity）复算，5 处适用条件已更正，判决都没变。32 格的几何对象与同源量对照见 `correspondence_table.md`，需要 Z 决定的事见 `reports/2026-11-18_progress.md` 开头。
 
 ## 文件导航
 
@@ -26,7 +26,7 @@
 | `analysis/` | 预注册测量用的仪器 |
 | `results/ledger.md` | 实验流水账：只记预注册里列出的量 |
 | `results/bench_cpu.md` | baseline 在 4 核 CPU 上的吞吐实测（安静机器），以及格 0、格 6 的预算表 |
-| `reports/` | 进展报告（`2026-11-18_progress.md`，开头是需要 Z 决定的事）；外部评估（`2026-11-17_external_review.md`）；Wright–Fisher 的 RK4 分支离开单纯形的修复记录（`2026-11-17_wf_simplex_fix.md`）；给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
+| `reports/` | 进展报告（`2026-11-18_progress.md`，开头是需要 Z 决定的事）；外部评估（`2026-11-17_external_review.md`）；与 Antigravity 的往来（`2026-11-18_reply_to_antigravity.md`、`2026-11-19_from_antigravity.md`、`2026-11-19_reply_to_antigravity.md`）；Wright–Fisher 的 RK4 分支离开单纯形的修复记录（`2026-11-17_wf_simplex_fix.md`）；给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
 
 ## 环境
 

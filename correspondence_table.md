@@ -4,6 +4,8 @@
 
 整理：2026-11-17 起的外部评估会话（`reports/2026-11-17_external_review.md`）。依据是仓库里的结果、思想实验和预检，没有新增实验。标"建议"的状态只是预检的建议，没有经过独立核对，也没有经过 Z；`cells.yaml` 的 status 一律没改。
 
+11-19 按 Antigravity 的反驳轮修订了格 2、5、11、12、13、20、26 的说法（`reports/2026-11-19_reply_to_antigravity.md`），判决都没变。
+
 ## 大白话
 
 扫描问的是"几何能不能比不用几何多给东西"。结果是：32 格里，几何读数或约束成立的不少，但每一个都等于邻近领域早就有的某个量，只是叫法不同。区别只在"等于"的方式：有的是恒等式，有的由定理决定胜负，有的取决于怎么造世界，有的取决于坐标怎么选。真正还没有定论的只剩 3 格。
@@ -24,31 +26,31 @@
 |---|---|---|---|---|
 | 0 | 潜空间 H₁ 与绕柱面（持续同调） | 接缝比（切口两侧的局部距离比）、θ 的 kNN 可解码性 | 实验打平（angle 输入上 105 个 run 分歧为 0） | `cells/0/result.md` |
 | 1 | 预测分布 Fisher 拉回的曲率 / Cauchy–Green 压缩带 | 位移亏损图、数据密度图 | 恒等（Liouville：压缩 ⟹ 堆积）；体积守恒接触下看不见墙 | `cells/thought_experiments_2026-11-03.md` §2 |
-| 2 | Fisher（Shahshahani）度量下的 Hodge 残差 | 漂移型熵产生；暂态时 housekeeping 熵产生 | 恒等（×2N_e，平稳、带突变） | `cells/2/thought_experiment_2026-11-16.md`、`review_thought_experiment.md` |
+| 2 | Fisher（Shahshahani）度量下的 Hodge 残差 | 漂移型熵产生；暂态时 housekeeping 熵产生 | 恒等（×2N_e，平稳、带突变；残差对含 log x 项的势函数族取下确界） | `cells/2/thought_experiment_2026-11-16.md`、`review_thought_experiment.md` |
 | 3 | WFR 的搬运 / 改权份额 | ∂ₜρ 的空间功率谱 | 恒等（份额 = k²δ²/(1+k²δ²)） | `cells.yaml` 格 3 notes |
 | 4 | 潜空间拓扑与数据拓扑匹配 | ℓ = m + 1 的欧氏潜空间；撕裂统计 | 定理（最坏误差）＋ 非拓扑因子（平均误差） | `cells/4/precheck_2026-11-16.md` |
-| 5 | 预测空间 FIM 的硬方向 | 经验 NTK 的头几个特征向量；输入的低阶函数 | 恒等；判据在未训练网络上已通过 | `cells/5/precheck_2026-11-17.md` |
+| 5 | 预测空间 FIM 的硬方向 | 经验 NTK 的头几个特征向量；输入的低阶函数 | 恒等；判据通不通过由输入统计与 k 决定，未训练网络就如此（构造） | `cells/5/precheck_2026-11-17.md`（含 11-19 更正） |
 | 6 | 观测闭合环路的和乐 | HCDP 式历史可分辨性指纹 | 实验打平（AUC 差 0.012） | `cells/6/result.md` |
 | 7 | 连续 α-计 | 对数线性 vs 线性插值残差（二分 e/m 检验） | 连续读数结构性不单调；二分检验是 1993 年的结论 | `cells/7/prereg.md` |
 | 8 | 拟度量的不对称场 | 熵产生（NEEP、LENS） | 恒等（涨落定理）＋ 文献 | `cells.yaml` 格 8 notes |
 | 9 | Fisher–Rao 弧长时钟 | √ 变换后的弧长（Hellinger）；噪声区的墙钟 | 恒等（WF 的噪声是 Fisher 型） | `cells/9/precheck_2026-11-16.md` |
 | 10 | 规律沿尺度的流与不动点 | 元胞自动机粗粒化的穷举；Tao 等的共享核 | 不是几何主张；唯一有真值的世界由穷举决定 | `cells/10/precheck_2026-11-17.md` |
-| 11 | 奇点 / 突变地图 | 同一模型的 Jacobian 稳定裕度；跨边界 rollout | 恒等（隐函数定理） | `cells/11/precheck_2026-11-16.md` |
-| 12 | Ollivier–Ricci 负曲率边 | 4-圈计数与度数（1 步）；Fiedler 向量（大尺度）；同一对分布的 TV | 小尺度、大尺度恒等；中间尺度不胜谱方法 | `cells/12/precheck_2026-11-16.md` |
-| 13 | IGCI 正交性 | 两个边缘的熵差；ANM / RESIT | 恒等；潜空间上是坐标 | `cells/13/precheck_2026-11-18.md` |
+| 11 | 奇点 / 突变地图 | 同一模型的 Jacobian 稳定裕度；跨边界 rollout | 恒等（隐函数定理）；当作规划的安全地图是错设：安全由全局分岔决定，局部地图看不见 | `cells/11/precheck_2026-11-16.md` |
+| 12 | Ollivier–Ricci 负曲率边 | 度数、三角形、4-圈与邻域匹配（1 步，Balanced Forman 一类）；λ₂ 特征子空间 / k 路谱嵌入（大尺度）；同一对分布的 TV | 小尺度、大尺度恒等（大尺度要 λ₂ 非简并，否则对整个特征子空间）；中间尺度不胜谱方法 | `cells/12/precheck_2026-11-16.md`（含 11-19 更正） |
+| 13 | IGCI 正交性 | 两个边缘的熵差；ANM / RESIT | 坐标（潜变量上，即格子的用法）；观测变量上恒等 | `cells/13/precheck_2026-11-18.md` |
 | 14 | Klein 层级 | 跟踪轨迹上的三个经典不变量；数据增强 | 定理（不变量决定层级；等变的收益有定理） | `cells/14/precheck_2026-11-18.md` |
 | 15 | 声明体积形式的散度图 | 沿轨迹的对数密度变化率；轨道平均 = Lyapunov 谱之和 | 恒等（Liouville）＋ 坐标（体积形式） | `cells/thought_experiments_2026-11-03.md` §4 |
 | 16 | 转移核的 Fisher 度量 | 模型 Jacobian JᵀJ / FTLE | 恒等 | `cells.yaml` 格 16 self_review |
 | 17 | 动作 Fisher 矩阵的有效维数 | 局部 empowerment（注水） | 恒等 | `cells/17/precheck_2026-11-18.md` |
 | 18 | 挠率 | 动作交换子 | 恒等（并入格 6） | `cells.yaml` 格 18 self_review |
 | 19 | 切触哈密顿约束 | HNN ＋ 标量线性阻尼；二阶模型 | 同族 ＋ 构造（摩擦律） | `cells/19/precheck_2026-11-16.md` |
-| 20 | 拓扑特征的消失尺度 | 轨道的功率谱与噪声底 | 频谱 | `cells/20/precheck_2026-11-18.md` |
+| 20 | 拓扑特征的消失尺度 | 轨道的功率谱、滤波器传递函数（含零点）、噪声底与采样密度 | 频谱 | `cells/20/precheck_2026-11-18.md`（含 11-19 更正） |
 | 21 | 模型流形在分岔点的谱简并 | 同一个 Jacobian 特征值（FIM ∝ 1/λ²） | 恒等 | `cells/11/precheck_2026-11-16.md` §3.1 |
 | 22 | 测地残差最小的度量 | 格 7 的二分检验；残差的归一化 | 坐标（"欧氏"指哪个坐标卡） | `cells/22/precheck_2026-11-18.md` |
 | 23 | 硬方向的出现顺序 | 回归系数的可检测阈值；谱学习曲线 | 构造（顺序 ≈ 0.06/γ²，γ > 0.245 时反转） | `cells/5/precheck_2026-11-17.md` §3 D |
 | 24 | 可达集 Betti 曲线的变化视界 | BFS 距离 | 恒等（子水平集同调） | `cells/24/precheck_2026-11-16.md` |
 | 25 | 观测映射的折叠集 | 沿最小奇异方向的后验方差 | 恒等（Laplace 近似内严格单调） | `cells/11/precheck_2026-11-16.md` §6 |
-| 26 | 时间 RG 的不动点 | Koopman 奇异值 / 谱隙；VAMP、SPIB | 恒等（线性高斯） | `cells/26/precheck_2026-11-18.md` |
+| 26 | 时间 RG 的不动点 | Koopman 奇异值（VAMP、SPIB）；可逆时由谱隙决定 | 恒等（线性高斯） | `cells/26/precheck_2026-11-18.md`（含 11-19 更正） |
 | 27 | 时间环路的和乐 | 漂移幅度；周期映射 | 恒等（一维上联络平坦） | `cells/27/precheck_2026-11-18.md` |
 | 28 | 对偶散度的不对称 | 熵产生；平稳态下恒为 0 | 恒等 | `cells.yaml` 格 28 self_review |
 | 29 | Wasserstein 哈密顿流 | 粒子级积分 | 定理（梯度流无周期解；哈密顿流不耗散） | `cells/29/precheck_2026-11-18.md` |
@@ -87,7 +89,7 @@
 | 8 | 是 | 否 | 否 | lit_killed | — |
 | 9 | 部分（任何弧长都比墙钟规整） | 否 | 否 | unexplored | thought_killed |
 | 10 | 元胞自动机上由穷举决定 | 交集空、周边密 | 不适用 | unexplored | 保留，但不属于本项目 |
-| 11 | 是 | 否（电力系统 1992） | 否 | unexplored | thought_killed |
+| 11 | 部分（奇点集成立；当作规划的安全地图不成立） | 否（电力系统 1992） | 否 | unexplored | thought_killed |
 | 12 | 部分 | 否 | 否 | unexplored | thought_killed |
 | 13 | 观测变量上是；潜变量上否 | 否 | 否 | unexplored | thought_killed |
 | 14 | 是 | 否 | 否 | unexplored | thought_killed |
@@ -96,7 +98,7 @@
 | 17 | 是 | 否 | 否 | unexplored | thought_killed |
 | 18 | 是 | 否 | 否 | merged_into:6 | — |
 | 19 | 是 | 否（CSympNet-ID 2026） | 否 | unexplored | thought_killed |
-| 20 | 部分（形状环的消失尺度约 ∝ w，但比例由噪声定；平移环不成立） | — | 否 | unexplored | thought_killed |
+| 20 | 部分（形状环的消失尺度约 ∝ w，但比例由噪声与采样数定；平移环不成立） | — | 否 | unexplored | thought_killed |
 | 21 | 是 | 否 | 否 | unexplored | thought_killed |
 | 22 | 否（不良定义） | — | — | unexplored | thought_killed |
 | 23 | 取决于 γ（γ 小时成立，γ > 0.245 时反转） | — | 否 | unexplored | thought_killed |

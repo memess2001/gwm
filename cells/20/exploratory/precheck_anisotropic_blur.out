@@ -1,0 +1,4 @@
+n =   64: death/birth < 2.8 first at sigma = 0.83 w
+n =  256: death/birth < 2.8 first at sigma = 1.50 w
+n = 1024: death/birth < 2.8 first at sigma = nan w
+box B=8 on (wavelength 8, wavelength 16) loop: singular values of the image cloud = [41.007  0.     0.   ] (rank 1 = a segment)

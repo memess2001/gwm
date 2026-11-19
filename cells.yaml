@@ -1235,6 +1235,15 @@ decisions:
       (1) 剩下格子的预检（只核真值）与对照表；(2) 格 0 的收敛复查（原始角度的四个臂训练到 5 倍步数，设计见
       cells/0/prereg_ext_convergence.md）与格 15 的预注册草案（不运行）；(3) 修动物园的数值问题。
       不包括：合并进 main、"有希望"指什么、预检建议的状态变更，这些仍由 Z 定。
+  - date: 2026-11-19
+    by: Z
+    recorded_by: "外部评估会话（Claude Code），Z 在会话里的原话是\"备份推到分支吧，合并分支后开 PR 进 main。然后antigravity的回复你看看\""
+    branches_and_pr: >
+      (1) 格 0 收敛复查的逐 run 输出（含检查点）推到备份分支 runs-backup/2026-11-e1；
+      (2) 把另一会话的同一修复分支 claude/adoring-rubin-3eau45 合进开发分支；
+      (3) 开 PR 把开发分支合进 main（https://github.com/memess2001/gwm/pull/3），合并由 Z 点；
+      (4) 核对 Antigravity 11-19 的反驳（reports/2026-11-19_reply_to_antigravity.md）。
+      不包括："有希望"指什么、预检建议的状态变更、格 15 做不做、格 0 像素阶段、停止点。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
@@ -1304,7 +1313,7 @@ three_questions:
     8: [是, 否, 否]
     9: [部分, 否, 否]
     10: [元胞自动机上由穷举决定, 交集空、周边密, 不适用]
-    11: [是, 否, 否]
+    11: [部分（奇点集成立；当作规划的安全地图不成立）, 否, 否]
     12: [部分, 否, 否]
     13: [观测变量上是；潜变量上否, 否, 否]
     14: [是, 否, 否]
