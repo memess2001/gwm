@@ -1,0 +1,7 @@
+world: bimodal
+   specialists (one mode each)                optimal alpha over 20 draws: median -1.00, range [-1.00, -1.00], sd 0.00
+   noisy generalists (both modes, jittered)   optimal alpha over 20 draws: median -0.12, range [-1.00, +5.00], sd 1.37
+   over-dispersed generalists                 optimal alpha over 20 draws: median +5.00, range [+5.00, +5.00], sd 0.00
+world: unimodal
+   over-confident, biased members             optimal alpha over 20 draws: median -1.00, range [-1.00, -0.20], sd 0.23
+   under-confident members                    optimal alpha over 20 draws: median +5.00, range [+5.00, +5.00], sd 0.00

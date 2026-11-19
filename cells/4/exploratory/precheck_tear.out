@@ -1,0 +1,31 @@
+adler map check: |closed form - RK4(400 substeps)| max = 5.5e-14; Lip(Phi) = 1.486; rho_max/rho_min = 9.0
+mean / max chord error over theta0 ~ invariant density (n = 200000); L = Lip of the ramp ~ 2 pi / delta
+world  cut at        L model             K=0            K=1           K=10           K=50          K=200         K=1000  lower bnd K=0
+rot    any          10 cover   0.1302/ 2.00  0.1302/ 2.00  0.1302/ 2.00  0.1302/ 2.00  0.1302/ 2.00  0.1302/ 2.00        0.00723
+rot    any          10 chart   0.1302/ 2.00  0.2573/ 2.00  1.2060/ 2.00  1.2744/ 2.00  1.2723/ 2.00  1.2708/ 2.00        0.00723
+rot    any         100 cover   0.0127/ 2.00  0.0127/ 2.00  0.0127/ 2.00  0.0127/ 2.00  0.0127/ 2.00  0.0127/ 2.00        0.00079
+rot    any         100 chart   0.0127/ 2.00  0.0251/ 2.00  0.1380/ 2.00  0.6484/ 2.00  1.2756/ 2.00  1.2746/ 2.00        0.00079
+rot    any        1000 cover   0.0012/ 2.00  0.0012/ 2.00  0.0012/ 2.00  0.0012/ 2.00  0.0012/ 2.00  0.0012/ 2.00        0.00008
+rot    any        1000 chart   0.0012/ 2.00  0.0025/ 2.00  0.0145/ 2.00  0.0650/ 2.00  0.2572/ 2.00  1.0968/ 2.00        0.00008
+adler  rho max      10 cover   0.3163/ 2.00  0.3074/ 2.00  0.2885/ 2.00  0.2447/ 2.00  0.3337/ 2.00  0.3401/ 2.00        0.00241
+adler  rho max      10 chart   0.3163/ 2.00  0.3217/ 2.00  0.8665/ 2.00  1.0885/ 2.00  1.0884/ 2.00  1.0899/ 2.00        0.00241
+adler  rho max     100 cover   0.0385/ 2.00  0.0379/ 2.00  0.0530/ 2.00  0.0406/ 2.00  0.0536/ 2.00  0.0349/ 2.00        0.00026
+adler  rho max     100 chart   0.0385/ 2.00  0.0749/ 2.00  0.4180/ 2.00  0.7425/ 2.00  1.0360/ 2.00  1.0485/ 2.00        0.00026
+adler  rho max    1000 cover   0.0037/ 2.00  0.0036/ 2.00  0.0054/ 2.00  0.0042/ 2.00  0.0052/ 2.00  0.0034/ 2.00        0.00003
+adler  rho max    1000 chart   0.0037/ 2.00  0.0075/ 2.00  0.0428/ 2.00  0.1831/ 2.00  0.6733/ 2.00  1.0506/ 2.00        0.00003
+adler  rho min      10 cover   0.0446/ 2.00  0.0432/ 2.00  0.0157/ 2.00  0.0168/ 2.00  0.0158/ 2.00  0.0211/ 2.00        0.00241
+adler  rho min      10 chart   0.0446/ 2.00  0.1040/ 2.00  0.4140/ 2.00  0.9742/ 2.00  1.0086/ 2.00  1.0068/ 2.00        0.00241
+adler  rho min     100 cover   0.0043/ 2.00  0.0040/ 2.00  0.0014/ 1.99  0.0015/ 2.00  0.0015/ 2.00  0.0020/ 2.00        0.00026
+adler  rho min     100 chart   0.0043/ 2.00  0.0090/ 2.00  0.0312/ 2.00  0.1309/ 2.00  0.5064/ 2.00  1.0481/ 2.00        0.00026
+adler  rho min    1000 cover   0.0005/ 2.00  0.0005/ 2.00  0.0002/ 1.85  0.0002/ 1.99  0.0002/ 1.99  0.0002/ 2.00        0.00003
+adler  rho min    1000 chart   0.0005/ 2.00  0.0009/ 2.00  0.0031/ 2.00  0.0142/ 2.00  0.0550/ 2.00  0.2862/ 2.00        0.00003
+Predicted chart-model hit fraction by step K (K >= 1): ~ K * delta * rho(cut) (one ramp crossing per revolution);
+  rot    any      L=100 K=  1: chart hit 0.0197  (K+1)*delta*rho(cut) = 0.0200   cover hit 0.0099  delta*rho(cut) = 0.0100
+  rot    any      L=100 K= 10: chart hit 0.1099  (K+1)*delta*rho(cut) = 0.1100   cover hit 0.0099  delta*rho(cut) = 0.0100
+  rot    any      L=100 K= 50: chart hit 0.5102  (K+1)*delta*rho(cut) = 0.5100   cover hit 0.0099  delta*rho(cut) = 0.0100
+  adler  rho max  L=100 K=  1: chart hit 0.0590  (K+1)*delta*rho(cut) = 0.0600   cover hit 0.0301  delta*rho(cut) = 0.0300
+  adler  rho max  L=100 K= 10: chart hit 0.3207  (K+1)*delta*rho(cut) = 0.3300   cover hit 0.0301  delta*rho(cut) = 0.0300
+  adler  rho max  L=100 K= 50: chart hit 0.6866  (K+1)*delta*rho(cut) = 1.5300   cover hit 0.0301  delta*rho(cut) = 0.0300
+  adler  rho min  L=100 K=  1: chart hit 0.0074  (K+1)*delta*rho(cut) = 0.0067   cover hit 0.0033  delta*rho(cut) = 0.0033
+  adler  rho min  L=100 K= 10: chart hit 0.0426  (K+1)*delta*rho(cut) = 0.0367   cover hit 0.0033  delta*rho(cut) = 0.0033
+  adler  rho min  L=100 K= 50: chart hit 0.1633  (K+1)*delta*rho(cut) = 0.1700   cover hit 0.0033  delta*rho(cut) = 0.0033

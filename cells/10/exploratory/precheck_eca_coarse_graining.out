@@ -1,0 +1,13 @@
+block size 2, 14 non-constant projections, 256 rules: 92 rules have at least one coarse-graining (404 (rule, projection) pairs)
+self-similar at N = 2 (coarse rule = fine rule for some projection): 18 rules: [0, 60, 90, 102, 128, 136, 150, 153, 165, 170, 192, 195, 204, 238, 240, 252, 254, 255]
+distinct coarse rules reached: 24: [0, 34, 48, 60, 90, 102, 128, 136, 150, 153, 165, 170, 187, 192, 195, 200, 204, 236, 238, 240, 243, 252, 254, 255]
+   rule  90: P=0011 -> rule 165, P=0101 -> rule 165, P=0110 -> rule 90, P=1001 -> rule 165, P=1010 -> rule 90, P=1100 -> rule 90
+   rule 105: P=0011 -> rule 150, P=0101 -> rule 150, P=0110 -> rule 150, P=1001 -> rule 150, P=1010 -> rule 150, P=1100 -> rule 150
+   rule 150: P=0011 -> rule 150, P=0101 -> rule 150, P=0110 -> rule 150, P=1001 -> rule 150, P=1010 -> rule 150, P=1100 -> rule 150
+   rule 146: no coarse-graining at N = 2
+   rule 110: no coarse-graining at N = 2
+   rule  30: no coarse-graining at N = 2
+   rule  54: no coarse-graining at N = 2
+fixed points of the scale map A -> B: 18 (same list as the self-similar rules: True)
+rules that flow to a different rule: 74; examples: 2 -> [0, 255]; 4 -> [0, 255]; 5 -> [200, 236]; 8 -> [0, 255]; 10 -> [34, 187]; 12 -> [0, 204, 255]; 15 -> [240]; 16 -> [0, 255]
+a (rule, projection) pair is decided by one pass over 2^10 fine configurations: enumeration, no learning

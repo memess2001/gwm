@@ -1,0 +1,7 @@
+A. water-filling on eig(G_A): C = 1.723448; log-det at the water-filling input: 1.723448; best of 20000 random inputs with the same power: 1.719594
+B. a different J with the same spectrum: |J2 - J| = 2.84; capacity 1.723448 vs 1.723448; eigenvalues equal to 2.6e-15
+C. effective dimension at threshold tau == active water-filling channels at water level 1/tau, 50 thresholds: True
+D. P = 1e-02: C / P = 6.87517, lambda_max / 2 = 7.37027
+D. P = 1e-03: C / P = 7.31648, lambda_max / 2 = 7.37027
+D. P = 1e-04: C / P = 7.36485, lambda_max / 2 = 7.37027
+E. pendulum, one torque, 500 random states: d(theta')/du in [0.00496, 0.00497], d(omega')/du in [0.09884, 0.09917]; G_A in [0.009794, 0.009860]: rank 1 everywhere

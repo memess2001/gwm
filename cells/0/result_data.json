@@ -1,0 +1,511 @@
+{
+ "n_measured": 114,
+ "P01": {
+  "angle_cs": {
+   "status": "pass",
+   "fails": 0,
+   "used": 9
+  },
+  "pixels64": {
+   "status": "missing"
+  }
+ },
+ "P02": {
+  "angle_cs": {
+   "status": "pass",
+   "fails": 0,
+   "used": 9
+  },
+  "pixels64": {
+   "status": "missing"
+  }
+ },
+ "angle_raw_arms": {
+  "raw-recon-mse": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 20.287216047909283
+  },
+  "raw-recon-circ": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 17.77829890181145
+  },
+  "raw-jepa-sg": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 10.672347917145023
+  },
+  "raw-jepa-sym": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 1.0,
+   "torn_rate": 0.0,
+   "seam_median": 0.8707218346434071
+  }
+ },
+ "angle_raw_arms_theta_n2000": {
+  "raw-recon-mse": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 20.287216047909283
+  },
+  "raw-recon-circ": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 17.77829890181145
+  },
+  "raw-jepa-sg": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 0.0,
+   "torn_rate": 1.0,
+   "seam_median": 10.672347917145023
+  },
+  "raw-jepa-sym": {
+   "n_runs": 9,
+   "missing": [],
+   "classes": [
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued",
+    "glued"
+   ],
+   "n_decided": 9,
+   "evaluable": true,
+   "glued_rate": 1.0,
+   "torn_rate": 0.0,
+   "seam_median": 0.8707218346434071
+  }
+ },
+ "sensitivity_theta_n2000": {
+  "P03": "F",
+  "P04": {
+   "sg": "F",
+   "sym": "T"
+  }
+ },
+ "P03": "F",
+ "P04": {
+  "sg": "F",
+  "sym": "T"
+ },
+ "P04_prime_nonblind": "T",
+ "lambda_lat": {
+  "raw-recon-mse": {
+   "0.0": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "0.1": [
+    "torn",
+    "torn",
+    "torn"
+   ]
+  },
+  "raw-recon-circ": {
+   "0.0": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "0.1": [
+    "torn",
+    "torn",
+    "torn"
+   ]
+  }
+ },
+ "P05": {
+  "angle_cs-sg": {
+   "status": "decided",
+   "ring_rate": 1.0,
+   "decided": 6,
+   "original_le4of6": false,
+   "mine_ge5of6": true
+  },
+  "angle_cs-sym": {
+   "status": "decided",
+   "ring_rate": 1.0,
+   "decided": 6,
+   "original_le4of6": false,
+   "mine_ge5of6": true
+  },
+  "pixels64-sg": {
+   "status": "missing"
+  },
+  "pixels64-sym": {
+   "status": "missing"
+  }
+ },
+ "P06": {
+  "cs-recon": {
+   "mine_decodable_and_smooth": false,
+   "original_decodable_not_smooth": false,
+   "n": 3
+  },
+  "raw-recon-mse": {
+   "mine_decodable_and_smooth": false,
+   "original_decodable_not_smooth": true,
+   "n": 3
+  },
+  "raw-recon-circ": {
+   "mine_decodable_and_smooth": false,
+   "original_decodable_not_smooth": false,
+   "n": 3
+  },
+  "pix-recon": {
+   "status": "missing_or_excluded"
+  }
+ },
+ "P07": {
+  "cs-recon": {
+   "S": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "M": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "L": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "XL": []
+  },
+  "cs-jepa-sg": {
+   "S": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "M": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "L": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "XL": []
+  },
+  "cs-jepa-sym": {
+   "S": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "M": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "L": [
+    "ring",
+    "ring",
+    "ring"
+   ],
+   "XL": []
+  },
+  "raw-recon-mse": {
+   "S": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "M": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "L": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "XL": []
+  },
+  "raw-recon-circ": {
+   "S": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "M": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "L": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "XL": []
+  },
+  "raw-jepa-sg": {
+   "S": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "M": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "L": [
+    "torn",
+    "torn",
+    "torn"
+   ],
+   "XL": []
+  },
+  "raw-jepa-sym": {
+   "S": [
+    "glued",
+    "glued",
+    "glued"
+   ],
+   "M": [
+    "glued",
+    "glued",
+    "glued"
+   ],
+   "L": [
+    "glued",
+    "glued",
+    "glued"
+   ],
+   "XL": []
+  },
+  "pix-recon": {
+   "S": [
+    "ring",
+    "ring",
+    "inconclusive"
+   ],
+   "M": [],
+   "L": [],
+   "XL": []
+  },
+  "pix-jepa-sg": {
+   "S": [
+    "not_ring",
+    "not_ring",
+    "not_ring"
+   ],
+   "M": [],
+   "L": [],
+   "XL": []
+  },
+  "pix-jepa-sym": {
+   "S": [
+    "ring",
+    "ring",
+    "not_ring"
+   ],
+   "M": [],
+   "L": [],
+   "XL": []
+  }
+ },
+ "null_encoders": {
+  "null-angle_cs_M_s0": {
+   "h1": "ring",
+   "seam": 1.212972567190151,
+   "consistency": "glued",
+   "theta_r2": 0.999798611850178
+  },
+  "null-angle_cs_M_s1": {
+   "h1": "ring",
+   "seam": 1.2818161859505306,
+   "consistency": "glued",
+   "theta_r2": 0.9998916878431938
+  },
+  "null-angle_cs_M_s2": {
+   "h1": "ring",
+   "seam": 1.1768733776329332,
+   "consistency": "glued",
+   "theta_r2": 0.9998782596044612
+  },
+  "null-angle_raw_M_s0": {
+   "h1": "ring_not_wrapping",
+   "seam": 607.036981798561,
+   "consistency": "inconclusive",
+   "theta_r2": 0.4974467776423829
+  },
+  "null-angle_raw_M_s1": {
+   "h1": "ring_not_wrapping",
+   "seam": 1021.945827715216,
+   "consistency": "inconclusive",
+   "theta_r2": 0.49581314000652366
+  },
+  "null-angle_raw_M_s2": {
+   "h1": "ring_not_wrapping",
+   "seam": 850.4052313352425,
+   "consistency": "inconclusive",
+   "theta_r2": 0.5068245188281016
+  },
+  "null-pixels64_M_s0": {
+   "h1": "none",
+   "seam": 1.102868623471269,
+   "consistency": "inconclusive",
+   "theta_r2": 0.9854094430652934
+  },
+  "null-pixels64_M_s1": {
+   "h1": "none",
+   "seam": 0.5210619781036632,
+   "consistency": "inconclusive",
+   "theta_r2": 0.9969033196443764
+  },
+  "null-pixels64_M_s2": {
+   "h1": "none",
+   "seam": 0.7050599223218674,
+   "consistency": "inconclusive",
+   "theta_r2": 0.9905558819009843
+  }
+ },
+ "verdicts": {
+  "P01": {
+   "angle_cs": "pass",
+   "pixels64": "missing"
+  },
+  "P02": {
+   "angle_cs": "pass",
+   "pixels64": "missing"
+  },
+  "P03": "F",
+  "P04": {
+   "sg": "F",
+   "sym": "T"
+  },
+  "P04_prime_nonblind": "T",
+  "decision": {
+   "state": "DECIDED",
+   "updates": {
+    "cell0.confidence.exists": "high -> mid\uff08'\u8f93\u51fa\u51e0\u4f55\u51b3\u5b9a\u62d3\u6251'\u4e0d\u6210\u7acb\uff1bstatus \u4e0d\u53d8\uff0c\u5f85 P0.4 / P0.5\uff09",
+    "cell0.notes.mechanism": {
+     "sg": "\u7ee7\u627f\u5207\u53e3\uff08\u6495\u5f00\u7387 >= 2/3\uff09",
+     "sym": "\u7c98\u5408"
+    },
+    "P05": "deferred or I: needs pixel M / L and passing pixel instrument checks (item 12)",
+    "cell4.confidence.yields": "down one tier (P0.4 and P0.5 combined, capped at one)",
+    "cell15.declared_output": "\u683c 0 \u7684\u68c0\u67e5\u70b9\u4e0e\u4e8c\u7ea7\u80fd\u91cf\u6f02\u79fb\uff08measures.json \u7684 energy_drift\uff09"
+   }
+  }
+ }
+}

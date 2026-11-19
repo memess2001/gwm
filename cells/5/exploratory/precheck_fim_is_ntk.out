@@ -1,0 +1,22 @@
+A. identity on 300 pendulum states (3 inputs, 3 outputs; prediction space has 900 dimensions)
+   top-20 eigenvalues of J^T J (Fisher, 4611 parameters) vs J J^T (NTK Gram): max relative difference 3.4e-15
+   top-6 left singular subspace of J vs top-6 eigenvectors of the NTK Gram: largest principal angle 2.3e-06 degrees
+
+B. cell 5 criterion on untrained networks: largest principal angle (degrees) / mean cos^2 between the
+   top-k prediction-space hard subspaces; pairs of different architectures, 3 initialisation seeds each
+   k =  3: different architectures  angle median  72.3 max  89.9  cos^2 0.616 | same architecture, other seed  angle median  18.4  cos^2 0.916 | random subspaces  angle median  89.4 min  86.5  cos^2 0.003
+   k =  6: different architectures  angle median  13.9 max  25.5  cos^2 0.968 | same architecture, other seed  angle median  11.4  cos^2 0.983 | random subspaces  angle median  89.6 min  87.8  cos^2 0.006
+   k = 12: different architectures  angle median  28.7 max  76.5  cos^2 0.930 | same architecture, other seed  angle median  18.1  cos^2 0.971 | random subspaces  angle median  89.7 min  88.3  cos^2 0.013
+
+C. share of the untrained top-k hard subspace inside low-order functions of the inputs
+   affine in (cos, sin, omega), per output    (12 dims of 900): k = 3: 0.972-0.998   k = 6: 0.965-0.997   k = 12: 0.827-0.993
+   quadratic, per output                      (30 dims of 900): k = 3: 0.975-1.000   k = 6: 0.968-1.000   k = 12: 0.941-1.000
+   (the Jacobian of an untrained network does not involve the targets, so none of this depends on the dynamics)
+
+D. cell 23: sample size at which each term of  d(omega)/dt = -sin(theta) - 2 gamma omega  is detected
+   OLS of the one-step change of omega on (sin theta, omega), added noise sd 0.5 on the change per unit time;
+   detected = |t| > 3 in at least 90 % of 200 replicates; formula: N_damping / N_conservative = Var(sin) / (4 gamma^2 Var(omega))
+   gamma = 0.050: N(conservative) = 13, N(damping) = 247, ratio  19.00, formula  23.83   -> conservative first
+   gamma = 0.100: N(conservative) = 13, N(damping) = 63, ratio   4.85, formula   5.96   -> conservative first
+   gamma = 0.173: N(conservative) = 16, N(damping) = 25, ratio   1.56, formula   1.99   -> conservative first
+   gamma = 0.500: N(conservative) = 16, N(damping) = 8, ratio   0.50, formula   0.24   -> damping first
