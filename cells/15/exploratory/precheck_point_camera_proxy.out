@@ -1,0 +1,6 @@
+fake divergence RMS (harmonics <= 4 of log a), undamped pendulum; true divergence 0, signal 2 gamma = 0.1
+   projective k = 0.0: point observation 0.000 (a max/min 1.00) | pixels 0.000 (a max/min 1.02) | correlation of log a: nan
+   projective k = 0.3: point observation 0.437 (a max/min 1.52) | pixels 0.473 (a max/min 1.63) | correlation of log a: 0.999
+   projective k = 0.6: point observation 0.938 (a max/min 2.40) | pixels 0.906 (a max/min 2.38) | correlation of log a: 0.996
+   affine, foreshortening cos(0.5) = 0.88: point observation 0.267 (a max/min 1.14)
+   affine, foreshortening cos(1.0) = 0.54: point observation 1.266 (a max/min 1.85)

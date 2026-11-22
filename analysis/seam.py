@@ -376,3 +376,86 @@ def seam_flags(res: dict, threshold: float = 5.0, omega_aspect_max: float = OMEG
                 omega_dominated=omega_dom, folded_at_cut=folded,
                 in_range=bool(verdict in ("glued", "torn") and not folded and not (omega_dom and verdict == "glued")),
                 omega_aspect=float(kappa), fold_index=float(fi), threshold=float(threshold))
+
+
+# ================================================================================================ v2 (cell-0 prereg v2)
+# Changes required by the cell-0 preregistration review (cells/0/prereg.md, v2 list items 2, 3, 6, 14), checked
+# on ground truth by the reviewer (cells/0/exploratory_prereg_review/fixes_check.py, fixes.jsonl):
+#   (B) drop "straddle" windows: with history 2 the encoder sees (theta_{t-1}, theta_t); 33-36 % of the windows in
+#       the cut window have their two frames on opposite sides of the cut. A "displaced tear" (the tear sits between
+#       straddle and post-straddle windows) read SR 2.8-4.9 with every flag silent; without straddle windows it
+#       reads 44-46 (torn), a glued chart 1.01;
+#   (A) kappa-adaptive omega matching, omega_tol = 0.08 / max(1, kappa_hat): with omega anisotropy kappa < 10 a torn
+#       arc read SR 2-5 ("in range"); with the adaptive tolerance the same arcs read 6.4-10.
+# The window half width (0.12 rad), bins and thresholds are unchanged. Verdicts are three-way (glued / partial /
+# torn); the PH x SR consistency table below decides "glued" / "torn" / "inconclusive" for a run.
+SR_GLUED_MAX, SR_TORN_MIN = 1.5, 5.0
+KAPPA_PH_MAX = 5.0             # prereg v2 item 6: H1 = 0 with kappa > 5 is inconclusive (PH false negatives)
+
+
+def straddle_mask(theta, theta_prev) -> np.ndarray:
+    """Windows (theta_{t-1}, theta_t) whose two frames lie on opposite sides of the cut theta = +-pi (raw values
+    in [-pi, pi): the raw input jumps by more than pi between the two frames)."""
+    return np.abs(wrap_angle(theta) - wrap_angle(theta_prev)) > np.pi
+
+
+def seam_ratio_v2(Z, theta, omega, theta_prev, *, omega_tol_base: float = 0.08, **kw) -> dict[str, Any]:
+    """Seam ratio v2: straddle windows dropped, omega tolerance = omega_tol_base / max(1, kappa_hat), where
+    kappa_hat is ``omega_aspect`` of a first pass (default tolerance, no bootstrap) on the kept points.
+    All other keyword arguments go to ``seam_ratio`` (groups, n_boot, seed, omega_abs_min, ...). Adds
+    ``kappa_first_pass``, ``n_straddle_dropped``, ``omega_tol_used`` and ``version = 2``."""
+    Z = np.asarray(Z, dtype=np.float64)
+    keep = ~straddle_mask(theta, theta_prev)
+    groups = kw.pop("groups", None)
+    g = None if groups is None else np.asarray(groups)[keep]
+    first = seam_ratio(Z[keep], np.asarray(theta)[keep], np.asarray(omega)[keep], groups=g, n_boot=0,
+                       diagnostics=False, seed=kw.get("seed", 0),
+                       omega_abs_min=kw.get("omega_abs_min", 0.0))
+    kap = first.get("omega_aspect", np.nan)
+    kap = np.nan if kap is None else float(kap)
+    # v2.1 (review): an unknown kappa (nan: too few pairs; inf: theta not resolved) is reported as such, never as 1;
+    # the tolerance then falls back to the base value and the consistency table treats kappa as unknown.
+    tol = omega_tol_base / max(1.0, kap) if np.isfinite(kap) else omega_tol_base
+    out = seam_ratio(Z[keep], np.asarray(theta)[keep], np.asarray(omega)[keep], groups=g, omega_tol=tol, **kw)
+    out.update(kappa_first_pass=kap, n_straddle_dropped=int((~keep).sum()), omega_tol_used=tol, version=2)
+    return out
+
+
+def classify_seam3(res: dict, glued_max: float = SR_GLUED_MAX, torn_min: float = SR_TORN_MIN) -> str:
+    """Three-way verdict on the point estimate: 'glued' (SR <= 1.5), 'partial' (1.5 < SR <= 5), 'torn' (SR > 5),
+    or 'insufficient'."""
+    r = res.get("ratio", np.nan)
+    if res.get("status") != "ok" or r is None or not np.isfinite(r):
+        return "insufficient"
+    if r <= glued_max:
+        return "glued"
+    return "torn" if r > torn_min else "partial"
+
+
+def seam_flags_v2(res: dict) -> dict[str, Any]:
+    """Three-way verdict plus the review flags of ``seam_flags`` (fold, omega dominance) and the v2 fold-suspect
+    flag (fold_index > 1.3 reported as 'suspected misalignment', prereg v2 item 14)."""
+    f = seam_flags(res)
+    v = classify_seam3(res)
+    fi = f["fold_index"]
+    f.update(verdict3=v, misalignment_suspect=bool(np.isfinite(fi) and fi > 1.3),
+             in_range3=bool(v in ("glued", "partial", "torn") and not f["folded_at_cut"]
+                            and not (f["omega_dominated"] and v != "torn")))
+    return f
+
+
+def seam_ph_consistency(ph_state: str, sr_verdict3: str, kappa: float, folded: bool = False) -> str:
+    """Cell-0 prereg v2 item 2: one verdict per run from the H1 rule and the seam ratio.
+
+    ph_state: 'ring' (H1 = 1 and wrapping), 'none' (H1 = 0), 'unstable', 'ring_not_wrapping'.
+    sr_verdict3: classify_seam3 output. Returns 'glued', 'torn' or 'inconclusive':
+      glued  <=> ring and SR glued (and not folded at the cut);
+      torn   <=> none and SR torn (and kappa <= 5: H1 = 0 under strong omega anisotropy is a known PH false negative);
+      everything else (disagreement, 'partial', 'unstable', insufficient data, folds) -> inconclusive."""
+    if folded or sr_verdict3 == "insufficient" or ph_state not in ("ring", "none"):
+        return "inconclusive"
+    if ph_state == "ring" and sr_verdict3 == "glued":
+        return "glued"
+    if ph_state == "none" and sr_verdict3 == "torn":
+        return "torn" if (np.isfinite(kappa) and kappa <= KAPPA_PH_MAX) else "inconclusive"
+    return "inconclusive"

@@ -1,0 +1,16 @@
+A. identity: slope estimator vs entropy difference, Y = f(X), X ~ U[0,1]
+   f = x^3              slope C = -0.924   H(Y) - H(X) = -0.861   -> X -> Y (correct)
+   f = sqrt             slope C = -0.183   H(Y) - H(X) = -0.197   -> X -> Y (correct)
+   f = Beta(0.5,2) cdf  slope C = -0.773   H(Y) - H(X) = -0.755   -> X -> Y (correct)
+
+B. recoding the cause, X' = g(X), g monotone: the causal direction X' -> Y is unchanged
+   g(x) = x^1 : C(X' -> Y) = -0.861 -> X -> Y (correct)
+   g(x) = x^2 : C(X' -> Y) = -0.574 -> X -> Y (correct)
+   g(x) = x^4 : C(X' -> Y) = +0.692 -> Y -> X (wrong)
+   g(x) = x^10: C(X' -> Y) = +5.652 -> Y -> X (wrong)
+   random Beta-cdf mechanisms f and recodings g: IGCI right on the native coordinates in 300 of 300 worlds; a random recoding of the cause flips it in 153 of them (51%)
+
+C. stationary process: C(z_t -> z_{t+1}) and C(z_{t+1} -> z_t) on the same pairs
+   identity chart       H(z_t+1) - H(z_t) = -0.0000   (the rotation is piecewise-linear, so the slope estimator is not used here)
+   chart u^2            H(z_t+1) - H(z_t) = +0.0002   (the rotation is piecewise-linear, so the slope estimator is not used here)
+   chart Beta(3,1) cdf  H(z_t+1) - H(z_t) = +0.0004   (the rotation is piecewise-linear, so the slope estimator is not used here)

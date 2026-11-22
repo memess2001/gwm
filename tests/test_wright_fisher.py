@@ -47,6 +47,51 @@ def test_flows_match_independent_ode_solver(mech):
     assert np.abs(tr.state[0] - ode(lambda x: 0.5 * x @ CYC, X0, tr.t)).max() < 1e-9
 
 
+LONG = 600   # steps = 60 time units; an off-simplex mode of rate 0.9 takes round-off (1e-16) to 1e-6 in 25 time units
+
+
+@pytest.mark.parametrize("cfg", [dict(schedule="mixed_only"), dict(schedule="mutation_selection"),
+                                 dict(schedule="mutation_selection", mutation="cyclic", K=4),
+                                 dict(schedule="rps", rps_A=RPS_A - 1.0)],
+                         ids=["mixed_only", "mutation_selection", "mutation_selection_cyclic_K4", "rps_minus_1"])
+def test_long_deterministic_paths_stay_on_the_simplex(cfg):
+    """RK4 mechanisms over a long horizon. With s = sum(x): sum(v) = -r (s - 1), r = x.f + mu (mixed), x.f
+    (mutation_selection), x.Ax (rps), so where r < 0 the round-off in s grows like exp(-r t) unless every RK4 substep
+    is projected back onto the simplex. RPS_A - 1 is the default RPS field (column constants) with r = -1."""
+    tr = WrightFisher(seg_steps=LONG, **cfg).sample(1, LONG, 400, "freq")
+    X, I = tr.state, tr.info
+    assert np.isfinite(X).all() and (X >= 0).all()
+    assert np.abs(X.sum(-1) - 1).max() < 1e-12
+    if cfg["schedule"] == "rps":
+        r = np.einsum("nti,ij,ntj->nt", X, cfg["rps_A"], X)
+        H = (np.log(X) / 3).sum(-1)
+        assert np.abs(H - H[:, :1]).max() < 1e-6                     # same field as RPS_A: H is still conserved
+    else:
+        r = (X[:, :-1] * I["fitness"]).sum(-1) + (I["mu"] if cfg["schedule"] == "mixed_only" else 0.0)
+    assert (r[:, -1] < 0).sum() >= 10                                # the unstable regime is in the sample
+    if (I["hodge"] == "gradient").all():
+        assert (np.diff(I["potential"], axis=1) > -1e-12).all()      # gradient ascent of V along the whole path
+
+
+def test_long_paths_do_not_depend_on_constants_that_leave_the_field_unchanged():
+    """On the simplex the field is the same for f and f + c, and for A and A + c, but the off-simplex rate r is
+    shifted by c: with c = -5 (c = -1 for rps) r < 0 along the whole path."""
+    t = np.arange(LONG + 1) * 0.1
+    G = F + 5                                    # the reference solver has the off-simplex mode too: use a gauge with r > 0
+    stable = {"mixed": lambda x: x * (G - x @ G) + MU * (M - x),
+              "mutation_selection": lambda x: x * (G - x @ G) + 0.5 * (1 / 3 - x)}
+    for mech, par in (("mixed", {"mu": MU, "m": M}), ("mutation_selection", {"u": 0.5})):
+        def path(c):
+            w = WrightFisher(x0=X0, schedule=[(mech, LONG * 0.1, {"f": F + c, **par})])
+            return w.sample(0, LONG, 1, "freq").state[0]
+        base = path(0.0)
+        assert max(np.abs(path(c) - base).max() for c in (-5.0, 5.0)) < 1e-12, mech
+        assert np.abs(base - ode(stable[mech], X0, t)).max() < 1e-9, mech
+    rps = lambda c: WrightFisher(schedule="rps", rps_A=RPS_A + c).sample(4, LONG, 16, "freq").state
+    base = rps(0.0)
+    assert max(np.abs(rps(c) - base).max() for c in (-1.0, 1.0)) < 1e-10
+
+
 def test_selection_is_e_geodesic_and_migration_is_m_geodesic():
     sel = WrightFisher(x0=X0, schedule=[("selection", 3.0, {"f": F})]).sample(0, 30, 1, "freq")
     mig = WrightFisher(x0=X0, schedule=[("migration", 3.0, {"mu": MU, "m": M})]).sample(0, 30, 1, "freq")

@@ -77,8 +77,8 @@ cells:
     prediction: （v0.3 原版，照常打分）中等尺寸下 H1 出现但跨种子不稳定；能量可解码但不平滑。v0.4 主预测见 cells/0/prereg.md：潜空间拓扑由训练目标的几何决定，而不是由数据决定。
     kill_test: 见 cells/0/prereg.md（草案，待 Z 批准）：观测（angle_cs / angle_raw / pixels64）× 目标（recon-mse / recon-circular / jepa）× 4 尺寸 × 3 种子，外加只摆动的负对照数据。
     cost_days: 2
-    confidence: {exists: high, novel: low, yields: high}
-    status: unexplored
+    confidence: {exists: mid, novel: low, yields: high}   # 阶段 1（2026-11-15）：P0.3 = F，exists high → mid（prereg §7）
+    status: unexplored   # §7：P0.3 = F 时 status 不变，等阶段 2 的 P0.5
     neighbors: [1, 4, 9, 15, 5]
     exits: []
     collision: n/a
@@ -105,6 +105,13 @@ cells:
       (2) Z 选定的三个小选择：jepa-sg 与 jepa-sym 都跑、分开计分；θ gate 以 n = 8000 为主、n = 2000 做敏感性；加一个初始化后不训练的编码器作零对照。
       (3) 提议（回答 Q1）：格 0 卸下"地基"角色，真正的公共前提现在是 rules R1–R5。本格剩下的独立问题是 P0.5（像素 JEPA 会不会粘合 / 折叠角度），按普通格子打分。
       (4) 按 rules.R3 的精确版：潜空间拓扑对微分同胚不变，但不是预测分布的泛函，它描述"模型怎样实现规律"而不是世界。v0.4 的主预测（拓扑由训练目标决定）正是这个意思，结论要按"关于模型"来写。
+      阶段 1 结果（2026-11-15 JST，prereg v2.2，见 cells/0/result.md）：
+      (1) angle_raw 上 recon-mse、recon-circular、jepa-sg 在 S / M / L 全部撕开（各 9/9），jepa-sym 全部粘合（9/9）。P0.3 = F，P0.4-sg = F，P0.4-sym = T；仪器检查 P0.1 / P0.2 通过。
+      (2) 机制（§7 判定表）：sg "继承切口"（撕开率 1.0），sym "粘合"。限定：angle_raw 的未训练编码器读"不绕的环 + 不确定"，与训练后的分类不同，所以"继承"没有零对照的直接支持；angle_cs 上训练后与未训练相同（环 + 粘合）。
+      (3) 描述：jepa-sym 的粘合在 K = 1 时消失（3/3 撕开）；λ_lat = 0 不改变 recon 的撕开；粘合的 jepa-sym 跨切口一步误差仍是非跨切口的约 500 倍。
+      (4) 同源对照：angle 上 PH 与接缝比 0 分歧，拓扑读数没有多给信息；像素 S 上 3/9 分歧，等阶段 2 的像素仪器检查。
+      (5) P0.6："可解码且平滑"在 L 尺寸三个 recon 臂上都不成立；原版"可解码不平滑"只在 raw-recon-mse 上成立。
+      延伸 E1（2026-11-19 JST，收敛复查，见 cells/0/result_ext_convergence.md）：同一配方训练 100000 步（阶段 1 是 20000 步），angle_raw 四个臂在 S、M 上都保持阶段 1 的分类（8/8 格子"保持"，24/24 run），总读法"稳定"，E1.1 成立；按预注册 §6，status 与 confidence 不变。
 
   - id: 1
     name: 曲率即规律（测地线世界模型）
@@ -161,7 +168,7 @@ cells:
     kill_test: wright_fisher（一般对称收益 / 循环突变梯子 / RPS + 突变）；从轨迹拟合 F（MPL 为基线）；Fisher-Hodge 与欧氏 HHD head-to-head。欧氏版同样好 → 死。原"三世界"测试降为估计器校准，因为它测的是定理。
     cost_days: 1
     confidence: {exists: high, novel: low, yields: mid}
-    status: unexplored
+    status: thought_killed   # 2026-11-16 JST，Z 的决定：思想实验 + 独立核对（cells/2/review_thought_experiment.md），不跑算力
     neighbors: [7, 5, 6]
     exits: [physics_discovery_datasets]
     collision: "A-（命题层）/ B+（方法层）"
@@ -178,6 +185,11 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议：
       (1) 与格 7 合为一格（回答 Q6）：格 7 的二分 e/m 检验 + r_min 作为本格工具，连续 α-计维持死亡。
       (2) 世界首选 Wright–Fisher 计数；同源对照 = 欧氏 Hodge / 势回归残差。按 rules.R3，主张只能是"更好的统计量"（省数据、稳、可解释），不是"看到更多"。
+      v0.6（2026-11-16 JST，Claude Code；cells/2/thought_experiment_2026-11-16.md 与独立核对 cells/2/review_thought_experiment.md）：
+      (1) 有限 N 的 WF 噪声协方差 (diag x − xxᵀ)/(2N_e) 就是 Shahshahani 度量的逆。带突变（每种类型都有正的突变流入）的平稳过程里，ρ 加权、势函数族不受限的 Fisher-Hodge 残差 × 2N_e 恰好等于熵产生率；暂态数据上它是 housekeeping 熵产生（Dechant–Sasa–Ito 2022）。按 R2 与同源熵产生打平（恒等式），格点数值相差约 0.01%。
+      (2) 对欧氏 HHD 的胜利是定理（Legacci 2024），按 R1 救不了格子。MPL 本身就是 Fisher 加权，比的是函数族。
+      (3) 判 thought_killed，没有跑算力。唯一真实的分岔：噪声不是 Fisher 型（环境适应度噪声、类型依赖的后代方差）时，Fisher-Hodge 问"机制是不是 Shahshahani 梯度"，熵产生问"是否细致平衡"，弱突变 × 环境噪声下两者排序相反。但那里胜负也由定理决定，最强对照是参数化机制检验，至多是新格子的起点。
+      (4) 保留：Fisher-Hodge 分解可作 benchmark 的真值工具；只用多项式基会报假旋度（梯度世界 1.11），基里要有 log x_i，或改为分解 b − ∇·D。
 
   - id: 3
     name: 搬运还是改权（Wasserstein–Fisher–Rao 世界模型）
@@ -231,7 +243,7 @@ cells:
     prediction: 严格固定参数量与潜维数时，拓扑匹配（S¹×R）的 WM 长程误差低于欧氏潜空间；强制错误拓扑比欧氏更差；拓扑由持续同调自动判定（Betti 数预测正确）。
     kill_test: pendulum 像素：潜空间 S¹×R vs R² vs R³（容量严格对齐）；4 尺寸；加错配测试；用 van Hulst 2026 的乘积拓扑先验或 flow 式 encoder 处理优化障碍。所有尺寸欧氏 ≥ 匹配 → 死。
     cost_days: 2
-    confidence: {exists: high, novel: low, yields: mid}
+    confidence: {exists: high, novel: low, yields: lowmid}   # 格 0 阶段 1（2026-11-15）：P0.4-sym = T、P0.4-sg = F → yields −1 档（格 0 prereg §7；与阶段 2 的 P0.5 相加，截断在 ±1 档）
     status: unexplored
     neighbors: [1, 10, 11]
     exits: [known_topology_datasets_SO3_joint_spaces]
@@ -254,6 +266,7 @@ cells:
       CHyLL（Teng, Liu, Song, Sreenath 2025-12）在混合系统上完成了"发现粘合 → 学流 → ripser 验 Betti 数 → 长程胜出"。
       Nicollier 2026 在 JEPA 静态恢复层面做了"几何匹配的目标更好"。
       剩下的空位：光滑系统上用持续上同调选潜流形；"拓扑 vs 流形约束"的归因；Lenia 吸引子拓扑；把可训练性当实验变量。
+      格 0 阶段 1（2026-11-15 JST，cells/0/result.md）：angle_raw 上只有对称 JEPA（K = 8）把切口粘上，stop-grad JEPA 与两种重建都撕开。按格 0 判定表 yields mid → lowmid：在 JEPA 潜空间里"先发现拓扑"不那么必要。P0.3 = F，所以 must (7) 不触发。
 
   - id: 5
     name: 可分辨性即规律（模型流形世界模型）
@@ -291,7 +304,7 @@ cells:
     kill_test: 见 cells/6/prereg.md（草案，待 Z 批准）。过 gate（模型学会了隐变量）但读数测不出或定位不了 → 死。
     cost_days: 2
     confidence: {exists: high, novel: midhigh, yields: mid}
-    status: unexplored
+    status: merged_into:HCDP   # 2026-11-15 JST，prereg v1.4 §7：读数有效，P6.6 没有胜过非几何基线（Zhang et al. 2026-07）；只有尺寸 M，见 cells/6/result.md
     neighbors: [1, 12, 8, 2]
     exits: [popgym, arc_agi_3_stretch]
     collision: B
@@ -319,6 +332,7 @@ cells:
       (2) 预先授权（见 decisions）：v1 预注册逐条实现上面的 15 条清单（文末附逐条对照表），提交并把 sha256 记进 results/ledger.md，再由审稿 agent 按 rules.R4 确认。三条齐了即可开跑，不必再等 Z；清单之外的任何新增或偏离仍须 Z 点头。
       (3) handoff 作者意见（回答 Q2）：若与非几何基线（P6.6）打平，就 merged_into HCDP。唯一可能多出来的是连续极限下的曲率 2-形式，网格世界上测不到，不为它保留本格。
       (4) 第二轮生成的格 18（挠率 = 动作交换子）自审后并入本格，作副读数。
+      结果（2026-11-15 JST，prereg v1.4，只有尺寸 M，cells/6/result.md）：读数层有效（H-act 种子 0、1：分层 AUC 0.998 / 0.996，R0 precision@4 = 1.0，对 C-open、C-vis 特异；种子 2 没过门 gate）。几何层 P6.6 没有胜出：非几何 same_source 基线 AUC 0.994 / 0.976（差的中位数 0.012，门槛 0.05），precision@4 同为 1.0，数据效率相同（探测都要 2000 条，定位都是 500 条；500 条时基线定位 1.0、和乐 0.75）。按 §7 status → merged_into:HCDP。这个最终状态只在 v1.4 下可达，v1.3 会判不确定（S 的 pilot 从没过门 gate）。限定：种子 0、1 的 τ = 0，特异性判据实际是"H_obs 不为零的环路 ≤ 10%"；C-vis 种子 1、2 的模型检查 0.94，略低于 0.95。
 
   - id: 7
     name: 两种直线 → α-计（对偶平坦世界模型）
@@ -434,6 +448,13 @@ cells:
       v0.5（2026-11-04，handoff 作者）提议（回答 Q7）：
       世界用 Wright–Fisher 计数：二项噪声让 σ 随状态自然变化，白化欧氏弧长和 Fisher 弧长这时才分得开；单摆遮挡只作负对照。
       同源对照 = 冻结 σ 的白化欧氏弧长（rules.R2）。HANDOFF §7 第 4 条对 TOTR 的过度解读已在 HANDOFF v0.5 更正。
+      v0.6（2026-11-16 JST，Claude Code，写预注册前的真值检查，cells/9/exploratory/c9_clock_metric.py，不训练模型）：
+      精确 WF 路径（选择、迁移、两者混合；随机起点与稀有入侵者；事件 = 最终胜者首次超过 0.5 或 0.9）上，事件时刻跨种子的 CV：
+      墙钟 0.83–2.40，各种弧长 0.46–1.32。任何弧长都远比墙钟规整，这是去掉速度的重参数化效果（TOTR 的地盘）。
+      在几种弧长之间，Fisher（Shahshahani）只在 8 个情形里赢 1 个（差 0.014），欧氏赢 5 个，logit（clr）赢 2 个，没有偏向 Fisher 的机制。
+      所以第一条预测（事件在 τ 里更规整）在"胜过欧氏弧长"这一步大概率不成立；按 R1，这类精确状态上的结果能削弱、不能救。
+      第二条（在 τ 里训练、换回墙钟评估的 k 步误差）是真正的约束型问题，思想实验判不了，但目前看不出它为什么偏向 Fisher：选择主导时 logit 弧长让时钟速率恒定，迁移主导时欧氏更好。
+      补（2026-11-17 JST，外部评估会话）：上面的检查用到 600 步的确定性 mixed 路径，当时 zoo 的 RK4 在长视界上有单纯形漂移（results/ledger.md "动物园修复记录"）。修复后重跑，只有 mixed 两行在第三位小数上变化，最优时钟不变，结论不变（cells/9/exploratory/c9_clock_metric_after_simplex_fix.out）。
 
   - id: 10
     name: 尺度即时间（重整化群世界模型）
@@ -530,6 +551,7 @@ cells:
     notes: >
       v0.3：撞车最重；Castro 组可能很快推出正式版。优先级下调。
       v0.4（2026-11-03）：第二轮文献截至今日未见正式版，A− 不变。有向最短路是 quasimetric，可与格 8 合并。
+      格 6 结果（2026-11-15 JST，cells/6/result.md）：和乐曲率图定位到的是来源（开关），不是后果（门）。H-act 过 gate 的种子里两个门邻接小方格排第 7–10；门邻接进前 4 只出现在没学会门的模型上。
 
   - id: 13
     name: 因果正交（信息几何因果世界模型）
@@ -620,6 +642,7 @@ cells:
       (1) 本格主线改为"标定 benchmark + 窗口反演对称化读数"，并把这个手法抽象成生成器的第 7 个算子 symmetrize（见 axes.operator_notes）。
       (2) LeHami：handoff 作者只核到论文存在（作者含 Yalovetzky、Balestriero、LeCun，2026 年 10 月；TuringPost 2026-10-24 有解读）。解读里没有提 log|det J|、Liouville、保守摆上的虚假收缩、耗散留作 future work；这几条细节引用前请对照全文再核一次。
       Code 复核（2026-11-12 JST）：已对照全文核实，见 rules.code_review.citations（arXiv 2610.15267v1：§3.2 / 图 4 右的累积 log|det J|；附录 C.4 把耗散留作 future work）。
+      格 0 阶段 1（2026-11-15 JST）的声明产出：格 0 的检查点（保守世界里的一批模型，runs/c0/，备份分支 runs-backup/2026-11 不含 model.pt）与二级能量漂移（measures.json 的 energy_drift），供格 15 标定虚假收缩，见 cells/0/result.md。
 
   # ---- 第二轮生成（handoff 作者 v0.4，2026-11-04）：16 格，v0.5 加 same_source / self_review ----
 
@@ -1170,6 +1193,57 @@ decisions:
       theta_gate: "n = 8000 为主，n = 2000 做敏感性检查"
       null_encoder: "加一个初始化后不训练的编码器作零对照"
     delivery: "handoff 作者的改动走新分支 + PR，不直接改 main"
+  - date: 2026-11-12
+    by: Z
+    recorded_by: Claude Code（Z 在会话里回答选择题）
+    cell_6_post_freeze_revisions: >
+      接受格 6 预注册 v1.1 / v1.2（冻结后、开跑前按独立审稿意见修订；第三轮审稿确认 v1.2，cells/6/review_v1_2.md），
+      包括三处统计量定义的改动（precision@4 取平局期望值；P6.3 的 ≥ 2 次偶数环路只报告；模型检查按分支取最小值）。
+      只接受这一次：以后同类修订仍须逐次请 Z 点头。
+    status_changes_confirmed: "格 1、3、7 → thought_killed，格 8 → lit_killed（第一周报告提议，handoff 作者已接受）"
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code（Z 在会话里回答选择题）
+    cell_6_after_failed_pilots: >
+      两次 pilot（10k、20k 步）都没过 gate（模型学成"门永远关着"；主动档只有 2% 的帧受门状态影响）。
+      Z 选择：主动档 p_home 从 0.01 提到 0.1（受影响的帧约 8%），放弃主动档与被动档的覆盖匹配，P6.5 降为描述；
+      改完重新冻结、审稿，先用 S 尺寸重跑 pilot。
+    cell_0_v2_2: >
+      接受格 0 预注册 v2.2（冻结后按三轮审稿修订），包括：阶段 2 像素仪器检查失败时只停像素部分、保留阶段 1 的结论；
+      收敛判据用 val 损失代替 pred_err[8]。允许开跑阶段 1。
+    cell_0_compute: 阶段 1 现在就在云端跑（格 6 暂停期间）
+  - date: 2026-11-14
+    by: Z
+    recorded_by: Claude Code
+    cell_6_after_failed_v1_3_pilots: >
+      v1.3（p_home 0.1）的 S 尺寸 pilot 也没过 gate（10k：奇数次进入后正确率 0；20k：0.035 / 0.03）。
+      Z 选择：数据与其余设定不动，先用 M 尺寸跑一次 20k 步 pilot；过了就把主实验改成只用能学会的尺寸（v1.4，重新冻结、审稿），
+      不过就回到"换带记忆的模型"或"记为不确定"二选一。
+    cell_6_v1_4_approved: >
+      2026-11-14：M 的 20k 步 pilot 过了 gate（门 gate 四种状态都是 1.0）。prereg v1.4（commit 69ebea5，审稿确认 cells/6/review_v1_4.md）
+      只用尺寸 M、20k 步、21 个 run。Z 看过 §13 "判据变宽松了"一段后认可，开跑：只有 M 判据全过也算读数有效，
+      P6.6 在 M 上任一条胜出路线即可，结论只对尺寸 M 成立。没有加尺寸或种子作补偿。
+    cell_2_next_then_thought_kill: >
+      2026-11-16：格 0、格 6 跑完后，Z 选格 2 作为下一格（越过原顺序里的格 15），这周不写周报。写预注册前的思想实验
+      （cells/2/thought_experiment_2026-11-16.md）发现：Fisher 读数对欧氏分解按定理赢，对熵产生按恒等式打平。Z 决定：
+      先由只核真值、不训练模型的 agent 独立核对推导，成立就把格 2 记为 thought_killed，不跑算力；之后做格 9。
+  - date: 2026-11-17
+    by: Z
+    recorded_by: "外部评估会话（Claude Code），Z 在会话里的原话是\"开始做吧\""
+    external_review_items: >
+      对 reports/2026-11-17_external_review.md 里"你说一声我就可以开始"的三项回复"开始做吧"：
+      (1) 剩下格子的预检（只核真值）与对照表；(2) 格 0 的收敛复查（原始角度的四个臂训练到 5 倍步数，设计见
+      cells/0/prereg_ext_convergence.md）与格 15 的预注册草案（不运行）；(3) 修动物园的数值问题。
+      不包括：合并进 main、"有希望"指什么、预检建议的状态变更，这些仍由 Z 定。
+  - date: 2026-11-19
+    by: Z
+    recorded_by: "外部评估会话（Claude Code），Z 在会话里的原话是\"备份推到分支吧，合并分支后开 PR 进 main。然后antigravity的回复你看看\""
+    branches_and_pr: >
+      (1) 格 0 收敛复查的逐 run 输出（含检查点）推到备份分支 runs-backup/2026-11-e1；
+      (2) 把另一会话的同一修复分支 claude/adoring-rubin-3eau45 合进开发分支；
+      (3) 开 PR 把开发分支合进 main（https://github.com/memess2001/gwm/pull/3），合并由 Z 点；
+      (4) 核对 Antigravity 11-19 的反驳（reports/2026-11-19_reply_to_antigravity.md）。
+      不包括："有希望"指什么、预检建议的状态变更、格 15 做不做、格 0 像素阶段、停止点。
 
 next_generation_todo: >
   v0.5：第二轮生成已做（见 generator_round_2）。按 R2 自审后，16 格里 3 格当场死、1 格并入、1 格不成立、5 格降为 weak 或 deprioritize，
@@ -1220,3 +1294,44 @@ generator_round_2:
     conditional: [19, 21, 23, 26, 27]
     pending: [20]
     lesson: "写出同源量之后，16 格里约一半当场死或降级。生成器本身没问题，缺的是入表前的过滤器"
+
+# 三问（2026-11-18 JST 提议，外部评估会话）。把 status 拆成三个问题：成立吗（几何陈述本身对不对）、新吗（作为世界模型的用法
+# 有没有人做过）、比同源量好吗（rules.R2）。现在的 dead 把"结论是错的"和"结论对但不新"混在一起，后者占多数。
+# 这里只是提议：不替代 status，不改任何格的 status；Z 决定是否采用。依据与每格的说明见 correspondence_table.md。
+three_questions:
+  status: "提议（2026-11-18），未经 Z 确认"
+  fields: [holds, new, beats_same_source]
+  values:
+    0: [是（仪器检查通过）, 部分, 否（angle 上打平；像素待阶段 2）]
+    1: [否, —, 否]
+    2: [是, 否, 否]
+    3: [否, —, 否]
+    4: [是（定理）, 否, 否]
+    5: [是（作为 NTK 谱）, 否, 否]
+    6: [是, 否, 否]
+    7: [否（连续 α）, —, 否]
+    8: [是, 否, 否]
+    9: [部分, 否, 否]
+    10: [元胞自动机上由穷举决定, 交集空、周边密, 不适用]
+    11: [部分（奇点集成立；当作规划的安全地图不成立）, 否, 否]
+    12: [部分, 否, 否]
+    13: [观测变量上是；潜变量上否, 否, 否]
+    14: [是, 否, 否]
+    15: [是（声明体积形式后）, 部分, 未测（学到的模型上）]
+    16: [是, 否, 否]
+    17: [是, 否, 否]
+    18: [是, 否, 否]
+    19: [是, 否, 否]
+    20: [部分, —, 否]
+    21: [是, 否, 否]
+    22: [否（不良定义）, —, —]
+    23: [取决于 γ, —, 否]
+    24: [是, 否, 否]
+    25: [是, 否, 否]
+    26: [是, 否, 否]
+    27: [否, —, 否]
+    28: [是（恒为 0）, —, 否]
+    29: [是（定理）, 否, 否]
+    30: [是, 否, 否]
+    31: [否（α 不是世界的性质）, —, 否]
+  prechecks_2026_11_17_18: "格 5、23、10（11-17）与 13、14、17、20、22、26、27、29、31（11-18）的预检，见 cells/<id>/precheck_*.md；只核真值，没有训练模型，没有改 status"

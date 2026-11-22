@@ -404,6 +404,66 @@ def test_wf_labels_at_step_t_reproduce_step_t(K, schedule):
     assert np.array_equal(tr.obs, tr.state.astype(np.float32))                      # freq obs = state only
 
 
+@pytest.mark.parametrize("mech", ["mixed", "mutation_selection"])
+def test_wf_long_horizon_against_log_coordinate_solver(mech):
+    """600 steps (60 time units) with every fitness negative, so the mean fitness plus mu is below zero on the whole
+    path: off the simplex the field is then transversally unstable (d(sum x - 1)/dt = -(x.f + mu)(sum x - 1)), and an
+    integrator working in x drifts away. The reference works in log coordinates y (x = softmax(y)), which cannot
+    leave the simplex: dy_i/dt = f_i + mu m_i / x_i (mixed), f_i + u / (K x_i) (selection + uniform mutation)."""
+    K, f, x0 = 3, np.array([-1.0, -1.6, -2.3]), np.array([0.3, 0.3, 0.4])
+    mu, m, u = 0.2, np.array([0.2, 0.3, 0.5]), 0.5
+    par = dict(f=f, mu=mu, m=m) if mech == "mixed" else dict(f=f, u=u)
+    tr = WrightFisher(K=K, x0=x0, schedule=[(mech, 60.0, par)]).sample(0, 600, 1, "freq")
+
+    def soft(y):
+        z = np.exp(y - y.max())
+        return z / z.sum()
+
+    def rhs(_, y):
+        x = soft(y)
+        return f + (mu * m / x if mech == "mixed" else u / (K * x))
+    sol = solve_ivp(rhs, (0, 60.0), np.log(x0), t_eval=tr.t, method="DOP853", rtol=1e-12, atol=1e-13)
+    ref = np.array([soft(y) for y in sol.y.T])
+    assert (ref @ f + (mu if mech == "mixed" else 0.0)).max() < -0.5            # unstable off the simplex throughout
+    assert np.abs(tr.state[0] - ref).max() < 1e-8
+
+
+def _linear_closed_form(x0, t, f, rate, R):
+    """x(t) [len(t), K] of dx/dt = x (f - x.f) + rate x R for a rate matrix R (rows sum to 0), by hand:
+    y' = y (diag f + rate R) is LINEAR, and x = y / sum(y) obeys x' = x diag f + rate x R - (x.f) x because R 1 = 0.
+    Hence x(t) = x0 expm(t (diag f + rate R)) / sum. Subtracting max f from the diagonal only rescales y."""
+    y = np.einsum("i,tij->tj", x0, expm(t[:, None, None] * (np.diag(f - f.max()) + rate * R)))
+    return y / y.sum(-1, keepdims=True)
+
+
+@pytest.mark.parametrize("K,schedule,mutation", [(3, "mixed_only", "uniform"), (3, "mutation_selection", "uniform"),
+                                                 (4, "mutation_selection", "cyclic")])
+def test_wf_long_deterministic_paths_match_the_linear_closed_form(K, schedule, mutation):
+    """600 steps, 400 paths, one segment each. Selection + mutation is linear before normalisation, and migration
+    toward a pool m is mutation with R = 1 m' - I, so the exact path is a matrix exponential from t = 0: no time
+    stepping and no vector field of the builder. The zoo integrates both mechanisms by RK4, where s = sum(x) obeys
+    d(s - 1)/dt = -r (s - 1) with r = x.f (+ mu): r < 0 on many paths, and round-off in s would reach order 1.
+    (Added together with the simplex projection of 2026-11-17, by its author: independent in method, not in person.)"""
+    T = 600
+    tr = WrightFisher(K=K, schedule=schedule, mutation=mutation, seg_steps=T).sample(1, T, 400, "freq")
+    X, I = tr.state, tr.info
+    assert np.isfinite(X).all() and X.min() >= 0 and np.abs(X.sum(-1) - 1).max() < 1e-12
+    assert (I["segment_id"] == 0).all()                                              # step-0 parameters hold throughout
+    shift = np.zeros((K, K))
+    shift[np.arange(K), (np.arange(K) + 1) % K] = 1.0                                # cyclic: type i -> type i + 1
+    R_mut = (shift if mutation == "cyclic" else np.ones((K, K)) / K) - np.eye(K)
+    worst = 0.0
+    for i in range(len(X)):
+        if schedule == "mixed_only":
+            R, rate = np.outer(np.ones(K), I["pool"][i, 0]) - np.eye(K), I["mu"][i, 0]
+        else:
+            R, rate = R_mut, I["mut_rate"][i, 0]
+        worst = max(worst, np.abs(X[i] - _linear_closed_form(X[i, 0], tr.t, I["fitness"][i, 0], rate, R)).max())
+    assert worst < 1e-9
+    r = (X[:, :-1] * I["fitness"]).sum(-1) + (I["mu"] if schedule == "mixed_only" else 0.0)
+    assert (r[:, -1] < 0).sum() >= 10                                                # not vacuous: r < 0 is sampled
+
+
 def _circulation(v, center, r, n=3000):
     """Line integral of the Fisher-dual 1-form sum_i v_i / x_i dx_i around a circle in the simplex."""
     K = len(center)
@@ -470,7 +530,8 @@ def test_wf_replicator_hodge_exact_criteria_against_finite_differences():
 
 @pytest.mark.parametrize("A,conservative", [(None, True), ([[0, -1, 2], [1, 0, -1], [-2, 1, 0]], True),
                                             ([[0, -1, 2], [2, 0, -1], [-1, 2, 0]], False),
-                                            ([[1, -1, 3], [2, 0, 1], [0, 1, 2]], True)])   # RPS + column consts
+                                            ([[1, -1, 3], [2, 0, 1], [0, 1, 2]], True),    # RPS + column consts
+                                            ([[-1, -2, 0], [0, -1, -2], [-2, 0, -1]], True)])   # RPS - 1: x.Ax = -1 < 0
 def test_wf_rps_invariant_claim_matches_simulation(A, conservative):
     w = WrightFisher(schedule="rps", rps_A=A)
     gt = w.ground_truth()["rps"]

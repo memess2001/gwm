@@ -1,0 +1,6 @@
+== 3-room star: lambda_2..5 = [0.00559 0.00559 0.09963 0.1313 ], auto k = 2
+  P@doors: orc0=1.000, orc05=1.000, c4=0.500, sq=0.500, orc_t1=1.000, tv_t1=0.000, dd_t1=1.000, orc_t4=1.000, tv_t4=1.000, dd_t4=1.000, orc_t16=1.000, tv_t16=1.000, dd_t16=1.000, orc_t64=1.000, tv_t64=1.000, dd_t64=1.000, fiedler=0.667, speck=1.000, speco=1.000, btw=1.000, orc_t256=1.000, tv_t256=1.000, dd_t256=1.000
+  lambda_2 eigenspace (dim 2) P@doors = 1.000; Spearman(orc_t256, eigenspace) = 0.998; Spearman(orc_t256, fiedler) = 0.901
+== 4-room star: lambda_2..5 = [0.00519 0.00519 0.0058  0.09963], auto k = 3
+  P@doors: orc0=1.000, orc05=1.000, c4=1.000, sq=1.000, orc_t1=1.000, tv_t1=0.000, dd_t1=1.000, orc_t4=1.000, tv_t4=1.000, dd_t4=1.000, orc_t16=1.000, tv_t16=1.000, dd_t16=1.000, orc_t64=1.000, tv_t64=1.000, dd_t64=1.000, fiedler=0.500, speck=1.000, speco=1.000, btw=1.000, orc_t256=1.000, tv_t256=1.000, dd_t256=1.000
+  lambda_2 eigenspace (dim 3) P@doors = 1.000; Spearman(orc_t256, eigenspace) = 0.998; Spearman(orc_t256, fiedler) = 0.544

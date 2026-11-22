@@ -1,0 +1,7 @@
+A. chart 0: MI at tau = 0.01, 0.1, 0.5, 2: 2.7334, 0.9014, 0.2293, 0.0092; max deviation of the singular-value and rate formulas: 8.7e-14
+A. chart 1: MI at tau = 0.01, 0.1, 0.5, 2: 2.7334, 0.9014, 0.2293, 0.0092; max deviation of the singular-value and rate formulas: 8.4e-15
+A. chart 2: MI at tau = 0.01, 0.1, 0.5, 2: 2.7334, 0.9014, 0.2293, 0.0092; max deviation of the singular-value and rate formulas: 4.0e-14
+B. lag at which the slowest component alone keeps 99 % of the MI
+   rates (1,    3): tau* = 1.1359;  tau* x fast rate = 3.408
+   rates (1,   12): tau* = 0.1851;  tau* x fast rate = 2.221
+   rates (1,   48): tau* = 0.0380;  tau* x fast rate = 1.824

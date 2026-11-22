@@ -4,16 +4,21 @@
 每个想法（格）按 **文献杀 → 思想实验杀 → 算力杀** 的顺序处决，只有幸存者才去碰外部 benchmark。
 方法与约定见 `HANDOFF.md`。
 
+**现状（2026-11-19）：** 格 0 阶段 1 与格 6 已跑完，格 0 的收敛复查（训练 5 倍长）分类全部不变，格 2 已判死；其余格子都做了预检（只核真值），关键恒等式经另一家模型（Antigravity）复算，5 处适用条件已更正，判决都没变。32 格的几何对象与同源量对照见 `correspondence_table.md`，需要 Z 决定的事见 `reports/2026-11-18_progress.md` 开头。
+
 ## 文件导航
 
 | 路径 | 内容 |
 |---|---|
 | `HANDOFF.md` | 计划全文（v0.5）：生成器、31 格、动物园、主循环与过滤规则 R1–R5、出口、决定记录（§10） |
+| `correspondence_table.md` | 32 格的几何对象、同源的非几何量、两者的关系类型与证据；"成立吗 / 新吗 / 比同源量好吗"三问 |
 | `cells.yaml` | 生成器的活状态，**v0.5**（2026-11-04 JST，合并两份 v0.4 + 第二轮 16 格 + `rules` + `decisions`）。每格的 status / confidence / collision / nearest / must / same_source / notes；v0.4、v0.5 的改动分别以"v0.4（2026-11-03）""v0.5（2026-11-04 …）"开头写明理由 |
 | `literature_audit.md` | 第一轮文献审计（2026-11-01），保持原样 |
 | `literature_audit_round2.md` | 第二轮补查与引用核对（2026-11-03）；原始结构化输出在 `results/lit_round2_raw.json` |
 | `cells/thought_experiments_2026-11-03.md` | 思想实验杀 / 修正：格 0、1、6、7、9、15，以及跨格模式 |
-| `cells/<id>/prereg.md` | 预注册。**草案，未经 Z 批准，不运行**；格 0、格 6 适用预先授权协议（`cells.yaml` 的 `decisions`） |
+| `cells/<id>/prereg.md` | 预注册。格 0（v2.2）、格 6（v1.4）经 Z 批准并已跑完；格 15 只有草案（`cells/15/prereg_draft_2026-11-18.md`），未批准，不运行 |
+| `cells/<id>/result.md` | 结果（格 0 阶段 1、格 6）；格 0 的收敛复查见 `cells/0/result_ext_convergence.md`（预注册 `cells/0/prereg_ext_convergence.md`） |
+| `cells/<id>/precheck_*.md` | 写预注册之前的检查：只核真值、不训练模型，判断能否由思想实验决定；脚本在同格的 `exploratory/` |
 | `cells/<id>/exploratory/` | 已披露的探索性数值检查（不是 kill test） |
 | `cells/0/calibration.md` | 格 0 测量仪器（持续同调、能量平滑度）在真值嵌入上的校准报告 |
 | `zoo/` | 世界动物园：每个世界都有 `sample()` 与 `ground_truth()`，答案是定理 |
@@ -21,7 +26,7 @@
 | `analysis/` | 预注册测量用的仪器 |
 | `results/ledger.md` | 实验流水账：只记预注册里列出的量 |
 | `results/bench_cpu.md` | baseline 在 4 核 CPU 上的吞吐实测（安静机器），以及格 0、格 6 的预算表 |
-| `reports/` | 给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
+| `reports/` | 进展报告（`2026-11-18_progress.md`，开头是需要 Z 决定的事）；外部评估（`2026-11-17_external_review.md`）；与 Antigravity 的往来（`2026-11-18_reply_to_antigravity.md`、`2026-11-19_from_antigravity.md`、`2026-11-19_reply_to_antigravity.md`）；Wright–Fisher 的 RK4 分支离开单纯形的修复记录（`2026-11-17_wf_simplex_fix.md`）；给 Z 的第一周报告（`2026-11-04_week1.md`），以及写给 handoff 共同作者的详细结果报告（`2026-11-04_advisor_report.md`）；handoff 作者的回信（`2026-11-04_reply_from_handoff_author.md`） |
 
 ## 环境
 

@@ -32,6 +32,15 @@ conserves H = sum_i x*_i log x_i and has closed orbits around x*: "rotational". 
 the label is computed exactly by ``replicator_hodge`` (e.g. a symmetric A is a gradient flow of x.Ax / 2, and
 adding a constant to a column of A does not change the field).
 
+RK4 mechanisms (mixed, mutation_selection, rps): each field is tangent to the hyperplane s = sum_i x_i = 1, but the
+hyperplane need not be attracting. sum_i v_i = -r (s - 1) with r = x.f + mu (mixed), x.f (mutation_selection),
+x.Ax (rps), so where r < 0 the round-off in s grows like exp(-r t): at rate 0.9, 1e-16 reaches 1e-6 after 25 time
+units (250 steps of dt = 0.1). The flow on the simplex does not change when a constant is added to f or to A, but r
+does. Each RK4 substep is therefore followed by the projection x -> clip(x, 0) / sum (the point of the simplex with
+the same ratios x_i / x_j). In exact arithmetic RK4 keeps s = 1 (and x >= 0 while the step dt / n_sub resolves the
+rates), so the projection removes round-off only: the accuracy is that of RK4 with step dt / n_sub, and every state
+of an RK4 segment has sum 1 to a few ulp at any horizon.
+
 Finite population (``pop_size`` = N): one multinomial resampling per observation step, i.e. ``dt`` is the
 generation time. The drift covariance per unit time is (diag x - x x') / (N dt), so changing dt at fixed N changes
 the stochastic dynamics (halving dt doubles the drift per unit time), unlike the deterministic case where dt is
@@ -244,7 +253,7 @@ class WrightFisher(World):
         return 0.5 * np.einsum("...i,ij,...j->...", x, h["S"], x) + x @ h["u"]
 
     def _flow(self, x, mech, p, c, Q, A):
-        """Exact (selection, migration, mutation) or RK4 flow of one observation interval dt."""
+        """Exact (selection, migration, mutation) or RK4 flow of one observation interval dt (x on the simplex)."""
         dt = c["dt"]
         if mech == "selection":
             y = x * np.exp(dt * (p["f"] - p["f"].max(-1, keepdims=True)))
@@ -260,7 +269,8 @@ class WrightFisher(World):
             k2 = _field(x + 0.5 * h * k1, mech, p, Q, A)
             k3 = _field(x + 0.5 * h * k2, mech, p, Q, A)
             k4 = _field(x + h * k3, mech, p, Q, A)
-            x = x + h / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4)
+            # back onto the simplex after every substep: round-off in sum(x) is unstable where r < 0 (module docstring)
+            x = _normalize(x + h / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4))
         return x
 
     def _draw(self, rng, mech, given, c):

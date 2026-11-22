@@ -1,0 +1,19 @@
+300 random cameras per level, 300 bob positions, noise sd 0.01 (bob radius = 1); first draw:
+level          Sampson RMS / noise     centre offset / size         axis ratio
+similarity      0.875 -   1.106       0.0009 -  0.0598      1.000 -   1.007
+affine          0.876 -   1.116       0.0008 -  0.0555      1.300 -   2.511
+projective      0.879 -   1.099       0.0672 -  0.6826      1.120 -   5.551
+warp            0.954 -  10.064       0.0291 -  0.6842      1.029 -  16.826
+thresholds = 99.5th percentile under the null classes: residual 1.099, offset 0.0462, ratio 1.006
+fresh draw: accuracy 0.949
+   similarity  classified as: similarity 294, affine 2, projective 1, warp 3
+   affine      classified as: affine 296, projective 2, warp 2
+   projective  classified as: projective 300
+   warp        classified as: projective 51, warp 249
+where the errors are:
+   projective, perspective strength 0.1-0.2: 1.00 correct (78 cameras)
+   projective, perspective strength 0.2-0.3: 1.00 correct (78 cameras)
+   projective, perspective strength 0.3-0.5: 1.00 correct (144 cameras)
+   warp, amplitude 0.01-0.02 (noise sd 0.01): 0.45 detected (42 cameras)
+   warp, amplitude 0.02-0.04 (noise sd 0.01): 0.85 detected (101 cameras)
+   warp, amplitude 0.04-0.08 (noise sd 0.01): 0.92 detected (157 cameras)
